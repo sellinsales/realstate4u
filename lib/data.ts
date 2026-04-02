@@ -1,0 +1,234 @@
+import { ListingType, Prisma, PropertyType } from "@prisma/client";
+import { DEMO_ADMIN, DEMO_DASHBOARD, DEMO_PROPERTIES } from "@/lib/demo-data";
+import { prisma } from "@/lib/db/prisma";
+import type { AdminSnapshot, DashboardSnapshot, PropertyCardData, PropertyFilters } from "@/lib/types";
+
+const propertyInclude = {
+  media: {
+    orderBy: {
+      sortOrder: "asc",
+    },
+  },
+  createdBy: {
+    include: {
+      profile: true,
+    },
+  },
+  housingQueue: true,
+  leads: true,
+} satisfies Prisma.PropertyListingInclude;
+
+type PropertyRecord = Prisma.PropertyListingGetPayload<{
+  include: typeof propertyInclude;
+}>;
+
+export function isDatabaseConfigured() {
+  return Boolean(process.env.DATABASE_URL);
+}
+
+function mapPropertyRecord(record: PropertyRecord): PropertyCardData {
+  return {
+    id: record.id,
+    slug: record.slug,
+    title: record.title,
+    description: record.description,
+    price: Number(record.price),
+    country: record.country,
+    city: record.city,
+    address: record.address ?? undefined,
+    marketCode: record.marketCode as PropertyCardData["marketCode"],
+    propertyType: record.propertyType,
+    listingType: record.listingType,
+    bedrooms: record.bedrooms ?? undefined,
+    bathrooms: record.bathrooms ?? undefined,
+    areaSqm: record.areaSqm ?? undefined,
+    firstHand: record.firstHand,
+    landlordSelection: record.landlordSelection ?? undefined,
+    isVerified: record.isVerified,
+    createdAt: record.createdAt.toISOString(),
+    agentName: record.createdBy.profile?.name ?? record.createdBy.email,
+    contactPhone: record.contactPhone ?? record.createdBy.profile?.phone ?? undefined,
+    whatsappPhone: record.whatsappPhone ?? undefined,
+    latitude: record.latitude ?? undefined,
+    longitude: record.longitude ?? undefined,
+    imageUrls: record.media.map((item) => item.imageUrl),
+    queueType: record.housingQueue?.type,
+    leadCount: record.leads.length,
+  };
+}
+
+function filterProperties(properties: PropertyCardData[], filters: PropertyFilters) {
+  return properties.filter((property) => {
+    const matchesCountry = filters.country
+      ? property.country.toLowerCase() === filters.country.toLowerCase()
+      : true;
+    const matchesCity = filters.city
+      ? property.city.toLowerCase() === filters.city.toLowerCase()
+      : true;
+    const matchesListingType = filters.listingType
+      ? property.listingType === filters.listingType
+      : true;
+    const matchesPropertyType = filters.propertyType
+      ? property.propertyType === filters.propertyType
+      : true;
+    const matchesMarket = filters.marketCode
+      ? property.marketCode === filters.marketCode
+      : true;
+    const matchesPrice = filters.maxPrice ? property.price <= filters.maxPrice : true;
+
+    return (
+      matchesCountry &&
+      matchesCity &&
+      matchesListingType &&
+      matchesPropertyType &&
+      matchesMarket &&
+      matchesPrice
+    );
+  });
+}
+
+export async function getProperties(filters: PropertyFilters = {}) {
+  if (!isDatabaseConfigured()) {
+    return filterProperties(DEMO_PROPERTIES, filters);
+  }
+
+  try {
+    const properties = await prisma.propertyListing.findMany({
+      where: {
+        country: filters.country || undefined,
+        city: filters.city || undefined,
+        listingType: filters.listingType
+          ? (filters.listingType as ListingType)
+          : undefined,
+        propertyType: filters.propertyType
+          ? (filters.propertyType as PropertyType)
+          : undefined,
+        marketCode: filters.marketCode || undefined,
+        price: filters.maxPrice
+          ? {
+              lte: filters.maxPrice,
+            }
+          : undefined,
+      },
+      include: propertyInclude,
+      orderBy: {
+        createdAt: "desc",
+      },
+    });
+
+    return properties.map(mapPropertyRecord);
+  } catch {
+    return filterProperties(DEMO_PROPERTIES, filters);
+  }
+}
+
+export async function getFeaturedProperties() {
+  const properties = await getProperties();
+  return properties.slice(0, 3);
+}
+
+export async function getPropertyBySlug(slug: string) {
+  if (!isDatabaseConfigured()) {
+    return DEMO_PROPERTIES.find((property) => property.slug === slug) ?? null;
+  }
+
+  try {
+    const property = await prisma.propertyListing.findUnique({
+      where: { slug },
+      include: propertyInclude,
+    });
+
+    return property ? mapPropertyRecord(property) : null;
+  } catch {
+    return DEMO_PROPERTIES.find((property) => property.slug === slug) ?? null;
+  }
+}
+
+export async function getQueueHousingListings() {
+  const properties = await getProperties({ marketCode: "SWEDEN", listingType: "RENT" });
+  return properties.filter((property) => Boolean(property.queueType));
+}
+
+export async function getDashboardSnapshot(userId: string): Promise<DashboardSnapshot> {
+  if (!isDatabaseConfigured() || userId.startsWith("demo-")) {
+    return DEMO_DASHBOARD;
+  }
+
+  try {
+    const [listingCount, leadCount, queueApplications, pendingReview, listings] = await Promise.all([
+      prisma.propertyListing.count({
+        where: { createdById: userId },
+      }),
+      prisma.lead.count({
+        where: {
+          property: {
+            createdById: userId,
+          },
+        },
+      }),
+      prisma.housingApplication.count({
+        where: {
+          property: {
+            createdById: userId,
+          },
+        },
+      }),
+      prisma.propertyListing.count({
+        where: {
+          createdById: userId,
+          isVerified: false,
+        },
+      }),
+      prisma.propertyListing.findMany({
+        where: {
+          createdById: userId,
+        },
+        include: propertyInclude,
+        take: 3,
+        orderBy: {
+          createdAt: "desc",
+        },
+      }),
+    ]);
+
+    return {
+      listingCount,
+      leadCount,
+      queueApplications,
+      pendingReview,
+      listings: listings.map(mapPropertyRecord),
+    };
+  } catch {
+    return DEMO_DASHBOARD;
+  }
+}
+
+export async function getAdminSnapshot(): Promise<AdminSnapshot> {
+  if (!isDatabaseConfigured()) {
+    return DEMO_ADMIN;
+  }
+
+  try {
+    const [pendingListings, verifiedCount, userCount] = await Promise.all([
+      prisma.propertyListing.findMany({
+        where: { isVerified: false },
+        include: propertyInclude,
+        orderBy: {
+          createdAt: "desc",
+        },
+      }),
+      prisma.propertyListing.count({
+        where: { isVerified: true },
+      }),
+      prisma.user.count(),
+    ]);
+
+    return {
+      pendingListings: pendingListings.map(mapPropertyRecord),
+      verifiedCount,
+      userCount,
+    };
+  } catch {
+    return DEMO_ADMIN;
+  }
+}
