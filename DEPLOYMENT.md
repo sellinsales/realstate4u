@@ -33,10 +33,19 @@ In cPanel:
 1. Go to MySQL Databases
 2. Verify database exists: `realstate4u_marketplace`
 3. Verify user exists: `realstate4u_online`
-4. **FIX AUTH PLUGIN** (critical):
-   - Go to phpMyAdmin or MySQL Console
-   - Run: `ALTER USER 'realstate4u_online'@'localhost' IDENTIFIED WITH mysql_native_password BY 'Z4]$bE7TPdF?g5^8';`
-   - Or recreate user with mysql_native_password auth
+4. **Using phpMyAdmin - Create Tables**:
+   - Open phpMyAdmin in cPanel
+   - Select database: `realstate4u_marketplace`
+   - Click **SQL** tab
+   - Copy entire content from `prisma/schema.sql` file in your project
+   - Paste into SQL editor and click **Go**
+   - All 7 tables will be created automatically
+5. **FIX AUTH PLUGIN** (critical):
+   - Still in phpMyAdmin SQL tab, run:
+   ```sql
+   ALTER USER 'realstate4u_online'@'localhost' IDENTIFIED WITH mysql_native_password BY 'Z4]$bE7TPdF?g5^8';
+   ```
+   - Click **Go** and verify success
 
 ## Step 4: Verify Node.js App in cPanel (REQUIRED - User Action)
 
@@ -73,13 +82,21 @@ In cPanel Node.js Manager:
 
 ## Step 6: Database Initialization (One-time, after first deploy)
 
-Via cPanel Terminal or SSH:
+**Option A: Via cPanel Terminal or SSH** (if available):
 ```bash
 cd public_html/rs4u
 npx prisma generate
 npx prisma migrate deploy
 npx tsx prisma/seed.ts
 ```
+
+**Option B: Via phpMyAdmin** (if no terminal access):
+1. Open phpMyAdmin
+2. Select database: `realstate4u_marketplace`
+3. Click **SQL** tab
+4. Paste the demo data SQL from `prisma/demo-seed.sql` (see Troubleshooting section)
+5. Click **Go**
+6. Data will be seeded automatically
 
 ## Step 7: Test the Deployment
 
