@@ -35,7 +35,7 @@ jobs:
         username: realstate4u
         password: ${{ secrets.CPANEL_PASSWORD }}
         local-dir: ./
-        remote-dir: public_html/rs4u/
+        server-dir: public_html/rs4u/
         exclude: |
           .git*
           .github*
