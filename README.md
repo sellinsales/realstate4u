@@ -99,6 +99,10 @@ npm run prisma:migrate -- --name init
 npm run db:seed
 ```
 
+## Deployment
+
+The app is configured for automated deployment to cPanel hosting via GitHub Actions FTP. Push to the `master` branch to trigger deployment.
+
 5. Start the app.
 
 ```bash
