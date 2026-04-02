@@ -92,6 +92,30 @@ npx tsx prisma/seed.ts
 
 ## Troubleshooting
 
+### If you don't have cPanel Terminal access:
+
+**Option 1: Use phpMyAdmin (Easiest)**
+1. Go to cPanel → phpMyAdmin
+2. Select database: `realstate4u_marketplace`
+3. Click **SQL** tab
+4. Run: `ALTER USER 'realstate4u_online'@'localhost' IDENTIFIED WITH mysql_native_password BY 'Z4]$bE7TPdF?g5^8';`
+5. Then use Prisma migrations via the app or setup script
+
+**Option 2: Contact Hosting Support**
+- Email your host asking them to:
+  1. Fix auth plugin to mysql_native_password
+  2. Run Prisma migrations for your database
+
+**Option 3: Setup Locally, Export & Import**
+1. Setup database locally with Prisma
+2. Export database dump
+3. Import via phpMyAdmin on cPanel
+
+**Option 4: Check for SSH Access**
+- Check if SSH is available in cPanel
+- Connect via: `ssh realstate4u@108.163.234.178`
+- Then run setup commands
+
 ### If FTP deployment fails:
 - Verify `CPANEL_PASSWORD` secret is set in GitHub
 - Check username is `realstate4u@realstate4u.com`
