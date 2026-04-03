@@ -1,6 +1,9 @@
 import { NextResponse } from "next/server";
 import { hasAccountSecuritySchema, verifyEmailToken } from "@/lib/account-security";
 
+export const runtime = "nodejs";
+export const dynamic = "force-dynamic";
+
 export async function GET(request: Request) {
   const token = new URL(request.url).searchParams.get("token") || "";
 

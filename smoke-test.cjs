@@ -76,6 +76,47 @@ async function checkPage(route) {
   }
 }
 
+async function checkRuntimeDebug() {
+  if (!process.env.NEXTAUTH_SECRET) {
+    addResult("Runtime debug route", "warn", "Skipped because NEXTAUTH_SECRET is not available");
+    return;
+  }
+
+  try {
+    const response = await httpJson(`${baseUrl}/api/debug/runtime-db`, {
+      method: "GET",
+      headers: {
+        "x-debug-token": process.env.NEXTAUTH_SECRET,
+      },
+    });
+
+    if (response.ok) {
+      const details = [];
+
+      if (response.json?.databaseUrlPreview) {
+        details.push(`env=${response.json.databaseUrlPreview}`);
+      }
+      if (response.json?.dbPingError) {
+        details.push(`dbPingError=${response.json.dbPingError}`);
+      } else {
+        details.push("dbPing=ok");
+      }
+      if (response.json?.userLookupError) {
+        details.push(`userLookupError=${response.json.userLookupError}`);
+      } else {
+        details.push("userLookup=ok");
+      }
+
+      addResult("Runtime debug route", "pass", details.join(" | "));
+      return;
+    }
+
+    addResult("Runtime debug route", "fail", response.json?.error || response.text || `HTTP ${response.status}`);
+  } catch (error) {
+    addResult("Runtime debug route", "fail", error instanceof Error ? error.message : "Request failed");
+  }
+}
+
 async function checkAuthPreflight() {
   try {
     const response = await httpJson(`${baseUrl}/api/auth/preflight`, {
@@ -172,6 +213,7 @@ async function main() {
   await checkPage("/login");
   await checkPage("/register");
   await checkPage("/forgot-password");
+  await checkRuntimeDebug();
   await checkAuthPreflight();
 
   if (runRegister) {

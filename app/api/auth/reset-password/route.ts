@@ -2,6 +2,9 @@ import { NextResponse } from "next/server";
 import { hasAccountSecuritySchema, resetPasswordWithToken } from "@/lib/account-security";
 import { resetPasswordSchema } from "@/lib/validators";
 
+export const runtime = "nodejs";
+export const dynamic = "force-dynamic";
+
 export async function POST(request: Request) {
   const body = await request.json().catch(() => null);
   const parsed = resetPasswordSchema.safeParse(body);
