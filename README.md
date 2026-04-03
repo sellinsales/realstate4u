@@ -26,7 +26,7 @@ Services and jobs are scaffolded as future verticals, but Phase 1 is intentional
 - Tailwind CSS v4
 - NextAuth credentials provider
 - Prisma ORM
-- MySQL/MariaDB
+- PostgreSQL
 - Cloudinary-ready image URL field
 - OpenStreetMap link integration
 
@@ -87,7 +87,7 @@ npm install
 npm run prisma:generate
 ```
 
-3. Run the initial migration.
+3. Run the initial migration locally.
 
 ```bash
 npm run prisma:migrate -- --name init
@@ -131,6 +131,53 @@ npm run lint
 npm run build
 npm run prisma:studio
 ```
+
+## Passenger Deployment
+
+If your hosting uses Phusion Passenger or cPanel Node.js App:
+
+1. Set the application root to this project folder.
+2. Set the startup file to `app.js`.
+3. Install dependencies:
+
+```bash
+npm install
+```
+
+4. Generate Prisma client:
+
+```bash
+npm run prisma:generate
+```
+
+5. Build the app:
+
+```bash
+npm run build
+```
+
+6. Apply production migrations:
+
+```bash
+npm run prisma:deploy
+```
+
+7. Set these environment variables in the hosting panel:
+
+- `DATABASE_URL`
+- `NEXTAUTH_URL`
+- `NEXTAUTH_SECRET`
+
+8. Restart the Passenger app.
+
+If Passenger still shows the generic error page, check the app error log first. The most common causes for this project are:
+
+- `npm run build` was not run on the server
+- `node_modules` is missing
+- `NEXTAUTH_SECRET` is missing
+- `DATABASE_URL` is invalid
+- the startup file was not set to `app.js`
+- the MySQL user is using the unsupported `sha256_password` authentication plugin
 
 ## Next Phase Notes
 

@@ -1,100 +1,54 @@
-# Troubleshooting Passenger Error on cPanel
+# Troubleshooting Passenger
 
-## Error: "We're sorry, but something went wrong"
+If Passenger shows the generic error page, the app failed during startup.
 
-This Passenger error means your Node.js app deployed but isn't running. Common causes:
+## Check First
 
-## 1. Check Passenger Logs (CRITICAL)
+- startup file is `app.js`
+- `npm install` was run
+- `npm run build` was run
+- `npm run prisma:generate` was run
+- environment variables are present
 
-**In cPanel → File Manager:**
-- Navigate to: `/home/realstate4u/logs/`
-- Look for: `passenger.log`
-- Download and check for error messages
+## Required Environment Variables
 
-**Common errors:**
-- `Cannot find module` → dependencies not installed
-- `ECONNREFUSED` → database can't connect
-- `Error: listen EADDRINUSE` → port already in use
-- `undefined environment variable` → missing .env variables
-
-## 2. Verify Environment Variables in cPanel
-
-**In cPanel → Node.js Manager:**
-Check these variables are set:
-```
-DATABASE_URL=mysql://realstate4u_online:Z4%5D%24bE7TPdF%3Fg5%5E8@localhost:3306/realstate4u_marketplace?authPlugin=mysql_native_password
-NEXTAUTH_URL=http://realstate4u.com
-NEXTAUTH_SECRET=7f9d2c8e1a4b6k9m3p5q8t2v6x1z4c7j9n2r5u8w
+```env
+DATABASE_URL=mysql://DB_USER:URL_ENCODED_PASSWORD@127.0.0.1:3306/realstate4u_marketplace
+NEXTAUTH_URL=https://realstate4u.com
+NEXTAUTH_SECRET=generate-a-long-random-secret
 NODE_ENV=production
 ```
 
-## 3. Install Dependencies on Server
+## Common Causes
 
-**Via cPanel Terminal/SSH:**
-```bash
-cd /home/realstate4u/public_html/rs4u
-npm install --production
-```
+- missing `node_modules`
+- missing `.next` build output
+- invalid `DATABASE_URL`
+- bad DB password encoding
+- unsupported MySQL auth plugin
 
-## 4. Check .env File in App Root
+## MariaDB/MySQL Auth Plugin Fix
 
-**File:** `/home/realstate4u/public_html/rs4u/.env`
+If Prisma cannot connect, ask hosting support to switch the database user to `mysql_native_password`.
 
-Should contain exactly:
-```
-NODE_ENV=production
-DATABASE_URL=mysql://realstate4u_online:Z4%5D%24bE7TPdF%3Fg5%5E8@localhost:3306/realstate4u_marketplace?authPlugin=mysql_native_password
-NEXTAUTH_URL=http://realstate4u.com
-NEXTAUTH_SECRET=7f9d2c8e1a4b6k9m3p5q8t2v6x1z4c7j9n2r5u8w
-```
+Example:
 
-## 5. Restart the App
-
-**In cPanel → Node.js Manager:**
-- Click "Restart"
-
-## 6. Check MySQL Auth Plugin Again
-
-In phpMyAdmin, run:
 ```sql
-ALTER USER 'realstate4u_online'@'localhost' IDENTIFIED WITH mysql_native_password BY 'Z4]$bE7TPdF?g5^8';
+ALTER USER 'your_db_user'@'localhost' IDENTIFIED WITH mysql_native_password BY 'your-db-password';
+FLUSH PRIVILEGES;
 ```
 
-## Quick Diagnostic Script
+## Useful Commands
 
-If you have cPanel Terminal/SSH, run:
 ```bash
-cd /home/realstate4u/public_html/rs4u
-echo "=== Node Version ==="
 node --version
-echo "=== npm Version ==="
 npm --version
-echo "=== .env file ==="
-cat .env
-echo "=== node_modules exists ==="
-ls -la | grep node_modules
-echo "=== .next build exists ==="
-ls -la | grep .next
-echo "=== package.json exists ==="
-ls -la | grep package.json
+npm install
+npm run prisma:generate
+npm run build
+npm run prisma:deploy
 ```
 
-## Most Common Fix
+## Log Location
 
-Most likely issue: **npm dependencies not installed on server**
-
-```bash
-cd /home/realstate4u/public_html/rs4u
-rm -rf node_modules package-lock.json
-npm install --production
-npm start
-```
-
-Then restart via cPanel Node.js Manager.
-
----
-
-**What to do now:**
-1. Check `/home/realstate4u/logs/passenger.log` for the actual error
-2. Share the first 10 lines of that error
-3. I'll give you the exact fix
+Check the Passenger or application error log in your hosting panel first. That log is the fastest way to find the actual startup failure.
