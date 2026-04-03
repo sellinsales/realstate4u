@@ -3,11 +3,24 @@ import type { NextAuthOptions } from "next-auth";
 import { getServerSession } from "next-auth/next";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { UserRole } from "@prisma/client";
+import { hasAccountSecuritySchema, normalizeEmail, shouldRequireEmailVerification } from "@/lib/account-security";
 import { prisma } from "@/lib/db/prisma";
 import { DEMO_CREDENTIALS } from "@/lib/demo-data";
 import { loginSchema } from "@/lib/validators";
 
-async function authorizeDemoUser(email: string, password: string) {
+type SessionUser = {
+  id: string;
+  email: string;
+  name: string;
+  role: UserRole;
+};
+
+type CredentialCheckResult =
+  | { status: "ok"; user: SessionUser }
+  | { status: "invalid" }
+  | { status: "unverified"; email: string };
+
+async function authorizeDemoUser(email: string, password: string): Promise<SessionUser | null> {
   const demoUser = DEMO_CREDENTIALS.find(
     (candidate) => candidate.email === email && candidate.password === password,
   );
@@ -21,6 +34,59 @@ async function authorizeDemoUser(email: string, password: string) {
     email: demoUser.email,
     name: demoUser.name,
     role: demoUser.role as UserRole,
+  };
+}
+
+export async function validateCredentials(email: string, password: string): Promise<CredentialCheckResult> {
+  const normalizedEmail = normalizeEmail(email);
+
+  if (!process.env.DATABASE_URL) {
+    const demoUser = await authorizeDemoUser(normalizedEmail, password);
+    return demoUser ? { status: "ok", user: demoUser } : { status: "invalid" };
+  }
+
+  const supportsAccountSecurity = await hasAccountSecuritySchema();
+  const user = await prisma.user.findUnique({
+    where: { email: normalizedEmail },
+    select: {
+      id: true,
+      email: true,
+      password: true,
+      role: true,
+      profile: {
+        select: {
+          name: true,
+        },
+      },
+      ...(supportsAccountSecurity ? { emailVerifiedAt: true } : {}),
+    },
+  });
+
+  if (!user) {
+    return { status: "invalid" };
+  }
+
+  const isValid = await compare(password, user.password);
+
+  if (!isValid) {
+    return { status: "invalid" };
+  }
+
+  if (supportsAccountSecurity && shouldRequireEmailVerification() && !("emailVerifiedAt" in user && user.emailVerifiedAt)) {
+    return {
+      status: "unverified",
+      email: user.email,
+    };
+  }
+
+  return {
+    status: "ok",
+    user: {
+      id: user.id,
+      email: user.email,
+      name: user.profile?.name ?? user.email,
+      role: user.role,
+    },
   };
 }
 
@@ -46,36 +112,11 @@ export const authOptions: NextAuthOptions = {
           return null;
         }
 
-        const { email, password } = parsed.data;
-
-        if (!process.env.DATABASE_URL) {
-          return authorizeDemoUser(email, password);
-        }
-
         try {
-          const user = await prisma.user.findUnique({
-            where: { email },
-            include: { profile: true },
-          });
-
-          if (!user) {
-            return null;
-          }
-
-          const isValid = await compare(password, user.password);
-
-          if (!isValid) {
-            return null;
-          }
-
-          return {
-            id: user.id,
-            email: user.email,
-            name: user.profile?.name ?? user.email,
-            role: user.role,
-          };
+          const result = await validateCredentials(parsed.data.email, parsed.data.password);
+          return result.status === "ok" ? result.user : null;
         } catch {
-          return authorizeDemoUser(email, password);
+          return null;
         }
       },
     }),

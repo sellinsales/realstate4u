@@ -7,10 +7,23 @@ export const loginSchema = z.object({
 
 export const registerSchema = z.object({
   email: z.email(),
-  password: z.string().min(6),
+  password: z.string().min(8),
   name: z.string().min(2),
   phone: z.string().min(6),
   country: z.string().min(2),
+});
+
+export const forgotPasswordSchema = z.object({
+  email: z.email(),
+});
+
+export const resendVerificationSchema = z.object({
+  email: z.email(),
+});
+
+export const resetPasswordSchema = z.object({
+  token: z.string().min(20),
+  password: z.string().min(8),
 });
 
 export const propertyFormSchema = z.object({

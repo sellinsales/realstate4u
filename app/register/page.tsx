@@ -9,7 +9,7 @@ export default function RegisterPage() {
         <PageIntro
           eyebrow="Create account"
           title="Create an account for buyers, renters, agents, and landlords."
-          description="Registration stores the core details needed for inquiries, listings, queue applications, and dashboard access."
+          description="Registration stores the core details needed for inquiries, listings, queue applications, and dashboard access. Confirmed accounts are ready for secure sign-in, password recovery, and account notifications."
         />
         <div className="grid gap-8 lg:grid-cols-[0.78fr_1.22fr]">
           <div className="panel rounded-[1.8rem] p-5">
@@ -19,6 +19,7 @@ export default function RegisterPage() {
             <div className="mt-4 space-y-3 text-sm leading-7 text-[var(--muted)]">
               <p>Users can browse, send inquiries, and apply to queue-based rentals.</p>
               <p>Agents and landlords can attach listings and manage the dashboard workflow from the same account.</p>
+              <p>Email confirmation and password recovery are built into the live account flow.</p>
               <p>
                 Already registered?{" "}
                 <Link href="/login" className="font-semibold text-[var(--brand-blue)]">

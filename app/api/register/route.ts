@@ -1,5 +1,12 @@
 import { hash } from "bcryptjs";
 import { NextResponse } from "next/server";
+import {
+  createVerificationEmail,
+  getBaseUrl,
+  hasAccountSecuritySchema,
+  normalizeEmail,
+  shouldRequireEmailVerification,
+} from "@/lib/account-security";
 import { prisma } from "@/lib/db/prisma";
 import { registerSchema } from "@/lib/validators";
 
@@ -21,20 +28,24 @@ export async function POST(request: Request) {
   }
 
   try {
+    const normalizedEmail = normalizeEmail(parsed.data.email);
     const existing = await prisma.user.findUnique({
-      where: { email: parsed.data.email },
+      where: { email: normalizedEmail },
     });
 
     if (existing) {
       return NextResponse.json({ error: "Email already exists." }, { status: 409 });
     }
 
+    const supportsAccountSecurity = await hasAccountSecuritySchema();
+    const requiresVerification = supportsAccountSecurity && shouldRequireEmailVerification();
     const password = await hash(parsed.data.password, 10);
 
-    await prisma.user.create({
+    const user = await prisma.user.create({
       data: {
-        email: parsed.data.email,
+        email: normalizedEmail,
         password,
+        ...(supportsAccountSecurity ? { emailVerifiedAt: requiresVerification ? null : new Date() } : {}),
         profile: {
           create: {
             name: parsed.data.name,
@@ -45,7 +56,44 @@ export async function POST(request: Request) {
       },
     });
 
-    return NextResponse.json({ message: "Account created successfully." }, { status: 201 });
+    if (!requiresVerification) {
+      return NextResponse.json(
+        { message: "Account created successfully. You can sign in now.", verificationRequired: false },
+        { status: 201 },
+      );
+    }
+
+    try {
+      await createVerificationEmail(
+        {
+          userId: user.id,
+          email: user.email,
+          name: parsed.data.name,
+        },
+        getBaseUrl(request),
+      );
+
+      return NextResponse.json(
+        {
+          message: "Account created. Check your inbox to confirm the email before signing in.",
+          verificationRequired: true,
+          email: user.email,
+          delivery: "sent",
+        },
+        { status: 201 },
+      );
+    } catch {
+      return NextResponse.json(
+        {
+          message:
+            "Account created, but the confirmation email could not be sent yet. Use resend confirmation from the login page.",
+          verificationRequired: true,
+          email: user.email,
+          delivery: "pending",
+        },
+        { status: 201 },
+      );
+    }
   } catch {
     return NextResponse.json({ error: "Unable to create account." }, { status: 500 });
   }

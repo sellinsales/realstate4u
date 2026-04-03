@@ -17,6 +17,15 @@ export function RegisterForm() {
 
     const formData = new FormData(event.currentTarget);
     const payload = Object.fromEntries(formData.entries());
+    const password = String(formData.get("password") || "");
+    const confirmPassword = String(formData.get("confirmPassword") || "");
+    const email = String(formData.get("email") || "");
+
+    if (password !== confirmPassword) {
+      setLoading(false);
+      setError("Password confirmation does not match.");
+      return;
+    }
 
     const response = await fetch("/api/register", {
       method: "POST",
@@ -26,7 +35,13 @@ export function RegisterForm() {
       body: JSON.stringify(payload),
     });
 
-    const data = (await response.json()) as { message?: string; error?: string };
+    const data = (await response.json()) as {
+      message?: string;
+      error?: string;
+      verificationRequired?: boolean;
+      delivery?: string;
+      email?: string;
+    };
     setLoading(false);
 
     if (!response.ok) {
@@ -36,7 +51,18 @@ export function RegisterForm() {
 
     setMessage(data.message || "Account created.");
     setTimeout(() => {
-      router.push("/login?registered=1");
+      const params = new URLSearchParams({ registered: "1" });
+
+      if (data.verificationRequired) {
+        params.set("verify", "1");
+        params.set("email", data.email || email);
+
+        if (data.delivery === "pending") {
+          params.set("delivery", "pending");
+        }
+      }
+
+      router.push(`/login?${params.toString()}`);
     }, 900);
   }
 
@@ -72,7 +98,14 @@ export function RegisterForm() {
         <label htmlFor="password" className="field-label">
           Password
         </label>
-        <input id="password" name="password" type="password" className="field" required minLength={6} />
+        <input id="password" name="password" type="password" className="field" required minLength={8} />
+        <p className="field-hint">Use at least 8 characters for a production-ready account password.</p>
+      </div>
+      <div>
+        <label htmlFor="confirmPassword" className="field-label">
+          Confirm password
+        </label>
+        <input id="confirmPassword" name="confirmPassword" type="password" className="field" required minLength={8} />
       </div>
       {message ? <p className="status-note status-note-success">{message}</p> : null}
       {error ? <p className="status-note status-note-error">{error}</p> : null}

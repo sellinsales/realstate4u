@@ -15,6 +15,7 @@ Services and jobs are scaffolded as future verticals, but Phase 1 is intentional
 - Property detail page
 - Post property page
 - Credentials auth
+- Password reset and email confirmation
 - Lead and inquiry capture
 - Basic queue housing application flow
 - Dashboard and admin pages
@@ -37,13 +38,16 @@ app/
   admin/
   api/
   dashboard/
+  forgot-password/
   jobs/
   login/
   post-property/
   properties/
   queue-housing/
   register/
+  reset-password/
   services/
+  verify-email/
 components/
   auth/
   property/
@@ -68,10 +72,23 @@ Copy `.env.example` to `.env` and fill in the values.
 DATABASE_URL=
 NEXTAUTH_URL=http://localhost:3000
 NEXTAUTH_SECRET=
+AUTH_REQUIRE_EMAIL_VERIFICATION=false
+MAIL_FROM=
+SMTP_HOST=
+SMTP_PORT=587
+SMTP_USER=
+SMTP_PASS=
+SMTP_SECURE=false
 CLOUDINARY_CLOUD_NAME=
 CLOUDINARY_API_KEY=
 CLOUDINARY_API_SECRET=
 ```
+
+Notes:
+
+- The app uses MySQL / MariaDB, not PostgreSQL.
+- Email confirmation becomes required automatically when SMTP is configured.
+- You can force confirmation on or off with `AUTH_REQUIRE_EMAIL_VERIFICATION=true` or `false`.
 
 ## Setup
 
@@ -119,10 +136,11 @@ These work when the database is not configured yet:
 
 ## MVP Notes
 
-- Public property pages work with demo data fallback when PostgreSQL is not connected.
+- Public property pages work with demo data fallback when MySQL / MariaDB is not connected.
 - Lead and queue APIs return demo-mode success messages without persistence until `DATABASE_URL` is configured.
-- Posting new properties and registration require a real database connection.
+- Posting new properties, registration, and live sign-in require a real database connection.
 - The post property form currently accepts image URLs so Cloudinary uploads can be integrated cleanly next.
+- Password reset email and email confirmation delivery require SMTP settings.
 
 ## Useful Commands
 
@@ -162,11 +180,19 @@ npm run build
 npm run prisma:push
 ```
 
+If the live database already exists and you only need the auth upgrade for email confirmation and password reset, you can also run `prisma/auth-upgrade.sql` once in phpMyAdmin.
+
 7. Set these environment variables in the hosting panel:
 
 - `DATABASE_URL`
 - `NEXTAUTH_URL`
 - `NEXTAUTH_SECRET`
+- `MAIL_FROM`
+- `SMTP_HOST`
+- `SMTP_PORT`
+- `SMTP_USER`
+- `SMTP_PASS`
+- `SMTP_SECURE`
 
 8. Restart the Passenger app.
 

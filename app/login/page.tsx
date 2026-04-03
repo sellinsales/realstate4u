@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { LoginForm } from "@/components/auth/login-form";
+import { ResendVerificationForm } from "@/components/auth/resend-verification-form";
 import { PageIntro } from "@/components/ui/page-intro";
 import { DEMO_CREDENTIALS } from "@/lib/demo-data";
 import { isDatabaseConfigured } from "@/lib/data";
@@ -11,6 +12,10 @@ type LoginPageProps = {
 export default async function LoginPage({ searchParams }: LoginPageProps) {
   const params = await searchParams;
   const registered = params.registered === "1";
+  const requiresVerification = params.verify === "1";
+  const reset = params.reset === "1";
+  const deliveryPending = params.delivery === "pending";
+  const email = typeof params.email === "string" ? params.email : "";
   const demoMode = !isDatabaseConfigured();
 
   return (
@@ -23,8 +28,20 @@ export default async function LoginPage({ searchParams }: LoginPageProps) {
           aside={
             <div className="space-y-4">
               {registered ? (
+                <div className={requiresVerification ? "status-note status-note-warning" : "status-note status-note-success"}>
+                  {requiresVerification
+                    ? "Account created. Confirm the email before signing in."
+                    : "Account created. You can sign in now."}
+                </div>
+              ) : null}
+              {deliveryPending ? (
+                <div className="status-note status-note-warning">
+                  The first confirmation email could not be delivered automatically. Use the resend form below once mail delivery is configured.
+                </div>
+              ) : null}
+              {reset ? (
                 <div className="status-note status-note-success">
-                  Account created. You can sign in now.
+                  Password updated. Sign in with the new password.
                 </div>
               ) : null}
               {demoMode ? (
@@ -67,8 +84,18 @@ export default async function LoginPage({ searchParams }: LoginPageProps) {
               </Link>
               .
             </p>
+            <p className="text-sm text-[var(--muted)]">
+              Forgot your password?{" "}
+              <Link href="/forgot-password" className="font-semibold text-[var(--brand-blue)]">
+                Reset it here
+              </Link>
+              .
+            </p>
           </div>
-          <LoginForm />
+          <div className="space-y-4">
+            <LoginForm />
+            <ResendVerificationForm initialEmail={email} />
+          </div>
         </div>
       </div>
     </main>

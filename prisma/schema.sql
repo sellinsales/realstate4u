@@ -7,6 +7,7 @@ CREATE TABLE IF NOT EXISTS `User` (
   `email` VARCHAR(191) NOT NULL UNIQUE,
   `password` VARCHAR(191) NOT NULL,
   `role` ENUM('USER','AGENT','LANDLORD','ADMIN') NOT NULL DEFAULT 'USER',
+  `emailVerifiedAt` DATETIME(3),
   `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
   `updatedAt` DATETIME(3) NOT NULL,
   PRIMARY KEY (`id`)
@@ -109,5 +110,29 @@ CREATE TABLE IF NOT EXISTS `HousingApplication` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `propertyId_userId` (`propertyId`, `userId`),
   FOREIGN KEY (`propertyId`) REFERENCES `PropertyListing`(`id`) ON DELETE CASCADE,
+  FOREIGN KEY (`userId`) REFERENCES `User`(`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- Create EmailVerificationToken table
+CREATE TABLE IF NOT EXISTS `EmailVerificationToken` (
+  `id` VARCHAR(191) NOT NULL,
+  `userId` VARCHAR(191) NOT NULL,
+  `tokenHash` VARCHAR(191) NOT NULL UNIQUE,
+  `expiresAt` DATETIME(3) NOT NULL,
+  `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+  PRIMARY KEY (`id`),
+  INDEX `EmailVerificationToken_userId_idx` (`userId`),
+  FOREIGN KEY (`userId`) REFERENCES `User`(`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- Create PasswordResetToken table
+CREATE TABLE IF NOT EXISTS `PasswordResetToken` (
+  `id` VARCHAR(191) NOT NULL,
+  `userId` VARCHAR(191) NOT NULL,
+  `tokenHash` VARCHAR(191) NOT NULL UNIQUE,
+  `expiresAt` DATETIME(3) NOT NULL,
+  `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+  PRIMARY KEY (`id`),
+  INDEX `PasswordResetToken_userId_idx` (`userId`),
   FOREIGN KEY (`userId`) REFERENCES `User`(`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
