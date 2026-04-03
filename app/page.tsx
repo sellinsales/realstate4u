@@ -16,22 +16,99 @@ import { MARKET_CONFIG } from "@/lib/markets";
 import { detectPreferredMarket, getPreferredMarketCopy, prioritizeByMarket } from "@/lib/market-personalization";
 
 export default async function HomePage() {
-  const headerStore = await headers();
-  const preferredMarket = detectPreferredMarket(headerStore);
-  const preferenceCopy = getPreferredMarketCopy(preferredMarket);
-  const allProperties = prioritizeByMarket(await getProperties(), preferredMarket, (property) => property.marketCode);
-  const featured = prioritizeByMarket(await getFeaturedProperties(), preferredMarket, (property) => property.marketCode);
-  const orderedTrends = prioritizeByMarket(MARKET_TRENDS, preferredMarket, (item) => item.marketCode);
-  const orderedOpportunities = prioritizeByMarket(INVESTMENT_OPPORTUNITIES, preferredMarket, (item) => item.marketCode);
-  const orderedDemands = prioritizeByMarket(OPEN_DEMANDS, preferredMarket, (item) => item.marketCode);
-  const orderedMarketEntries = prioritizeByMarket(
-    Object.entries(MARKET_CONFIG),
-    preferredMarket,
-    ([code]) => code as keyof typeof MARKET_CONFIG,
-  );
-  const trendLead = orderedTrends[0];
-  const opportunityLead = orderedOpportunities[0];
-  const demandLead = orderedDemands[0];
+  let homepageData:
+    | {
+        preferenceCopy: string | null;
+        allProperties: Awaited<ReturnType<typeof getProperties>>;
+        featured: Awaited<ReturnType<typeof getFeaturedProperties>>;
+        orderedDemands: typeof OPEN_DEMANDS;
+        orderedMarketEntries: Array<[keyof typeof MARKET_CONFIG, (typeof MARKET_CONFIG)[keyof typeof MARKET_CONFIG]]>;
+        trendLead: (typeof MARKET_TRENDS)[number];
+        opportunityLead: (typeof INVESTMENT_OPPORTUNITIES)[number];
+        demandLead: (typeof OPEN_DEMANDS)[number];
+      }
+    | null = null;
+
+  try {
+    const headerStore = await headers();
+    const preferredMarket = detectPreferredMarket(headerStore);
+    const allProperties = prioritizeByMarket(await getProperties(), preferredMarket, (property) => property.marketCode);
+    const featured = prioritizeByMarket(await getFeaturedProperties(), preferredMarket, (property) => property.marketCode);
+    const orderedTrends = prioritizeByMarket(MARKET_TRENDS, preferredMarket, (item) => item.marketCode);
+    const orderedOpportunities = prioritizeByMarket(INVESTMENT_OPPORTUNITIES, preferredMarket, (item) => item.marketCode);
+    const orderedDemands = prioritizeByMarket(OPEN_DEMANDS, preferredMarket, (item) => item.marketCode);
+    const orderedMarketEntries = prioritizeByMarket(
+      Object.entries(MARKET_CONFIG) as Array<
+        [keyof typeof MARKET_CONFIG, (typeof MARKET_CONFIG)[keyof typeof MARKET_CONFIG]]
+      >,
+      preferredMarket,
+      ([code]) => code as keyof typeof MARKET_CONFIG,
+    );
+
+    homepageData = {
+      preferenceCopy: getPreferredMarketCopy(preferredMarket),
+      allProperties,
+      featured,
+      orderedDemands,
+      orderedMarketEntries,
+      trendLead: orderedTrends[0] ?? MARKET_TRENDS[0],
+      opportunityLead: orderedOpportunities[0] ?? INVESTMENT_OPPORTUNITIES[0],
+      demandLead: orderedDemands[0] ?? OPEN_DEMANDS[0],
+    };
+  } catch (error) {
+    console.error("Homepage data load failed", error);
+  }
+
+  if (!homepageData) {
+    return (
+      <main className="section-spacing">
+        <div className="page-shell space-y-8">
+          <section className="page-intro">
+            <div className="page-intro-grid page-intro-grid-single">
+              <div className="page-intro-copy">
+                <span className="eyebrow">Marketplace overview</span>
+                <h1 className="page-title page-title-compact">
+                  RealState4U is live with property search, account access, and market workflows.
+                </h1>
+                <p className="page-copy page-copy-compact">
+                  The full homepage is being refreshed. Core marketplace functions remain available while the landing
+                  layout is stabilized.
+                </p>
+                <div className="page-actions">
+                  <Link href="/properties" className="btn-primary">
+                    Explore properties
+                  </Link>
+                  <Link href="/login" className="btn-secondary">
+                    Sign in
+                  </Link>
+                  <Link href="/register" className="btn-secondary">
+                    Create account
+                  </Link>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <div className="grid gap-5 lg:grid-cols-3">
+            {HERO_METRICS.map((metric) => (
+              <StatCard key={metric.label} label={metric.label} value={metric.value} hint={metric.hint} />
+            ))}
+          </div>
+        </div>
+      </main>
+    );
+  }
+
+  const {
+    preferenceCopy,
+    allProperties,
+    featured,
+    orderedDemands,
+    orderedMarketEntries,
+    trendLead,
+    opportunityLead,
+    demandLead,
+  } = homepageData;
   const highlightListing = featured[0];
 
   return (
