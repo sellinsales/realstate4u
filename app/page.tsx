@@ -1,13 +1,9 @@
 import Link from "next/link";
-import { PropertyCard } from "@/components/property/property-card";
 import { SectionHeader } from "@/components/ui/section-header";
 import { StatCard } from "@/components/ui/stat-card";
 import { HERO_METRICS, HOME_VERTICALS, OPERATOR_WORKFLOWS, PHASE_NOTES } from "@/lib/demo-data";
-import { getFeaturedProperties } from "@/lib/data";
 
 export default async function HomePage() {
-  const featured = await getFeaturedProperties();
-
   return (
     <main>
       <section className="section-spacing relative overflow-hidden">
@@ -134,20 +130,39 @@ export default async function HomePage() {
       <section className="section-spacing">
         <div className="page-shell">
           <SectionHeader
-            eyebrow="Featured inventory"
-            title="Active listings from the current marketplace data."
-            description="These listings are pulled from the same property flow used across search, account actions, and lead handling."
-            action={
-              <Link href="/properties" className="btn-secondary">
-                View all properties
-              </Link>
-            }
+            eyebrow="Next step"
+            title="Go directly into the live marketplace flows."
+            description="Use the core routes below to search inventory, publish listings, create accounts, and manage property demand without depending on homepage-only data blocks."
           />
-
-          <div className="grid gap-6 lg:grid-cols-3">
-            {featured.map((property) => (
-              <PropertyCard key={property.id} property={property} />
-            ))}
+          <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-4">
+            <Link href="/properties" className="panel rounded-[2rem] p-6">
+              <p className="text-sm font-bold uppercase tracking-[0.16em] text-[var(--brand-green)]">Search</p>
+              <h3 className="mt-4 text-2xl font-semibold text-[var(--brand-blue)]">Find property</h3>
+              <p className="mt-3 text-sm leading-7 text-[var(--muted)]">
+                Browse current buy and rent inventory by market, city, and property type.
+              </p>
+            </Link>
+            <Link href="/post-property" className="panel rounded-[2rem] p-6">
+              <p className="text-sm font-bold uppercase tracking-[0.16em] text-[var(--brand-green)]">Publish</p>
+              <h3 className="mt-4 text-2xl font-semibold text-[var(--brand-blue)]">Post property</h3>
+              <p className="mt-3 text-sm leading-7 text-[var(--muted)]">
+                Create a listing, add media, and move it into the live marketplace workflow.
+              </p>
+            </Link>
+            <Link href="/register" className="panel rounded-[2rem] p-6">
+              <p className="text-sm font-bold uppercase tracking-[0.16em] text-[var(--brand-green)]">Access</p>
+              <h3 className="mt-4 text-2xl font-semibold text-[var(--brand-blue)]">Create account</h3>
+              <p className="mt-3 text-sm leading-7 text-[var(--muted)]">
+                Register buyers, renters, landlords, and agents with the new live auth flow.
+              </p>
+            </Link>
+            <Link href="/demand-board" className="panel rounded-[2rem] p-6">
+              <p className="text-sm font-bold uppercase tracking-[0.16em] text-[var(--brand-green)]">Demand</p>
+              <h3 className="mt-4 text-2xl font-semibold text-[var(--brand-blue)]">Open demand board</h3>
+              <p className="mt-3 text-sm leading-7 text-[var(--muted)]">
+                Share requirements, review open market needs, and keep demand visible.
+              </p>
+            </Link>
           </div>
         </div>
       </section>
