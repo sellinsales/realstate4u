@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { EngagementProvider } from "@/components/providers/engagement-provider";
 import { Fraunces, Manrope } from "next/font/google";
 import { Navbar } from "@/components/ui/navbar";
 import { SiteFooter } from "@/components/ui/site-footer";
@@ -71,9 +72,11 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${headingFont.variable} ${bodyFont.variable} site-shell antialiased`}>
-        <Navbar />
-        <div className="site-main">{children}</div>
-        <SiteFooter />
+        <EngagementProvider>
+          <Navbar />
+          <div className="site-main">{children}</div>
+          <SiteFooter />
+        </EngagementProvider>
       </body>
     </html>
   );

@@ -1,12 +1,15 @@
 import Link from "next/link";
 import { PropertyCard } from "@/components/property/property-card";
+import { RecommendedPropertyGrid } from "@/components/smart/recommended-property-grid";
+import { RecentlyViewedPanel } from "@/components/smart/recently-viewed-panel";
 import { SectionHeader } from "@/components/ui/section-header";
 import { StatCard } from "@/components/ui/stat-card";
 import { HERO_METRICS, HOME_VERTICALS, OPERATOR_WORKFLOWS, PHASE_NOTES } from "@/lib/demo-data";
-import { getFeaturedProperties } from "@/lib/data";
+import { getFeaturedProperties, getProperties } from "@/lib/data";
 import { MARKET_CONFIG } from "@/lib/markets";
 
 export default async function HomePage() {
+  const allProperties = await getProperties();
   const featured = await getFeaturedProperties();
 
   return (
@@ -28,6 +31,9 @@ export default async function HomePage() {
             <div className="flex flex-col gap-4 sm:flex-row">
               <Link href="/properties" className="btn-primary">
                 Explore properties
+              </Link>
+              <Link href="/smart-match" className="btn-secondary">
+                Try Smart Match
               </Link>
               <Link href="/post-property" className="btn-secondary">
                 Post a property
@@ -74,6 +80,16 @@ export default async function HomePage() {
               </article>
             ))}
           </div>
+        </div>
+      </section>
+
+      <section className="section-spacing">
+        <div className="page-shell">
+          <RecommendedPropertyGrid
+            properties={allProperties}
+            title="AI-ranked listings shaped by your browsing intent."
+            description="Use Smart Match to keep refining what the platform should surface first, then return to a shortlist that stays relevant across visits."
+          />
         </div>
       </section>
 
@@ -140,6 +156,16 @@ export default async function HomePage() {
               <PropertyCard key={property.id} property={property} />
             ))}
           </div>
+        </div>
+      </section>
+
+      <section className="section-spacing">
+        <div className="page-shell">
+          <RecentlyViewedPanel
+            properties={allProperties}
+            title="Come back to where you left off."
+            description="RealState4U keeps your latest listing trail visible so discovery feels continuous instead of starting over each visit."
+          />
         </div>
       </section>
     </main>

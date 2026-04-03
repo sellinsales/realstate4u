@@ -1,6 +1,7 @@
 export const primaryLinks = [
   { href: "/", label: "Home" },
   { href: "/properties", label: "Properties" },
+  { href: "/smart-match", label: "Smart Match" },
   { href: "/queue-housing", label: "Queue Rentals" },
   { href: "/services", label: "Home Services" },
   { href: "/jobs", label: "Construction Jobs" },

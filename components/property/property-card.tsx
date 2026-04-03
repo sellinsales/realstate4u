@@ -1,10 +1,21 @@
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
+import { SavePropertyButton } from "@/components/property/save-property-button";
 import { MARKET_CONFIG } from "@/lib/markets";
 import type { PropertyCardData } from "@/lib/types";
 import { formatPrice, formatRelativeDate } from "@/lib/utils";
 
-export function PropertyCard({ property }: { property: PropertyCardData }) {
+export function PropertyCard({
+  property,
+  recommendationLabel,
+  matchReasons,
+}: {
+  property: PropertyCardData;
+  recommendationLabel?: string;
+  matchReasons?: string[];
+}) {
   const market = MARKET_CONFIG[property.marketCode];
   const currency = property.marketCode === "PAKISTAN" ? "PKR" : property.marketCode === "SWEDEN" ? "SEK" : "EUR";
 
@@ -20,9 +31,12 @@ export function PropertyCard({ property }: { property: PropertyCardData }) {
         />
         <div className="absolute inset-x-0 top-0 flex items-center justify-between p-4">
           <span className="pill border-white/20 bg-[var(--brand-blue)]/80 text-white">{market.label}</span>
-          <span className="pill bg-white/85 text-[var(--brand-blue)]">
-            {property.listingType.toLowerCase()}
-          </span>
+          <div className="flex items-center gap-2">
+            <span className="pill bg-white/85 text-[var(--brand-blue)]">
+              {property.listingType.toLowerCase()}
+            </span>
+            <SavePropertyButton propertyId={property.id} />
+          </div>
         </div>
         <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-[rgba(12,28,40,0.42)] to-transparent" />
       </div>
@@ -40,6 +54,21 @@ export function PropertyCard({ property }: { property: PropertyCardData }) {
         </div>
 
         <p className="line-clamp-3 text-sm leading-7 text-[var(--muted)]">{property.description}</p>
+
+        {recommendationLabel ? (
+          <div className="rounded-[1.4rem] border border-[var(--brand-line)] bg-[var(--surface-soft)] px-4 py-3">
+            <p className="text-xs font-bold uppercase tracking-[0.16em] text-[var(--brand-green)]">
+              {recommendationLabel}
+            </p>
+            {matchReasons?.length ? (
+              <ul className="mt-2 space-y-1 text-sm leading-6 text-[var(--muted)]">
+                {matchReasons.map((reason) => (
+                  <li key={reason}>- {reason}</li>
+                ))}
+              </ul>
+            ) : null}
+          </div>
+        ) : null}
 
         <div className="flex flex-wrap gap-2 text-xs font-bold uppercase tracking-[0.12em] text-[var(--brand-blue)]">
           <span className="pill">{property.propertyType.toLowerCase()}</span>

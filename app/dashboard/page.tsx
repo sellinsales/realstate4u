@@ -1,8 +1,9 @@
+import { PersonalizedDashboardPanel } from "@/components/dashboard/personalized-dashboard-panel";
 import Link from "next/link";
 import { auth } from "@/lib/auth";
 import { PageIntro } from "@/components/ui/page-intro";
 import { StatCard } from "@/components/ui/stat-card";
-import { getDashboardSnapshot } from "@/lib/data";
+import { getDashboardSnapshot, getProperties } from "@/lib/data";
 
 export default async function DashboardPage() {
   const session = await auth();
@@ -12,6 +13,7 @@ export default async function DashboardPage() {
   }
 
   const snapshot = await getDashboardSnapshot(session.user.id);
+  const allProperties = await getProperties();
 
   return (
     <main className="section-spacing">
@@ -38,6 +40,8 @@ export default async function DashboardPage() {
           <StatCard label="Queue apps" value={snapshot.queueApplications} />
           <StatCard label="Pending review" value={snapshot.pendingReview} />
         </div>
+
+        <PersonalizedDashboardPanel properties={allProperties} />
 
         <div className="panel rounded-[2rem] p-6">
           <div className="flex items-center justify-between">

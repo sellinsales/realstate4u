@@ -1,4 +1,5 @@
 import { PropertyCard } from "@/components/property/property-card";
+import { RecommendedPropertyGrid } from "@/components/smart/recommended-property-grid";
 import { SearchFilters } from "@/components/property/search-filters";
 import { EmptyState } from "@/components/ui/empty-state";
 import { PageIntro } from "@/components/ui/page-intro";
@@ -24,6 +25,7 @@ export default async function PropertiesPage({ searchParams }: PropertiesPagePro
   };
 
   const properties = await getProperties(filters);
+  const allProperties = await getProperties();
 
   return (
     <main className="section-spacing">
@@ -35,6 +37,13 @@ export default async function PropertiesPage({ searchParams }: PropertiesPagePro
         />
 
         <SearchFilters filters={filters} />
+
+        <RecommendedPropertyGrid
+          properties={allProperties}
+          title="Smart picks that adapt as you refine the search."
+          description="Your brief and shortlist influence which listings stay near the top, even when market filters change."
+          limit={3}
+        />
 
         <div className="flex items-center justify-between">
           <p className="text-sm font-semibold uppercase tracking-[0.14em] text-[var(--muted)]">

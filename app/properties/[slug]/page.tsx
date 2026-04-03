@@ -4,10 +4,12 @@ import { notFound } from "next/navigation";
 import { LeadForm } from "@/components/property/lead-form";
 import { QueueApplyButton } from "@/components/property/queue-apply-button";
 import { WhatsAppButton } from "@/components/property/whatsapp-button";
+import { PropertyEngagementPanel } from "@/components/smart/property-engagement-panel";
+import { RecommendedPropertyGrid } from "@/components/smart/recommended-property-grid";
 import { PageIntro } from "@/components/ui/page-intro";
 import { SectionHeader } from "@/components/ui/section-header";
 import { auth } from "@/lib/auth";
-import { getPropertyBySlug } from "@/lib/data";
+import { getProperties, getPropertyBySlug } from "@/lib/data";
 import { MARKET_CONFIG } from "@/lib/markets";
 import { formatPrice } from "@/lib/utils";
 
@@ -20,6 +22,7 @@ type PropertyDetailPageProps = {
 export default async function PropertyDetailPage({ params }: PropertyDetailPageProps) {
   const { slug } = await params;
   const property = await getPropertyBySlug(slug);
+  const allProperties = await getProperties();
   const session = await auth();
 
   if (!property) {
@@ -132,6 +135,8 @@ export default async function PropertyDetailPage({ params }: PropertyDetailPageP
 
             <LeadForm propertyId={property.id} propertyTitle={property.title} />
 
+            <PropertyEngagementPanel property={property} allProperties={allProperties} />
+
             <div className="panel rounded-[2rem] p-5">
               <p className="form-section-title">Map</p>
               <p className="mt-3 text-sm leading-7 text-[var(--muted)]">
@@ -150,6 +155,14 @@ export default async function PropertyDetailPage({ params }: PropertyDetailPageP
             </div>
           </div>
         </div>
+
+        <RecommendedPropertyGrid
+          properties={allProperties}
+          title="More listings that fit the same decision path."
+          description="These recommendations use your smart brief plus the current listing context to keep the next options relevant."
+          excludePropertyId={property.id}
+          limit={3}
+        />
       </div>
     </main>
   );
