@@ -31,6 +31,19 @@ NODE_ENV=production
 - invalid `DATABASE_URL`
 - bad DB password encoding
 - unsupported MySQL auth plugin
+- shared hosting blocked Next.js child process spawning during build (`EAGAIN`)
+
+## Shared Hosting Build Fix
+
+If `next build` fails with `spawn ... EAGAIN` or `ERR_WORKER_INIT_FAILED`, keep the build on a single execution lane:
+
+- use `next build --webpack`
+- set `experimental.cpus = 1`
+- set `experimental.workerThreads = true`
+- set `experimental.webpackBuildWorker = false`
+- set `experimental.staticGenerationMaxConcurrency = 1`
+
+These settings are already configured in [`next.config.ts`](d:/projects/realstate4u/next.config.ts).
 
 ## MariaDB/MySQL Auth Plugin Fix
 
