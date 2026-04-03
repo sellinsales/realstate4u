@@ -1,4 +1,5 @@
 import { headers } from "next/headers";
+import Link from "next/link";
 import { PropertyCard } from "@/components/property/property-card";
 import { RecommendedPropertyGrid } from "@/components/smart/recommended-property-grid";
 import { SearchFilters } from "@/components/property/search-filters";
@@ -39,8 +40,18 @@ export default async function PropertiesPage({ searchParams }: PropertiesPagePro
       <div className="page-shell space-y-8">
         <PageIntro
           eyebrow="Property search"
-          title="Search verified and incoming inventory with the most relevant market first."
-          description="Filter by market, location, price, and listing type while the platform prioritizes the strongest local fit for the visitor."
+          title="Find property for sale or rent, with local-market listings shown first."
+          description="Start with buy or rent, then narrow by market, city, property type, and budget. Services and jobs stay in separate sections so the property search remains clean."
+          actions={
+            <>
+              <Link href="/post-property" className="btn-primary">
+                Post property
+              </Link>
+              <Link href="/services" className="btn-secondary">
+                Need a service team?
+              </Link>
+            </>
+          }
           size="compact"
         />
         {preferenceCopy && !filters.marketCode ? (
@@ -51,8 +62,8 @@ export default async function PropertiesPage({ searchParams }: PropertiesPagePro
 
         <RecommendedPropertyGrid
           properties={allProperties}
-          title="Smart picks that adapt as you refine the search."
-          description="Your brief and shortlist influence which listings stay near the top, even when market filters change."
+          title="Smart picks that stay aligned with your current search intent."
+          description="Saved homes, recent views, and your active filter choices influence which listings stay near the top."
           limit={3}
         />
 

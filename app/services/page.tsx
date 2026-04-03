@@ -21,26 +21,25 @@ export default function ServicesPage() {
     <main className="section-spacing">
       <div className="page-shell space-y-8">
         <PageIntro
-          eyebrow="Home services"
-          title="A services marketplace is being prepared under the same brand."
-          description="This route is reserved for vetted service providers who support property owners, agents, landlords, and residents around the listing lifecycle."
+          eyebrow="Property services"
+          title="Hire operational support without mixing service providers into property listings."
+          description="This area is for movers, cleaners, maintenance teams, inspectors, and setup partners. Properties stay for sale or rent; services stay focused on work providers you can hire."
           actions={
             <>
-              <Link href="/properties" className="btn-secondary">
-                Browse properties
+              <Link href="/demand-board" className="btn-primary">
+                Share service requirement
               </Link>
-              <Link href="/post-property" className="btn-primary">
-                List property
+              <Link href="/properties" className="btn-secondary">
+                Back to property search
               </Link>
             </>
           }
+          size="compact"
         />
         <div className="grid gap-5 lg:grid-cols-3">
           {serviceTracks.map((track) => (
             <article key={track.title} className="panel rounded-[2rem] p-6">
-              <p className="text-sm font-bold uppercase tracking-[0.16em] text-[var(--brand-green)]">
-                Planned vertical
-              </p>
+              <p className="text-sm font-bold uppercase tracking-[0.16em] text-[var(--brand-green)]">Service track</p>
               <h2 className="mt-4 text-3xl font-semibold text-[var(--brand-blue)]">{track.title}</h2>
               <p className="mt-4 text-base leading-7 text-[var(--muted)]">{track.description}</p>
             </article>

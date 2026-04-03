@@ -370,8 +370,8 @@ textarea {
 }
 
 .page-intro-grid-compact {
-  gap: 1.2rem;
-  padding: 1.35rem;
+  gap: 1rem;
+  padding: 1.2rem;
 }
 
 .page-intro-grid-single {
@@ -399,10 +399,10 @@ textarea {
 }
 
 .page-title-compact {
-  margin-top: 0.95rem;
-  max-width: 48rem;
-  font-size: clamp(1.85rem, 3.6vw, 2.85rem);
-  line-height: 1.02;
+  margin-top: 0.8rem;
+  max-width: 44rem;
+  font-size: clamp(1.65rem, 2.9vw, 2.45rem);
+  line-height: 1.05;
 }
 
 .page-copy {
@@ -414,10 +414,36 @@ textarea {
 }
 
 .page-copy-compact {
-  margin-top: 0.8rem;
+  margin-top: 0.7rem;
   max-width: 40rem;
-  font-size: 0.96rem;
-  line-height: 1.8;
+  font-size: 0.93rem;
+  line-height: 1.75;
+}
+
+.search-intent-pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  border: 1px solid rgba(24, 86, 122, 0.14);
+  background: rgba(255, 255, 255, 0.72);
+  padding: 0.58rem 0.95rem;
+  font-size: 0.82rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--brand-blue);
+}
+
+.search-intent-pill:hover {
+  transform: translateY(-1px);
+  background: rgba(255, 255, 255, 0.94);
+}
+
+.search-intent-pill-active {
+  border-color: rgba(45, 141, 115, 0.32);
+  background: rgba(45, 141, 115, 0.12);
+  color: var(--brand-green-deep);
 }
 
 .page-actions {

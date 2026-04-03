@@ -1,19 +1,104 @@
 import Link from "next/link";
+import type { Route } from "next";
 import { FILTER_OPTIONS } from "@/lib/demo-data";
 import type { PropertyFilters } from "@/lib/types";
 
 export function SearchFilters({ filters }: { filters: PropertyFilters }) {
+  const buildFilterHref = (listingType?: string): Route => {
+    const params = new URLSearchParams();
+
+    if (filters.country) {
+      params.set("country", filters.country);
+    }
+    if (filters.city) {
+      params.set("city", filters.city);
+    }
+    if (filters.propertyType) {
+      params.set("propertyType", filters.propertyType);
+    }
+    if (filters.marketCode) {
+      params.set("marketCode", filters.marketCode);
+    }
+    if (filters.maxPrice) {
+      params.set("maxPrice", String(filters.maxPrice));
+    }
+    if (listingType) {
+      params.set("listingType", listingType);
+    }
+
+    const query = params.toString();
+    return (query ? `/properties?${query}` : "/properties") as Route;
+  };
+
+  const propertyTypeLabel = (value: string) => value.charAt(0) + value.slice(1).toLowerCase();
+  const listingTypeLabel = (value: string) => (value === "BUY" ? "For sale" : "For rent");
+
   return (
     <form className="panel grid gap-4 rounded-[2rem] p-5 lg:grid-cols-6">
       <div className="lg:col-span-6 flex flex-col gap-2 border-b border-[var(--brand-line)] pb-4 md:flex-row md:items-end md:justify-between">
-        <div>
+        <div className="space-y-3">
           <p className="text-sm font-bold uppercase tracking-[0.16em] text-[var(--brand-green)]">
             Refine search
           </p>
           <p className="mt-2 text-sm leading-7 text-[var(--muted)]">
-            Match listings by market, location, listing type, and budget without leaving the same marketplace view.
+            Start with the property purpose, then narrow by market, location, type, and budget.
           </p>
+          <div className="flex flex-wrap gap-2">
+            <Link
+              href={buildFilterHref()}
+              className={`search-intent-pill ${!filters.listingType ? "search-intent-pill-active" : ""}`}
+            >
+              All property listings
+            </Link>
+            <Link
+              href={buildFilterHref("BUY")}
+              className={`search-intent-pill ${filters.listingType === "BUY" ? "search-intent-pill-active" : ""}`}
+            >
+              For sale
+            </Link>
+            <Link
+              href={buildFilterHref("RENT")}
+              className={`search-intent-pill ${filters.listingType === "RENT" ? "search-intent-pill-active" : ""}`}
+            >
+              For rent
+            </Link>
+          </div>
         </div>
+        <div className="status-note status-note-warning max-w-xl">
+          Properties are spaces to buy or rent. Need vendors or staffing instead? Use{" "}
+          <Link href="/services" className="font-semibold text-[var(--brand-blue)]">
+            property services
+          </Link>{" "}
+          or{" "}
+          <Link href="/jobs" className="font-semibold text-[var(--brand-blue)]">
+            construction jobs
+          </Link>
+          .
+        </div>
+      </div>
+      <div>
+        <label htmlFor="listingType" className="field-label">
+          Search purpose
+        </label>
+        <select id="listingType" name="listingType" defaultValue={filters.listingType || ""} className="field">
+          <option value="">Buy or rent</option>
+          {FILTER_OPTIONS.listingTypes.map((option) => (
+            <option key={option} value={option}>
+              {listingTypeLabel(option)}
+            </option>
+          ))}
+        </select>
+      </div>
+      <div>
+        <label htmlFor="marketCode" className="field-label">
+          Market focus
+        </label>
+        <select id="marketCode" name="marketCode" defaultValue={filters.marketCode || ""} className="field">
+          <option value="">All markets</option>
+          <option value="SWEDEN">Sweden</option>
+          <option value="EU">Europe</option>
+          <option value="PAKISTAN">Pakistan</option>
+        </select>
       </div>
       <div>
         <label htmlFor="country" className="field-label">
@@ -42,19 +127,6 @@ export function SearchFilters({ filters }: { filters: PropertyFilters }) {
         </select>
       </div>
       <div>
-        <label htmlFor="listingType" className="field-label">
-          Listing type
-        </label>
-        <select id="listingType" name="listingType" defaultValue={filters.listingType || ""} className="field">
-          <option value="">Buy or rent</option>
-          {FILTER_OPTIONS.listingTypes.map((option) => (
-            <option key={option} value={option}>
-              {option}
-            </option>
-          ))}
-        </select>
-      </div>
-      <div>
         <label htmlFor="propertyType" className="field-label">
           Property type
         </label>
@@ -62,20 +134,9 @@ export function SearchFilters({ filters }: { filters: PropertyFilters }) {
           <option value="">Property type</option>
           {FILTER_OPTIONS.propertyTypes.map((option) => (
             <option key={option} value={option}>
-              {option}
+              {propertyTypeLabel(option)}
             </option>
           ))}
-        </select>
-      </div>
-      <div>
-        <label htmlFor="marketCode" className="field-label">
-          Market
-        </label>
-        <select id="marketCode" name="marketCode" defaultValue={filters.marketCode || ""} className="field">
-          <option value="">All markets</option>
-          <option value="SWEDEN">Sweden</option>
-          <option value="EU">EU</option>
-          <option value="PAKISTAN">Pakistan</option>
         </select>
       </div>
       <div>
@@ -97,7 +158,7 @@ export function SearchFilters({ filters }: { filters: PropertyFilters }) {
           Reset filters
         </Link>
         <button type="submit" className="btn-primary">
-          Apply filters
+          Update results
         </button>
       </div>
     </form>
