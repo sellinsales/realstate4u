@@ -2,8 +2,10 @@ import Image from "next/image";
 import Link from "next/link";
 import { auth } from "@/lib/auth";
 import { DesktopNavLinks } from "@/components/ui/desktop-nav-links";
+import { MarketPulseStrip } from "@/components/ui/market-pulse-strip";
 import { LogoutButton } from "@/components/ui/logout-button";
 import { MobileMenu } from "@/components/ui/mobile-menu";
+import { MARKET_FLASHES } from "@/lib/community-data";
 
 export async function Navbar() {
   const session = await auth();
@@ -11,6 +13,7 @@ export async function Navbar() {
 
   return (
     <header className="sticky top-0 z-40 border-b border-[var(--brand-line)] bg-white/82 backdrop-blur-2xl">
+      <MarketPulseStrip items={MARKET_FLASHES} />
       <div className="page-shell flex items-center justify-between gap-4 py-3">
         <div className="flex items-center gap-4 md:gap-8">
           <Link href="/" className="brand-lockup" aria-label="RealState4U home">

@@ -131,6 +131,43 @@ textarea {
   color: var(--muted);
 }
 
+.market-pulse-strip {
+  border-bottom: 1px solid var(--brand-line);
+  background: linear-gradient(90deg, rgba(24, 86, 122, 0.12), rgba(45, 141, 115, 0.12));
+}
+
+.market-pulse-tag {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  background: rgba(24, 86, 122, 0.9);
+  padding: 0.28rem 0.7rem;
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: white;
+}
+
+.market-pulse-copy {
+  min-width: 0;
+  font-size: 0.84rem;
+  font-weight: 700;
+  line-height: 1.5;
+  color: var(--brand-blue);
+}
+
+.market-pulse-link {
+  display: inline-flex;
+  align-items: center;
+  font-size: 0.82rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--brand-green-deep);
+}
+
 .nav-link {
   display: inline-flex;
   align-items: center;
@@ -350,7 +387,7 @@ textarea {
 .page-title {
   margin-top: 1.2rem;
   max-width: 58rem;
-  font-size: clamp(2.5rem, 6vw, 4.5rem);
+  font-size: clamp(2.2rem, 5vw, 3.85rem);
   line-height: 0.98;
   font-weight: 600;
   color: var(--brand-blue);
@@ -505,7 +542,7 @@ textarea {
 }
 
 .section-spacing {
-  padding-block: 3.5rem;
+  padding-block: 3rem;
 }
 
 @media (min-width: 768px) {
@@ -526,7 +563,7 @@ textarea {
   }
 
   .section-spacing {
-    padding-block: 5rem;
+    padding-block: 4.3rem;
   }
 }
 

@@ -4,6 +4,11 @@ import { RecommendedPropertyGrid } from "@/components/smart/recommended-property
 import { RecentlyViewedPanel } from "@/components/smart/recently-viewed-panel";
 import { SectionHeader } from "@/components/ui/section-header";
 import { StatCard } from "@/components/ui/stat-card";
+import {
+  INVESTMENT_OPPORTUNITIES,
+  MARKET_TRENDS,
+  OPEN_DEMANDS,
+} from "@/lib/community-data";
 import { HERO_METRICS, HOME_VERTICALS, OPERATOR_WORKFLOWS, PHASE_NOTES } from "@/lib/demo-data";
 import { getFeaturedProperties, getProperties } from "@/lib/data";
 import { MARKET_CONFIG } from "@/lib/markets";
@@ -11,26 +16,33 @@ import { MARKET_CONFIG } from "@/lib/markets";
 export default async function HomePage() {
   const allProperties = await getProperties();
   const featured = await getFeaturedProperties();
+  const trendLead = MARKET_TRENDS[0];
+  const opportunityLead = INVESTMENT_OPPORTUNITIES[0];
+  const demandLead = OPEN_DEMANDS[0];
+  const highlightListing = featured[0];
 
   return (
     <main>
       <section className="section-spacing relative overflow-hidden">
         <div className="hero-grid absolute inset-0 opacity-80" aria-hidden="true" />
-        <div className="page-shell relative grid gap-10 lg:grid-cols-[1.1fr_0.9fr] lg:items-end">
-          <div className="space-y-8">
+        <div className="page-shell relative grid gap-8 lg:grid-cols-[1fr_0.96fr] lg:items-start">
+          <div className="space-y-6">
             <span className="eyebrow">Property marketplace for Sweden, EU, and Pakistan</span>
             <div className="space-y-5">
-              <h1 className="max-w-4xl text-5xl leading-[0.94] font-semibold text-[var(--brand-blue)] md:text-7xl">
+              <h1 className="max-w-4xl text-4xl leading-[0.96] font-semibold text-[var(--brand-blue)] md:text-6xl">
                 Search, publish, and qualify property demand across Sweden, Europe, and Pakistan.
               </h1>
-              <p className="max-w-2xl text-lg leading-8 text-[var(--muted)]">
-                RealState4U combines property discovery, queue-based rental applications, agent lead capture, and admin review inside one operating layer.
+              <p className="max-w-2xl text-base leading-8 text-[var(--muted)] md:text-lg">
+                RealState4U combines property discovery, public demand sharing, queue-based rental applications, agent lead capture, and admin review inside one operating layer.
               </p>
             </div>
 
-            <div className="flex flex-col gap-4 sm:flex-row">
+            <div className="flex flex-col gap-3 sm:flex-row">
               <Link href="/properties" className="btn-primary">
                 Explore properties
+              </Link>
+              <Link href="/demand-board" className="btn-secondary">
+                Open demand board
               </Link>
               <Link href="/smart-match" className="btn-secondary">
                 Try Smart Match
@@ -47,19 +59,55 @@ export default async function HomePage() {
             </div>
           </div>
 
-          <div className="panel rounded-[2.3rem] p-6">
-            <p className="text-sm font-bold uppercase tracking-[0.16em] text-[var(--brand-green)]">
-              Marketplace standard
-            </p>
-            <h2 className="mt-4 text-4xl font-semibold text-[var(--brand-blue)]">
-              Built for live inventory operations, not static brochure pages.
-            </h2>
-            <div className="mt-8 space-y-4">
-              {PHASE_NOTES.map((note) => (
-                <div key={note} className="rounded-[1.5rem] border border-[var(--brand-line)] bg-white/70 p-4 text-sm leading-7 text-[var(--muted)]">
-                  {note}
+          <div className="grid gap-4">
+            <div className="panel rounded-[2rem] p-5">
+              <p className="text-sm font-bold uppercase tracking-[0.16em] text-[var(--brand-green)]">
+                Market today
+              </p>
+              <h2 className="mt-3 text-2xl font-semibold text-[var(--brand-blue)]">
+                {trendLead.title}
+              </h2>
+              <p className="mt-3 text-sm font-semibold text-[var(--brand-green-deep)]">{trendLead.signal}</p>
+              <p className="mt-3 text-sm leading-7 text-[var(--muted)]">{trendLead.summary}</p>
+            </div>
+
+            <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-1">
+              <div className="panel rounded-[1.8rem] p-5">
+                <p className="text-sm font-bold uppercase tracking-[0.16em] text-[var(--brand-green)]">
+                  Best opportunity now
+                </p>
+                <h3 className="mt-3 text-xl font-semibold text-[var(--brand-blue)]">
+                  {opportunityLead.title}
+                </h3>
+                <p className="mt-3 text-sm leading-7 text-[var(--muted)]">{opportunityLead.whyNow}</p>
+              </div>
+
+              <div className="panel rounded-[1.8rem] p-5">
+                <p className="text-sm font-bold uppercase tracking-[0.16em] text-[var(--brand-green)]">
+                  Open demand
+                </p>
+                <h3 className="mt-3 text-xl font-semibold text-[var(--brand-blue)]">
+                  {demandLead.title}
+                </h3>
+                <p className="mt-3 text-sm leading-7 text-[var(--muted)]">{demandLead.summary}</p>
+              </div>
+
+              {highlightListing ? (
+                <div className="panel rounded-[1.8rem] p-5">
+                  <p className="text-sm font-bold uppercase tracking-[0.16em] text-[var(--brand-green)]">
+                    Highlighted listing
+                  </p>
+                  <h3 className="mt-3 text-xl font-semibold text-[var(--brand-blue)]">
+                    {highlightListing.title}
+                  </h3>
+                  <p className="mt-3 text-sm leading-7 text-[var(--muted)]">
+                    {highlightListing.city}, {highlightListing.country}
+                  </p>
+                  <Link href={`/properties/${highlightListing.slug}`} className="btn-secondary mt-4">
+                    View listing
+                  </Link>
                 </div>
-              ))}
+              ) : null}
             </div>
           </div>
         </div>
@@ -77,6 +125,36 @@ export default async function HomePage() {
               <article key={workflow.title} className="panel rounded-[2rem] p-6">
                 <h3 className="text-3xl font-semibold text-[var(--brand-blue)]">{workflow.title}</h3>
                 <p className="mt-4 text-base leading-7 text-[var(--muted)]">{workflow.description}</p>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="section-spacing">
+        <div className="page-shell">
+          <SectionHeader
+            eyebrow="Open demand"
+            title="A live board for needs, briefs, and property-related work."
+            description="Share public demand for rentals, acquisitions, renovations, contractor work, or investment sourcing and keep the market conversation visible."
+            action={
+              <Link href="/demand-board" className="btn-primary">
+                Share a demand
+              </Link>
+            }
+          />
+          <div className="grid gap-5 lg:grid-cols-3">
+            {OPEN_DEMANDS.map((demand) => (
+              <article key={demand.id} className="panel rounded-[2rem] p-6">
+                <p className="text-sm font-bold uppercase tracking-[0.16em] text-[var(--brand-green)]">
+                  {demand.category}
+                </p>
+                <h3 className="mt-4 text-2xl font-semibold text-[var(--brand-blue)]">{demand.title}</h3>
+                <p className="mt-3 text-sm leading-7 text-[var(--muted)]">{demand.summary}</p>
+                <div className="mt-4 flex flex-wrap gap-2">
+                  <span className="pill">{demand.location}</span>
+                  <span className="pill">{demand.urgency}</span>
+                </div>
               </article>
             ))}
           </div>
@@ -133,6 +211,23 @@ export default async function HomePage() {
                   ))}
                 </ul>
               </article>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="section-spacing">
+        <div className="page-shell">
+          <SectionHeader
+            eyebrow="Operational focus"
+            title="What makes this marketplace more usable right now."
+            description="The product is being shaped around immediate demand visibility, faster trend recognition, and simpler sharing of real opportunities."
+          />
+          <div className="grid gap-4 lg:grid-cols-3">
+            {PHASE_NOTES.map((note) => (
+              <div key={note} className="panel rounded-[1.6rem] p-5 text-sm leading-7 text-[var(--muted)]">
+                {note}
+              </div>
             ))}
           </div>
         </div>
