@@ -11,6 +11,7 @@
     "setup:server:prebuilt": "node setup-prebuilt-server.cjs",
     "update:server": "node update-server.cjs",
     "update:server:prebuilt": "node update-prebuilt-server.cjs",
+    "smoke:test": "node smoke-test.cjs",
     "lint": "eslint .",
     "prisma:generate": "prisma generate",
     "prisma:push": "prisma db push",
