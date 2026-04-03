@@ -156,10 +156,10 @@ npm run prisma:generate
 npm run build
 ```
 
-6. Apply production migrations:
+6. Apply the Prisma schema:
 
 ```bash
-npm run prisma:deploy
+npm run prisma:push
 ```
 
 7. Set these environment variables in the hosting panel:
@@ -204,6 +204,8 @@ If Passenger still shows the generic error page, check the app error log first. 
 - `DATABASE_URL` is invalid
 - the startup file was not set to `app.js`
 - the MySQL user is using the unsupported `sha256_password` authentication plugin
+
+This project does not ship Prisma migration files. The server scripts automatically use `prisma db push` unless a `prisma/migrations` directory exists.
 
 ## Prebuilt Deployment For Restricted Shared Hosting
 

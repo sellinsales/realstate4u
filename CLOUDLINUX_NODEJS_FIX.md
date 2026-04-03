@@ -33,7 +33,7 @@ Then run:
 npm install
 npm run prisma:generate
 npm run build
-npm run prisma:deploy
+npm run prisma:push
 ```
 
 `npm run build` intentionally uses `next build --webpack` to avoid Turbopack worker issues on some shared hosts.
@@ -76,3 +76,5 @@ node update-server.cjs
 ```
 
 This skips `npm install` and only regenerates Prisma, rebuilds, and deploys migrations.
+
+For this repository, the server scripts fall back to `prisma db push` because there is no `prisma/migrations` directory.

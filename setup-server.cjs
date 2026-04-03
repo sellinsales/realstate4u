@@ -1,6 +1,6 @@
 const { spawnSync } = require("child_process");
+const { getPrismaDeployStep, npmCommand } = require("./server-prisma-step.cjs");
 
-const npmCommand = process.platform === "win32" ? "npm.cmd" : "npm";
 const steps = [
   {
     title: "Install dependencies",
@@ -17,11 +17,7 @@ const steps = [
     command: npmCommand,
     args: ["run", "build"],
   },
-  {
-    title: "Apply production migrations",
-    command: npmCommand,
-    args: ["run", "prisma:deploy"],
-  },
+  getPrismaDeployStep(),
 ];
 
 const requiredEnv = ["DATABASE_URL"];

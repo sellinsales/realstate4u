@@ -75,7 +75,7 @@ npm --version
 npm install
 npm run prisma:generate
 npm run build
-npm run prisma:deploy
+npm run prisma:push
 ```
 
 `npm run build` uses `next build --webpack` on purpose. If you change it back to the Turbopack default, some shared hosts can fail with `ERR_WORKER_INIT_FAILED`.
