@@ -21,7 +21,13 @@ NODE_ENV=production
 
 ## Commands
 
-Run after the app is created:
+If cPanel Terminal is using the system runtime, activate the CloudLinux app runtime first:
+
+```bash
+source /home/USERNAME/nodevenv/public_html/APP_ROOT/20/bin/activate
+```
+
+Then run:
 
 ```bash
 npm install
@@ -29,6 +35,8 @@ npm run prisma:generate
 npm run build
 npm run prisma:deploy
 ```
+
+`npm run build` intentionally uses `next build --webpack` to avoid Turbopack worker issues on some shared hosts.
 
 Then restart the application.
 

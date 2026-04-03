@@ -9,6 +9,11 @@ If Passenger shows the generic error page, the app failed during startup.
 - `npm run build` was run
 - `npm run prisma:generate` was run
 - environment variables are present
+- if cPanel Terminal shows old Node/npm, activate the CloudLinux runtime first:
+
+```bash
+source /home/USERNAME/nodevenv/public_html/APP_ROOT/20/bin/activate
+```
 
 ## Required Environment Variables
 
@@ -48,6 +53,8 @@ npm run prisma:generate
 npm run build
 npm run prisma:deploy
 ```
+
+`npm run build` uses `next build --webpack` on purpose. If you change it back to the Turbopack default, some shared hosts can fail with `ERR_WORKER_INIT_FAILED`.
 
 ## Log Location
 
