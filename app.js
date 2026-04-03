@@ -1,5 +1,8 @@
 /* eslint-disable @typescript-eslint/no-require-imports */
-require("dotenv").config();
+const path = require("path");
+
+process.chdir(__dirname);
+require("dotenv").config({ path: path.join(__dirname, ".env") });
 
 const http = require("http");
 const next = require("next");
