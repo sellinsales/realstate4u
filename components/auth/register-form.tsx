@@ -41,41 +41,41 @@ export function RegisterForm() {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="panel space-y-4 rounded-[2rem] p-6">
+    <form onSubmit={handleSubmit} className="panel form-panel">
       <div>
-        <label htmlFor="name" className="mb-2 block text-sm font-semibold text-[var(--brand-blue)]">
+        <label htmlFor="name" className="field-label">
           Full name
         </label>
         <input id="name" name="name" className="field" required />
       </div>
       <div>
-        <label htmlFor="email" className="mb-2 block text-sm font-semibold text-[var(--brand-blue)]">
+        <label htmlFor="email" className="field-label">
           Email
         </label>
         <input id="email" name="email" type="email" className="field" required />
       </div>
       <div className="grid gap-4 sm:grid-cols-2">
         <div>
-          <label htmlFor="phone" className="mb-2 block text-sm font-semibold text-[var(--brand-blue)]">
+          <label htmlFor="phone" className="field-label">
             Phone
           </label>
           <input id="phone" name="phone" className="field" required />
         </div>
         <div>
-          <label htmlFor="country" className="mb-2 block text-sm font-semibold text-[var(--brand-blue)]">
+          <label htmlFor="country" className="field-label">
             Country
           </label>
           <input id="country" name="country" className="field" required />
         </div>
       </div>
       <div>
-        <label htmlFor="password" className="mb-2 block text-sm font-semibold text-[var(--brand-blue)]">
+        <label htmlFor="password" className="field-label">
           Password
         </label>
         <input id="password" name="password" type="password" className="field" required minLength={6} />
       </div>
-      {message ? <p className="text-sm font-medium text-[var(--brand-green-deep)]">{message}</p> : null}
-      {error ? <p className="text-sm font-medium text-red-700">{error}</p> : null}
+      {message ? <p className="status-note status-note-success">{message}</p> : null}
+      {error ? <p className="status-note status-note-error">{error}</p> : null}
       <button type="submit" disabled={loading} className="btn-primary w-full">
         {loading ? "Creating account..." : "Create account"}
       </button>

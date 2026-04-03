@@ -1,5 +1,7 @@
 import Link from "next/link";
 import { auth } from "@/lib/auth";
+import { PageIntro } from "@/components/ui/page-intro";
+import { StatCard } from "@/components/ui/stat-card";
 import { getDashboardSnapshot } from "@/lib/data";
 
 export default async function DashboardPage() {
@@ -14,42 +16,34 @@ export default async function DashboardPage() {
   return (
     <main className="section-spacing">
       <div className="page-shell space-y-8">
-        <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
-          <div>
-            <span className="eyebrow">Dashboard</span>
-            <h1 className="mt-5 text-5xl font-semibold text-[var(--brand-blue)]">
-              Welcome back, {session.user.email}
-            </h1>
-          </div>
-          <Link href="/dashboard/listings" className="btn-secondary">
-            View listings
-          </Link>
-        </div>
+        <PageIntro
+          eyebrow="Dashboard"
+          title={`Welcome back, ${session.user.email}`}
+          description="Track listing volume, lead flow, and queue applications from one operator view."
+          actions={
+            <>
+              <Link href="/dashboard/listings" className="btn-secondary">
+                View listings
+              </Link>
+              <Link href="/post-property" className="btn-primary">
+                Post another
+              </Link>
+            </>
+          }
+        />
 
         <div className="grid gap-5 md:grid-cols-4">
-          <div className="panel rounded-[1.8rem] p-5">
-            <p className="text-sm font-semibold uppercase tracking-[0.14em] text-[var(--muted)]">Listings</p>
-            <p className="mt-3 text-4xl font-semibold text-[var(--brand-blue)]">{snapshot.listingCount}</p>
-          </div>
-          <div className="panel rounded-[1.8rem] p-5">
-            <p className="text-sm font-semibold uppercase tracking-[0.14em] text-[var(--muted)]">Leads</p>
-            <p className="mt-3 text-4xl font-semibold text-[var(--brand-blue)]">{snapshot.leadCount}</p>
-          </div>
-          <div className="panel rounded-[1.8rem] p-5">
-            <p className="text-sm font-semibold uppercase tracking-[0.14em] text-[var(--muted)]">Queue apps</p>
-            <p className="mt-3 text-4xl font-semibold text-[var(--brand-blue)]">{snapshot.queueApplications}</p>
-          </div>
-          <div className="panel rounded-[1.8rem] p-5">
-            <p className="text-sm font-semibold uppercase tracking-[0.14em] text-[var(--muted)]">Pending review</p>
-            <p className="mt-3 text-4xl font-semibold text-[var(--brand-blue)]">{snapshot.pendingReview}</p>
-          </div>
+          <StatCard label="Listings" value={snapshot.listingCount} />
+          <StatCard label="Leads" value={snapshot.leadCount} />
+          <StatCard label="Queue apps" value={snapshot.queueApplications} />
+          <StatCard label="Pending review" value={snapshot.pendingReview} />
         </div>
 
         <div className="panel rounded-[2rem] p-6">
           <div className="flex items-center justify-between">
             <h2 className="text-3xl font-semibold text-[var(--brand-blue)]">Recent listings</h2>
-            <Link href="/post-property" className="btn-primary">
-              Post another
+            <Link href="/properties" className="btn-secondary">
+              Explore marketplace
             </Link>
           </div>
           <div className="mt-6 space-y-4">

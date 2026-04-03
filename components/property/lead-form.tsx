@@ -50,7 +50,14 @@ export function LeadForm({
   }
 
   return (
-    <form onSubmit={handleSubmit} className="panel space-y-4 rounded-[2rem] p-5">
+    <form onSubmit={handleSubmit} className="panel form-panel">
+      <div>
+        <p className="form-section-title">Lead capture</p>
+        <h2 className="mt-3 text-2xl font-semibold text-[var(--brand-blue)]">Message the listing contact</h2>
+        <p className="field-hint">
+          Your inquiry is stored against the listing so the team can track intent and follow up.
+        </p>
+      </div>
       <div className="grid gap-4 sm:grid-cols-2">
         <input name="name" placeholder="Your name" className="field" required />
         <input name="phone" placeholder="Phone" className="field" />
@@ -63,8 +70,8 @@ export function LeadForm({
         defaultValue={`I'm interested in ${propertyTitle}. Please share more details.`}
         required
       />
-      {message ? <p className="text-sm font-medium text-[var(--brand-green-deep)]">{message}</p> : null}
-      {error ? <p className="text-sm font-medium text-red-700">{error}</p> : null}
+      {message ? <p className="status-note status-note-success">{message}</p> : null}
+      {error ? <p className="status-note status-note-error">{error}</p> : null}
       <button type="submit" disabled={loading} className="btn-primary w-full">
         {loading ? "Sending..." : "Send inquiry"}
       </button>

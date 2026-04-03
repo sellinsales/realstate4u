@@ -1,43 +1,47 @@
+import Image from "next/image";
 import Link from "next/link";
 import { auth } from "@/lib/auth";
+import { DesktopNavLinks } from "@/components/ui/desktop-nav-links";
 import { LogoutButton } from "@/components/ui/logout-button";
-
-const primaryLinks = [
-  { href: "/", label: "Home" },
-  { href: "/properties", label: "Properties" },
-  { href: "/queue-housing", label: "Queue Housing" },
-  { href: "/services", label: "Services" },
-  { href: "/jobs", label: "Jobs" },
-] as const;
+import { MobileMenu } from "@/components/ui/mobile-menu";
 
 export async function Navbar() {
   const session = await auth();
   const isAdmin = session?.user.role === "ADMIN";
 
   return (
-    <header className="sticky top-0 z-40 border-b border-[var(--brand-line)] bg-white/78 backdrop-blur-xl">
-      <div className="page-shell flex items-center justify-between gap-6 py-4">
-        <div className="flex items-center gap-8">
-          <Link href="/" className="text-lg font-extrabold uppercase tracking-[0.22em] text-[var(--brand-blue)]">
-            RealState4U
+    <header className="sticky top-0 z-40 border-b border-[var(--brand-line)] bg-white/82 backdrop-blur-2xl">
+      <div className="page-shell flex items-center justify-between gap-4 py-3">
+        <div className="flex items-center gap-4 md:gap-8">
+          <Link href="/" className="flex items-center" aria-label="RealState4U home">
+            <Image
+              src="/logo-mark.png"
+              alt="RealState4U"
+              width={126}
+              height={154}
+              priority
+              className="h-12 w-auto sm:hidden"
+            />
+            <Image
+              src="/logo-web.png"
+              alt="RealState4U"
+              width={666}
+              height={231}
+              priority
+              className="hidden h-12 w-auto sm:block"
+            />
           </Link>
-          <nav className="hidden items-center gap-5 text-sm font-semibold text-[var(--muted)] lg:flex">
-            {primaryLinks.map((link) => (
-              <Link key={link.href} href={link.href} className="hover:text-[var(--brand-blue)]">
-                {link.label}
-              </Link>
-            ))}
-          </nav>
+          <DesktopNavLinks />
         </div>
 
-        <div className="flex items-center gap-3">
+        <div className="hidden items-center gap-3 md:flex">
           {session?.user ? (
             <>
-              <Link href="/dashboard" className="btn-secondary hidden sm:inline-flex">
+              <Link href="/dashboard" className="btn-secondary">
                 Dashboard
               </Link>
               {isAdmin ? (
-                <Link href="/admin" className="btn-secondary hidden sm:inline-flex">
+                <Link href="/admin" className="btn-secondary">
                   Admin
                 </Link>
               ) : null}
@@ -56,6 +60,19 @@ export async function Navbar() {
               </Link>
             </>
           )}
+        </div>
+
+        <div className="flex items-center gap-2 md:hidden">
+          {session?.user ? (
+            <Link href="/dashboard" className="btn-secondary px-4 py-3 text-sm">
+              Dashboard
+            </Link>
+          ) : (
+            <Link href="/login" className="btn-secondary px-4 py-3 text-sm">
+              Log in
+            </Link>
+          )}
+          <MobileMenu isAuthenticated={Boolean(session?.user)} isAdmin={isAdmin} />
         </div>
       </div>
     </header>

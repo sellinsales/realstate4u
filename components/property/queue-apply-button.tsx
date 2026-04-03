@@ -52,7 +52,11 @@ export function QueueApplyButton({
   }
 
   return (
-    <div className="panel space-y-4 rounded-[2rem] p-5">
+    <div className="panel form-panel">
+      <div>
+        <p className="form-section-title">Queue application</p>
+        <p className="field-hint">Add context for the landlord shortlist or queue review.</p>
+      </div>
       <textarea
         rows={3}
         className="field"
@@ -60,8 +64,8 @@ export function QueueApplyButton({
         value={note}
         onChange={(event) => setNote(event.target.value)}
       />
-      {message ? <p className="text-sm font-medium text-[var(--brand-green-deep)]">{message}</p> : null}
-      {error ? <p className="text-sm font-medium text-red-700">{error}</p> : null}
+      {message ? <p className="status-note status-note-success">{message}</p> : null}
+      {error ? <p className="status-note status-note-error">{error}</p> : null}
       <button type="button" onClick={handleApply} disabled={loading} className="btn-primary w-full">
         {loading ? "Submitting..." : "Apply to queue"}
       </button>

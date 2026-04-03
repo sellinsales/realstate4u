@@ -1,5 +1,7 @@
 import { PropertyCard } from "@/components/property/property-card";
 import { auth } from "@/lib/auth";
+import { EmptyState } from "@/components/ui/empty-state";
+import { PageIntro } from "@/components/ui/page-intro";
 import { getDashboardSnapshot } from "@/lib/data";
 
 export default async function DashboardListingsPage() {
@@ -14,15 +16,23 @@ export default async function DashboardListingsPage() {
   return (
     <main className="section-spacing">
       <div className="page-shell space-y-8">
-        <div>
-          <span className="eyebrow">Dashboard listings</span>
-          <h1 className="mt-5 text-5xl font-semibold text-[var(--brand-blue)]">Your most recent property records.</h1>
-        </div>
-        <div className="grid gap-6 lg:grid-cols-3">
-          {snapshot.listings.map((property) => (
-            <PropertyCard key={property.id} property={property} />
-          ))}
-        </div>
+        <PageIntro
+          eyebrow="Dashboard listings"
+          title="Your most recent property records."
+          description="Use this view to quickly inspect the published experience of your latest listings."
+        />
+        {snapshot.listings.length ? (
+          <div className="grid gap-6 lg:grid-cols-3">
+            {snapshot.listings.map((property) => (
+              <PropertyCard key={property.id} property={property} />
+            ))}
+          </div>
+        ) : (
+          <EmptyState
+            title="No listings have been posted yet."
+            copy="Start by creating the first property record for your account."
+          />
+        )}
       </div>
     </main>
   );

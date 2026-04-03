@@ -4,6 +4,8 @@ import { notFound } from "next/navigation";
 import { LeadForm } from "@/components/property/lead-form";
 import { QueueApplyButton } from "@/components/property/queue-apply-button";
 import { WhatsAppButton } from "@/components/property/whatsapp-button";
+import { PageIntro } from "@/components/ui/page-intro";
+import { SectionHeader } from "@/components/ui/section-header";
 import { auth } from "@/lib/auth";
 import { getPropertyBySlug } from "@/lib/data";
 import { MARKET_CONFIG } from "@/lib/markets";
@@ -31,20 +33,32 @@ export default async function PropertyDetailPage({ params }: PropertyDetailPageP
   return (
     <main className="section-spacing">
       <div className="page-shell space-y-8">
+        <PageIntro
+          eyebrow={market.label}
+          title={property.title}
+          description={property.address || `${property.city}, ${property.country}`}
+          aside={
+            <div className="panel rounded-[1.8rem] p-5">
+              <p className="text-sm font-bold uppercase tracking-[0.16em] text-[var(--brand-green)]">
+                Quick facts
+              </p>
+              <div className="mt-4 flex flex-wrap gap-2">
+                <span className="pill">{property.listingType.toLowerCase()}</span>
+                <span className="pill">{property.propertyType.toLowerCase()}</span>
+                {property.queueType ? <span className="pill">{property.queueType.toLowerCase()}</span> : null}
+                {property.firstHand ? <span className="pill">first-hand</span> : null}
+              </div>
+              <div className="mt-5 space-y-2 text-sm leading-7 text-[var(--muted)]">
+                <p>Agent: {property.agentName}</p>
+                {property.contactPhone ? <p>Phone: {property.contactPhone}</p> : null}
+                <p>Market rule: {market.accent}</p>
+              </div>
+            </div>
+          }
+        />
+
         <div className="grid gap-8 lg:grid-cols-[1.1fr_0.9fr]">
           <div className="space-y-6">
-            <div className="flex flex-wrap gap-3">
-              <span className="eyebrow">{market.label}</span>
-              <span className="pill">{property.listingType.toLowerCase()}</span>
-              <span className="pill">{property.propertyType.toLowerCase()}</span>
-              {property.queueType ? <span className="pill">{property.queueType.toLowerCase()}</span> : null}
-            </div>
-            <div>
-              <h1 className="text-5xl font-semibold text-[var(--brand-blue)]">{property.title}</h1>
-              <p className="mt-4 text-lg leading-8 text-[var(--muted)]">
-                {property.address || `${property.city}, ${property.country}`}
-              </p>
-            </div>
             <div className="grid gap-4 sm:grid-cols-3">
               {property.imageUrls.map((imageUrl) => (
                 <div key={imageUrl} className="panel overflow-hidden rounded-[1.8rem]">
@@ -61,8 +75,11 @@ export default async function PropertyDetailPage({ params }: PropertyDetailPageP
               ))}
             </div>
             <div className="panel rounded-[2rem] p-6">
-              <h2 className="text-3xl font-semibold text-[var(--brand-blue)]">Property overview</h2>
-              <p className="mt-4 text-base leading-8 text-[var(--muted)]">{property.description}</p>
+              <SectionHeader
+                eyebrow="Property overview"
+                title="Listing narrative and core details."
+                description={property.description}
+              />
               <div className="mt-6 flex flex-wrap gap-4 text-sm font-semibold text-[var(--muted)]">
                 {property.bedrooms ? <span>{property.bedrooms} bedrooms</span> : null}
                 {property.bathrooms ? <span>{property.bathrooms} bathrooms</span> : null}
@@ -86,9 +103,9 @@ export default async function PropertyDetailPage({ params }: PropertyDetailPageP
                 {formatPrice(property.price, currency)}
               </p>
               <div className="mt-6 space-y-3 text-sm text-[var(--muted)]">
-                <p>Agent: {property.agentName}</p>
-                {property.contactPhone ? <p>Phone: {property.contactPhone}</p> : null}
-                <p>Market rule: {market.accent}</p>
+                <p>Lead source style: {property.marketCode === "PAKISTAN" ? "WhatsApp-first" : "Web inquiry"}</p>
+                <p>Verification: {property.isVerified ? "Verified listing" : "Pending review"}</p>
+                {property.leadCount ? <p>Tracked leads: {property.leadCount}</p> : null}
               </div>
               <div className="mt-6 grid gap-3">
                 {property.contactPhone ? (
@@ -116,9 +133,9 @@ export default async function PropertyDetailPage({ params }: PropertyDetailPageP
             <LeadForm propertyId={property.id} propertyTitle={property.title} />
 
             <div className="panel rounded-[2rem] p-5">
-              <h2 className="text-2xl font-semibold text-[var(--brand-blue)]">Map</h2>
+              <p className="form-section-title">Map</p>
               <p className="mt-3 text-sm leading-7 text-[var(--muted)]">
-                OpenStreetMap is the default mapping layer for the MVP.
+                OpenStreetMap stays as the default mapping layer for the MVP and keeps the listing page lightweight.
               </p>
               {property.latitude && property.longitude ? (
                 <Link

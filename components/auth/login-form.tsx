@@ -37,20 +37,20 @@ export function LoginForm() {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="panel space-y-4 rounded-[2rem] p-6">
+    <form onSubmit={handleSubmit} className="panel form-panel">
       <div>
-        <label htmlFor="email" className="mb-2 block text-sm font-semibold text-[var(--brand-blue)]">
+        <label htmlFor="email" className="field-label">
           Email
         </label>
         <input id="email" name="email" type="email" className="field" required />
       </div>
       <div>
-        <label htmlFor="password" className="mb-2 block text-sm font-semibold text-[var(--brand-blue)]">
+        <label htmlFor="password" className="field-label">
           Password
         </label>
         <input id="password" name="password" type="password" className="field" required />
       </div>
-      {error ? <p className="text-sm font-medium text-red-700">{error}</p> : null}
+      {error ? <p className="status-note status-note-error">{error}</p> : null}
       <button type="submit" disabled={loading} className="btn-primary w-full">
         {loading ? "Signing in..." : "Sign in"}
       </button>

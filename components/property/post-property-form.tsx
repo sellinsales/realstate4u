@@ -78,103 +78,195 @@ export function PostPropertyForm() {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="panel space-y-5 rounded-[2rem] p-6">
-      <div className="grid gap-4 lg:grid-cols-2">
-        <div>
-          <label htmlFor="title" className="mb-2 block text-sm font-semibold text-[var(--brand-blue)]">
-            Title
-          </label>
-          <input id="title" name="title" className="field" required />
+    <form onSubmit={handleSubmit} className="panel form-panel">
+      <div className="form-section">
+        <p className="form-section-title">Core listing</p>
+        <div className="grid gap-4 lg:grid-cols-2">
+          <div>
+            <label htmlFor="title" className="field-label">
+              Title
+            </label>
+            <input id="title" name="title" className="field" required />
+          </div>
+          <div>
+            <label htmlFor="price" className="field-label">
+              Price
+            </label>
+            <input id="price" name="price" type="number" className="field" required />
+          </div>
         </div>
+
         <div>
-          <label htmlFor="price" className="mb-2 block text-sm font-semibold text-[var(--brand-blue)]">
-            Price
+          <label htmlFor="description" className="field-label">
+            Description
           </label>
-          <input id="price" name="price" type="number" className="field" required />
+          <textarea id="description" name="description" rows={5} className="field" required />
+        </div>
+
+        <div className="grid gap-4 lg:grid-cols-3">
+          <div>
+            <label htmlFor="country" className="field-label">
+              Country
+            </label>
+            <input id="country" name="country" placeholder="Country" className="field" required />
+          </div>
+          <div>
+            <label htmlFor="city" className="field-label">
+              City
+            </label>
+            <input id="city" name="city" placeholder="City" className="field" required />
+          </div>
+          <div>
+            <label htmlFor="address" className="field-label">
+              Address
+            </label>
+            <input id="address" name="address" placeholder="Address" className="field" />
+          </div>
         </div>
       </div>
 
-      <div>
-        <label htmlFor="description" className="mb-2 block text-sm font-semibold text-[var(--brand-blue)]">
-          Description
-        </label>
-        <textarea id="description" name="description" rows={5} className="field" required />
+      <div className="form-section">
+        <p className="form-section-title">Market setup</p>
+        <div className="grid gap-4 lg:grid-cols-3">
+          <div>
+            <label htmlFor="marketCode" className="field-label">
+              Market
+            </label>
+            <select id="marketCode" name="marketCode" className="field" defaultValue="SWEDEN">
+              {marketOptions.map((option) => (
+                <option key={option} value={option}>
+                  {option}
+                </option>
+              ))}
+            </select>
+          </div>
+          <div>
+            <label htmlFor="listingType" className="field-label">
+              Listing type
+            </label>
+            <select id="listingType" name="listingType" className="field" defaultValue="RENT">
+              {listingOptions.map((option) => (
+                <option key={option} value={option}>
+                  {option}
+                </option>
+              ))}
+            </select>
+          </div>
+          <div>
+            <label htmlFor="propertyType" className="field-label">
+              Property type
+            </label>
+            <select id="propertyType" name="propertyType" className="field" defaultValue="APARTMENT">
+              {propertyOptions.map((option) => (
+                <option key={option} value={option}>
+                  {option}
+                </option>
+              ))}
+            </select>
+          </div>
+        </div>
+
+        <div className="grid gap-4 lg:grid-cols-3">
+          <div>
+            <label htmlFor="bedrooms" className="field-label">
+              Bedrooms
+            </label>
+            <input id="bedrooms" name="bedrooms" type="number" min={0} placeholder="Bedrooms" className="field" />
+          </div>
+          <div>
+            <label htmlFor="bathrooms" className="field-label">
+              Bathrooms
+            </label>
+            <input id="bathrooms" name="bathrooms" type="number" min={0} placeholder="Bathrooms" className="field" />
+          </div>
+          <div>
+            <label htmlFor="areaSqm" className="field-label">
+              Area sqm
+            </label>
+            <input id="areaSqm" name="areaSqm" type="number" min={0} placeholder="Area sqm" className="field" />
+          </div>
+        </div>
       </div>
 
-      <div className="grid gap-4 lg:grid-cols-3">
-        <input name="country" placeholder="Country" className="field" required />
-        <input name="city" placeholder="City" className="field" required />
-        <input name="address" placeholder="Address" className="field" />
+      <div className="form-section">
+        <p className="form-section-title">Contact and map</p>
+        <div className="grid gap-4 lg:grid-cols-2">
+          <div>
+            <label htmlFor="contactPhone" className="field-label">
+              Contact phone
+            </label>
+            <input id="contactPhone" name="contactPhone" placeholder="Contact phone" className="field" required />
+          </div>
+          <div>
+            <label htmlFor="whatsappPhone" className="field-label">
+              WhatsApp phone
+            </label>
+            <input
+              id="whatsappPhone"
+              name="whatsappPhone"
+              placeholder="WhatsApp phone for Pakistan mode"
+              className="field"
+            />
+          </div>
+        </div>
+
+        <div className="grid gap-4 lg:grid-cols-2">
+          <div>
+            <label htmlFor="latitude" className="field-label">
+              Latitude
+            </label>
+            <input id="latitude" name="latitude" type="number" step="any" placeholder="Latitude" className="field" />
+          </div>
+          <div>
+            <label htmlFor="longitude" className="field-label">
+              Longitude
+            </label>
+            <input
+              id="longitude"
+              name="longitude"
+              type="number"
+              step="any"
+              placeholder="Longitude"
+              className="field"
+            />
+          </div>
+        </div>
       </div>
 
-      <div className="grid gap-4 lg:grid-cols-3">
-        <select name="marketCode" className="field" defaultValue="SWEDEN">
-          {marketOptions.map((option) => (
-            <option key={option} value={option}>
-              {option}
-            </option>
-          ))}
-        </select>
-        <select name="listingType" className="field" defaultValue="RENT">
-          {listingOptions.map((option) => (
-            <option key={option} value={option}>
-              {option}
-            </option>
-          ))}
-        </select>
-        <select name="propertyType" className="field" defaultValue="APARTMENT">
-          {propertyOptions.map((option) => (
-            <option key={option} value={option}>
-              {option}
-            </option>
-          ))}
-        </select>
+      <div className="form-section">
+        <p className="form-section-title">Market notes and media</p>
+        <div className="grid gap-4 lg:grid-cols-[auto_1fr] lg:items-center">
+          <label className="inline-flex items-center gap-3 text-sm font-semibold text-[var(--brand-blue)]">
+            <input type="checkbox" name="firstHand" className="h-4 w-4" />
+            First-hand Sweden rental
+          </label>
+          <input
+            name="landlordSelection"
+            placeholder="Landlord selection method or queue notes"
+            className="field"
+          />
+        </div>
+
+        <div>
+          <label htmlFor="imageUrls" className="field-label">
+            Image URLs
+          </label>
+          <textarea
+            id="imageUrls"
+            name="imageUrls"
+            rows={4}
+            className="field"
+            placeholder="Paste one image URL per line. Cloudinary upload wiring can be connected to this field next."
+            required
+          />
+          <p className="field-hint">
+            For production, replace this input with signed Cloudinary uploads and store the resulting asset URLs.
+          </p>
+        </div>
       </div>
 
-      <div className="grid gap-4 lg:grid-cols-3">
-        <input name="bedrooms" type="number" min={0} placeholder="Bedrooms" className="field" />
-        <input name="bathrooms" type="number" min={0} placeholder="Bathrooms" className="field" />
-        <input name="areaSqm" type="number" min={0} placeholder="Area sqm" className="field" />
-      </div>
-
-      <div className="grid gap-4 lg:grid-cols-2">
-        <input name="contactPhone" placeholder="Contact phone" className="field" required />
-        <input name="whatsappPhone" placeholder="WhatsApp phone for Pakistan mode" className="field" />
-      </div>
-
-      <div className="grid gap-4 lg:grid-cols-2">
-        <input name="latitude" type="number" step="any" placeholder="Latitude" className="field" />
-        <input name="longitude" type="number" step="any" placeholder="Longitude" className="field" />
-      </div>
-
-      <div className="grid gap-4 lg:grid-cols-[auto_1fr] lg:items-center">
-        <label className="inline-flex items-center gap-3 text-sm font-semibold text-[var(--brand-blue)]">
-          <input type="checkbox" name="firstHand" className="h-4 w-4" />
-          First-hand Sweden rental
-        </label>
-        <input
-          name="landlordSelection"
-          placeholder="Landlord selection method or queue notes"
-          className="field"
-        />
-      </div>
-
-      <div>
-        <label htmlFor="imageUrls" className="mb-2 block text-sm font-semibold text-[var(--brand-blue)]">
-          Image URLs
-        </label>
-        <textarea
-          id="imageUrls"
-          name="imageUrls"
-          rows={4}
-          className="field"
-          placeholder="Paste one image URL per line. Cloudinary upload wiring can be connected to this field next."
-          required
-        />
-      </div>
-
-      {message ? <p className="text-sm font-medium text-[var(--brand-green-deep)]">{message}</p> : null}
-      {error ? <p className="text-sm font-medium text-red-700">{error}</p> : null}
+      {message ? <p className="status-note status-note-success">{message}</p> : null}
+      {error ? <p className="status-note status-note-error">{error}</p> : null}
 
       <button type="submit" disabled={loading} className="btn-primary w-full">
         {loading ? "Submitting..." : "Submit property"}

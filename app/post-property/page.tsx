@@ -1,4 +1,5 @@
 import { PostPropertyForm } from "@/components/property/post-property-form";
+import { PageIntro } from "@/components/ui/page-intro";
 import { auth } from "@/lib/auth";
 
 export default async function PostPropertyPage() {
@@ -6,14 +7,24 @@ export default async function PostPropertyPage() {
 
   return (
     <main className="section-spacing">
-      <div className="page-shell grid gap-8 lg:grid-cols-[0.8fr_1.2fr]">
-        <div className="space-y-5">
-          <span className="eyebrow">New listing</span>
-          <h1 className="text-5xl font-semibold text-[var(--brand-blue)]">Post a property for the Phase 1 marketplace.</h1>
-          <p className="text-base leading-8 text-[var(--muted)]">
-            Logged in as {session?.user.email}. This form stores listing basics, market flags, queue notes, and media URLs. Cloudinary upload flow can attach to the same payload next.
-          </p>
-        </div>
+      <div className="page-shell space-y-8">
+        <PageIntro
+          eyebrow="New listing"
+          title="Post a property for the Phase 1 marketplace."
+          description={`Logged in as ${session?.user.email}. Capture listing basics now, then layer in richer media and market-specific publishing rules later.`}
+          aside={
+            <div className="panel rounded-[1.8rem] p-5">
+              <p className="text-sm font-bold uppercase tracking-[0.16em] text-[var(--brand-green)]">
+                Production checklist
+              </p>
+              <div className="mt-4 space-y-3 text-sm leading-7 text-[var(--muted)]">
+                <p>Use clear titles, real pricing, and at least one strong image URL.</p>
+                <p>Pakistan listings should include WhatsApp-ready contact details.</p>
+                <p>Sweden rentals can add first-hand and queue notes immediately.</p>
+              </div>
+            </div>
+          }
+        />
         <PostPropertyForm />
       </div>
     </main>

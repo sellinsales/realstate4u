@@ -24,6 +24,7 @@ export function PropertyCard({ property }: { property: PropertyCardData }) {
             {property.listingType.toLowerCase()}
           </span>
         </div>
+        <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-[rgba(12,28,40,0.42)] to-transparent" />
       </div>
       <div className="space-y-4 p-5">
         <div className="flex items-start justify-between gap-4">
@@ -55,6 +56,7 @@ export function PropertyCard({ property }: { property: PropertyCardData }) {
           {property.bedrooms ? <span>{property.bedrooms} beds</span> : null}
           {property.bathrooms ? <span>{property.bathrooms} baths</span> : null}
           {property.areaSqm ? <span>{property.areaSqm} sqm</span> : null}
+          {property.leadCount ? <span>{property.leadCount} leads</span> : null}
         </div>
 
         <Link href={`/properties/${property.slug}`} className="btn-primary w-full">

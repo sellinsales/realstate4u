@@ -1,5 +1,7 @@
 import Link from "next/link";
 import { PropertyCard } from "@/components/property/property-card";
+import { SectionHeader } from "@/components/ui/section-header";
+import { StatCard } from "@/components/ui/stat-card";
 import { HERO_METRICS, HOME_VERTICALS, PHASE_NOTES } from "@/lib/demo-data";
 import { getFeaturedProperties } from "@/lib/data";
 import { MARKET_CONFIG } from "@/lib/markets";
@@ -34,12 +36,7 @@ export default async function HomePage() {
 
             <div className="grid gap-4 sm:grid-cols-3">
               {HERO_METRICS.map((metric) => (
-                <div key={metric.label} className="panel rounded-[1.8rem] p-5">
-                  <p className="text-4xl font-semibold text-[var(--brand-blue)]">{metric.value}</p>
-                  <p className="mt-2 text-sm font-semibold uppercase tracking-[0.14em] text-[var(--muted)]">
-                    {metric.label}
-                  </p>
-                </div>
+                <StatCard key={metric.label} label={metric.label} value={metric.value} />
               ))}
             </div>
           </div>
@@ -64,12 +61,11 @@ export default async function HomePage() {
 
       <section className="section-spacing">
         <div className="page-shell">
-          <div className="mb-8 max-w-3xl">
-            <span className="eyebrow">Core verticals</span>
-            <h2 className="mt-5 text-4xl font-semibold text-[var(--brand-blue)] md:text-5xl">
-              One brand, multiple housing workflows.
-            </h2>
-          </div>
+          <SectionHeader
+            eyebrow="Core verticals"
+            title="One brand, multiple housing workflows."
+            description="Each vertical shares the same brand system, while market-specific rules stay modular under the surface."
+          />
           <div className="grid gap-5 lg:grid-cols-3">
             {HOME_VERTICALS.map((vertical) => (
               <article key={vertical.title} className="panel rounded-[2rem] p-6">
@@ -83,12 +79,11 @@ export default async function HomePage() {
 
       <section className="section-spacing">
         <div className="page-shell">
-          <div className="mb-8 max-w-3xl">
-            <span className="eyebrow">Market rules</span>
-            <h2 className="mt-5 text-4xl font-semibold text-[var(--brand-blue)] md:text-5xl">
-              Country logic is part of the platform model, not an afterthought.
-            </h2>
-          </div>
+          <SectionHeader
+            eyebrow="Market rules"
+            title="Country logic is part of the platform model, not an afterthought."
+            description="Sweden, EU, and Pakistan each get the right acquisition and application flow while still living inside one marketplace."
+          />
 
           <div className="grid gap-5 lg:grid-cols-3">
             {Object.entries(MARKET_CONFIG).map(([code, market]) => (
@@ -111,17 +106,16 @@ export default async function HomePage() {
 
       <section className="section-spacing">
         <div className="page-shell">
-          <div className="mb-8 flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
-            <div className="max-w-3xl">
-              <span className="eyebrow">Featured inventory</span>
-              <h2 className="mt-5 text-4xl font-semibold text-[var(--brand-blue)] md:text-5xl">
-                Starter listings for the MVP flow.
-              </h2>
-            </div>
-            <Link href="/properties" className="btn-secondary">
-              View all listings
-            </Link>
-          </div>
+          <SectionHeader
+            eyebrow="Featured inventory"
+            title="Starter listings for the MVP flow."
+            description="These sample records cover Sweden queue housing, EU marketplace discovery, and Pakistan lead-first contact journeys."
+            action={
+              <Link href="/properties" className="btn-secondary">
+                View all listings
+              </Link>
+            }
+          />
 
           <div className="grid gap-6 lg:grid-cols-3">
             {featured.map((property) => (

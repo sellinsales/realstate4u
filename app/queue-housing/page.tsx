@@ -1,5 +1,7 @@
 import Link from "next/link";
 import { PropertyCard } from "@/components/property/property-card";
+import { EmptyState } from "@/components/ui/empty-state";
+import { PageIntro } from "@/components/ui/page-intro";
 import { getQueueHousingListings } from "@/lib/data";
 
 export default async function QueueHousingPage() {
@@ -8,26 +10,34 @@ export default async function QueueHousingPage() {
   return (
     <main className="section-spacing">
       <div className="page-shell space-y-8">
-        <div className="max-w-3xl">
-          <span className="eyebrow">Sweden queue housing</span>
-          <h1 className="mt-5 text-5xl font-semibold text-[var(--brand-blue)]">
-            Queue-friendly rental listings with first-hand and second-hand signals.
-          </h1>
-          <p className="mt-4 text-lg leading-8 text-[var(--muted)]">
-            Phase 1 includes a basic application flow, queue type storage, and landlord selection notes.
-          </p>
-        </div>
+        <PageIntro
+          eyebrow="Sweden queue housing"
+          title="Queue-friendly rental listings with first-hand and second-hand signals."
+          description="Phase 1 includes the basic application flow, queue type storage, and landlord selection notes without overcomplicating the rental UX."
+        />
 
-        <div className="grid gap-6 lg:grid-cols-2">
-          {properties.map((property) => (
-            <div key={property.id} className="space-y-4">
-              <PropertyCard property={property} />
-              <Link href={`/properties/${property.slug}`} className="btn-secondary w-full">
-                Review queue details
+        {properties.length ? (
+          <div className="grid gap-6 lg:grid-cols-2">
+            {properties.map((property) => (
+              <div key={property.id} className="space-y-4">
+                <PropertyCard property={property} />
+                <Link href={`/properties/${property.slug}`} className="btn-secondary w-full">
+                  Review queue details
+                </Link>
+              </div>
+            ))}
+          </div>
+        ) : (
+          <EmptyState
+            title="No queue-ready rentals are available right now."
+            copy="Add Sweden rental listings with queue metadata to activate this route."
+            action={
+              <Link href="/post-property" className="btn-primary">
+                Post a Sweden rental
               </Link>
-            </div>
-          ))}
-        </div>
+            }
+          />
+        )}
       </div>
     </main>
   );
