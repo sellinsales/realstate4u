@@ -2,7 +2,7 @@
 const path = require("path");
 
 process.chdir(__dirname);
-require("dotenv").config({ path: path.join(__dirname, ".env") });
+require("dotenv").config({ path: path.join(__dirname, ".env"), override: true });
 
 const http = require("http");
 const next = require("next");
