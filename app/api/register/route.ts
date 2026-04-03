@@ -7,6 +7,7 @@ import {
   normalizeEmail,
   shouldRequireEmailVerification,
 } from "@/lib/account-security";
+import { getApiErrorMessage } from "@/lib/api-error";
 import { prisma } from "@/lib/db/prisma";
 import { registerSchema } from "@/lib/validators";
 
@@ -94,7 +95,11 @@ export async function POST(request: Request) {
         { status: 201 },
       );
     }
-  } catch {
-    return NextResponse.json({ error: "Unable to create account." }, { status: 500 });
+  } catch (error) {
+    console.error("Registration failed", error);
+    return NextResponse.json(
+      { error: getApiErrorMessage(error, "Unable to create account.") },
+      { status: 500 },
+    );
   }
 }
