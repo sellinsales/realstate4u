@@ -170,6 +170,32 @@ npm run prisma:deploy
 
 8. Restart the Passenger app.
 
+If your hosting panel can run a single Node.js script but you do not have terminal access, use:
+
+```bash
+node setup-server.cjs
+```
+
+Or run:
+
+```bash
+npm run setup:server
+```
+
+Do not use `setup-server.cjs` as the app startup file. It is a one-time setup script only. Keep the startup file as `app.js`.
+
+For later deployments where dependencies did not change, use:
+
+```bash
+node update-server.cjs
+```
+
+Or:
+
+```bash
+npm run update:server
+```
+
 If Passenger still shows the generic error page, check the app error log first. The most common causes for this project are:
 
 - `npm run build` was not run on the server

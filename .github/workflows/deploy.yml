@@ -41,5 +41,9 @@ jobs:
           .git*
           .github*
           node_modules/**
-          .next/cache/**
+          .next/**
+          .env*
+          CLOUDLINUX_NODEJS_FIX.md
+          DEPLOYMENT.md
+          TROUBLESHOOTING_PASSENGER.md
           *.log

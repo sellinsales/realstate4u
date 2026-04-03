@@ -38,7 +38,19 @@ npm run build
 npm run prisma:deploy
 ```
 
+If you only have a one-time JS runner in the hosting panel, run:
+
+```bash
+node setup-server.cjs
+```
+
 5. Restart the app from cPanel.
+
+For future updates where packages did not change, run:
+
+```bash
+node update-server.cjs
+```
 
 ## Database Checks
 

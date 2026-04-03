@@ -7,6 +7,8 @@
     "build": "next build",
     "start": "next start",
     "start:passenger": "node app.js",
+    "setup:server": "node setup-server.cjs",
+    "update:server": "node update-server.cjs",
     "lint": "eslint .",
     "prisma:generate": "prisma generate",
     "prisma:migrate": "prisma migrate dev",

@@ -31,3 +31,19 @@ npm run prisma:deploy
 ```
 
 Then restart the application.
+
+If CloudLinux gives you a "Run JS Script" option and you do not have terminal access, run:
+
+```bash
+node setup-server.cjs
+```
+
+This script performs the same setup steps automatically. It is not the startup file. The startup file must stay `app.js`.
+
+For normal updates after the app is already installed, run:
+
+```bash
+node update-server.cjs
+```
+
+This skips `npm install` and only regenerates Prisma, rebuilds, and deploys migrations.
