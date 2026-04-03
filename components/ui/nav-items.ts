@@ -1,11 +1,11 @@
 export const primaryLinks = [
   { href: "/", label: "Home" },
-  { href: "/properties", label: "Find Property" },
-  { href: "/demand-board", label: "Share Demand" },
-  { href: "/smart-match", label: "Smart Match" },
+  { href: "/properties", label: "Property Search" },
+  { href: "/demand-board", label: "Demand Board" },
+  { href: "/smart-match", label: "AI Match" },
   { href: "/queue-housing", label: "Rental Queue" },
-  { href: "/services", label: "Hire Services" },
-  { href: "/jobs", label: "Find Work" },
+  { href: "/services", label: "Home Services" },
+  { href: "/jobs", label: "Construction Jobs" },
 ] as const;
 
 export const secondaryLinks = [

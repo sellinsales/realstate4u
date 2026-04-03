@@ -35,13 +35,14 @@ export function SearchFilters({ filters }: { filters: PropertyFilters }) {
 
   return (
     <form className="panel grid gap-4 rounded-[2rem] p-5 lg:grid-cols-6">
-      <div className="lg:col-span-6 flex flex-col gap-2 border-b border-[var(--brand-line)] pb-4 md:flex-row md:items-end md:justify-between">
+      <div className="flex flex-col gap-3 border-b border-[var(--brand-line)] pb-4 lg:col-span-6 md:flex-row md:items-end md:justify-between">
         <div className="space-y-3">
           <p className="text-sm font-bold uppercase tracking-[0.16em] text-[var(--brand-green)]">
             Refine search
           </p>
-          <p className="mt-2 text-sm leading-7 text-[var(--muted)]">
-            Start with the property purpose, then narrow by market, location, type, and budget.
+          <p className="text-sm leading-7 text-[var(--muted)]">
+            Choose whether the search is for sale or rent first, then narrow the property feed by market, location,
+            type, and budget.
           </p>
           <div className="flex flex-wrap gap-2">
             <Link
@@ -65,13 +66,13 @@ export function SearchFilters({ filters }: { filters: PropertyFilters }) {
           </div>
         </div>
         <div className="status-note status-note-warning max-w-xl">
-          Properties are spaces to buy or rent. Need vendors or staffing instead? Use{" "}
+          Property Search is only for listings. If you need contractors, maintenance, or staffing instead, use{" "}
           <Link href="/services" className="font-semibold text-[var(--brand-blue)]">
-            property services
+            Home Services
           </Link>{" "}
           or{" "}
           <Link href="/jobs" className="font-semibold text-[var(--brand-blue)]">
-            construction jobs
+            Construction Jobs
           </Link>
           .
         </div>

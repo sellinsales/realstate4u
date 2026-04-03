@@ -90,15 +90,16 @@ export function DemandHub({ seededDemands }: { seededDemands: OpenDemand[] }) {
 
   return (
     <section className="grid gap-8 xl:grid-cols-[0.9fr_1.1fr]">
-      <div className="panel rounded-[2rem] p-6">
+      <div className="panel rounded-[1.9rem] p-6">
         <p className="text-sm font-bold uppercase tracking-[0.16em] text-[var(--brand-green)]">
           Share a requirement
         </p>
-        <h2 className="mt-3 text-3xl font-semibold text-[var(--brand-blue)]">
+        <h2 className="mt-3 text-[clamp(1.8rem,2.8vw,2.45rem)] leading-[1.08] font-semibold text-[var(--brand-blue)]">
           Post what you need, what work is open, or what investment you are seeking.
         </h2>
         <p className="mt-3 max-w-2xl text-sm leading-7 text-[var(--muted)]">
-          Use this board for rental demand, acquisition briefs, renovation requests, contractor needs, or market requests you want to circulate quickly.
+          Use this board for rental demand, acquisition briefs, renovation requests, contractor needs, or market
+          requests you want to circulate quickly.
         </p>
 
         <form onSubmit={handleSubmit} className="mt-6 grid gap-4">
@@ -231,7 +232,7 @@ export function DemandHub({ seededDemands }: { seededDemands: OpenDemand[] }) {
             <p className="text-sm font-bold uppercase tracking-[0.16em] text-[var(--brand-green)]">
               Open demand board
             </p>
-            <h2 className="mt-3 text-3xl font-semibold text-[var(--brand-blue)]">
+            <h2 className="mt-3 text-[clamp(1.75rem,2.6vw,2.3rem)] leading-[1.08] font-semibold text-[var(--brand-blue)]">
               Public demand, work requests, and investor briefs.
             </h2>
           </div>
@@ -250,7 +251,7 @@ export function DemandHub({ seededDemands }: { seededDemands: OpenDemand[] }) {
                 <span className="pill">{demand.urgency}</span>
               </div>
 
-              <h3 className="mt-4 text-2xl font-semibold text-[var(--brand-blue)]">{demand.title}</h3>
+              <h3 className="mt-4 text-[1.55rem] leading-[1.1] font-semibold text-[var(--brand-blue)]">{demand.title}</h3>
               <p className="mt-3 text-sm leading-7 text-[var(--muted)]">{demand.summary}</p>
 
               <div className="mt-4 grid gap-3 sm:grid-cols-2">

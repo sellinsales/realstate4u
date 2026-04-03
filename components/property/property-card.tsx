@@ -20,7 +20,7 @@ export function PropertyCard({
   const currency = property.marketCode === "PAKISTAN" ? "PKR" : property.marketCode === "SWEDEN" ? "SEK" : "EUR";
 
   return (
-    <article className="panel overflow-hidden rounded-[2rem]">
+    <article className="panel overflow-hidden rounded-[1.9rem]">
       <div className="relative h-64 overflow-hidden">
         <Image
           src={property.imageUrls[0]}
@@ -46,9 +46,11 @@ export function PropertyCard({
             <p className="text-sm font-semibold uppercase tracking-[0.12em] text-[var(--brand-green)]">
               {property.city}, {property.country}
             </p>
-            <h3 className="mt-2 text-3xl font-semibold text-[var(--brand-blue)]">{property.title}</h3>
+            <h3 className="mt-2 text-[1.72rem] leading-[1.08] font-semibold text-[var(--brand-blue)]">
+              {property.title}
+            </h3>
           </div>
-          <p className="text-lg font-bold text-[var(--brand-green-deep)]">
+          <p className="text-base font-bold text-[var(--brand-green-deep)] md:text-lg">
             {formatPrice(property.price, currency)}
           </p>
         </div>
@@ -78,12 +80,12 @@ export function PropertyCard({
           {property.isVerified ? <span className="pill">verified listing</span> : <span className="pill">review pending</span>}
         </div>
 
-        <div className="flex items-center justify-between text-sm text-[var(--muted)]">
+        <div className="flex items-center justify-between gap-3 text-sm text-[var(--muted)]">
           <span>{property.agentName}</span>
           <span>{formatRelativeDate(property.createdAt)}</span>
         </div>
 
-        <div className="flex flex-wrap gap-3 text-sm text-[var(--muted)]">
+        <div className="flex flex-wrap gap-x-4 gap-y-2 text-sm text-[var(--muted)]">
           {property.bedrooms ? <span>{property.bedrooms} beds</span> : null}
           {property.bathrooms ? <span>{property.bathrooms} baths</span> : null}
           {property.areaSqm ? <span>{property.areaSqm} sqm</span> : null}

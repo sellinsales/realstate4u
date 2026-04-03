@@ -40,8 +40,8 @@ export default async function PropertiesPage({ searchParams }: PropertiesPagePro
       <div className="page-shell space-y-8">
         <PageIntro
           eyebrow="Property search"
-          title="Find property for sale or rent, with local-market listings shown first."
-          description="Start with buy or rent, then narrow by market, city, property type, and budget. Services and jobs stay in separate sections so the property search remains clean."
+          title="Search sale and rental inventory with the local market shown first."
+          description="Start with the search purpose, then narrow by market, city, property type, and budget. Property search stays focused on listings, while services, jobs, and public demand remain in their own sections."
           actions={
             <>
               <Link href="/post-property" className="btn-primary">
@@ -69,7 +69,7 @@ export default async function PropertiesPage({ searchParams }: PropertiesPagePro
 
         <div className="flex items-center justify-between">
           <p className="text-sm font-semibold uppercase tracking-[0.14em] text-[var(--muted)]">
-            {properties.length} listings
+            {properties.length} live property listings
           </p>
         </div>
 

@@ -9,7 +9,7 @@ export function DesktopNavLinks() {
   const pathname = usePathname();
 
   return (
-    <nav className="hidden items-center gap-2 lg:flex">
+    <nav className="hidden items-center gap-1 lg:flex">
       {primaryLinks.map((link) => {
         const isActive =
           link.href === "/"
