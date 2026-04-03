@@ -1,13 +1,16 @@
 import type { Route } from "next";
+import type { MarketCode } from "@/lib/types";
 
 export type MarketFlash = {
   tag: string;
   title: string;
   href: Route;
+  marketCode?: MarketCode;
 };
 
 export type OpenDemand = {
   id: string;
+  marketCode: MarketCode;
   title: string;
   category: string;
   location: string;
@@ -18,6 +21,7 @@ export type OpenDemand = {
 };
 
 export type MarketTrend = {
+  marketCode: MarketCode;
   title: string;
   market: string;
   signal: string;
@@ -25,6 +29,7 @@ export type MarketTrend = {
 };
 
 export type InvestmentOpportunity = {
+  marketCode: MarketCode;
   title: string;
   market: string;
   profile: string;
@@ -42,6 +47,7 @@ export const MARKET_FLASHES: MarketFlash[] = [
     tag: "Trend",
     title: "Sweden queue rentals remain strong for verified first-hand supply.",
     href: "/queue-housing",
+    marketCode: "SWEDEN",
   },
   {
     tag: "Smart Match",
@@ -52,17 +58,20 @@ export const MARKET_FLASHES: MarketFlash[] = [
     tag: "Pakistan",
     title: "WhatsApp-ready listings are converting faster for direct agent response.",
     href: "/properties?marketCode=PAKISTAN",
+    marketCode: "PAKISTAN",
   },
   {
     tag: "Investment",
     title: "Mid-market EU apartments remain the cleanest entry point for long-hold buyers.",
     href: "/demand-board",
+    marketCode: "EU",
   },
 ];
 
 export const OPEN_DEMANDS: OpenDemand[] = [
   {
     id: "demand-sto-rental",
+    marketCode: "SWEDEN",
     title: "Need a verified 2-bed rental in Stockholm within 30 days",
     category: "Rental requirement",
     location: "Stockholm, Sweden",
@@ -74,6 +83,7 @@ export const OPEN_DEMANDS: OpenDemand[] = [
   },
   {
     id: "demand-lhr-renovation",
+    marketCode: "PAKISTAN",
     title: "Looking for villa renovation team in DHA Lahore",
     category: "Property work request",
     location: "Lahore, Pakistan",
@@ -85,6 +95,7 @@ export const OPEN_DEMANDS: OpenDemand[] = [
   },
   {
     id: "demand-ber-investor",
+    marketCode: "EU",
     title: "Investor seeking buy-to-let apartments in Berlin",
     category: "Investment requirement",
     location: "Berlin, Germany",
@@ -98,6 +109,7 @@ export const OPEN_DEMANDS: OpenDemand[] = [
 
 export const MARKET_TRENDS: MarketTrend[] = [
   {
+    marketCode: "SWEDEN",
     title: "Queue-aware supply is differentiating Sweden rental inventory",
     market: "Sweden",
     signal: "High tenant retention demand",
@@ -105,6 +117,7 @@ export const MARKET_TRENDS: MarketTrend[] = [
       "Listings that clearly explain queue type, first-hand status, and landlord selection rules are easier to qualify and shortlist.",
   },
   {
+    marketCode: "EU",
     title: "Mid-ticket apartments remain the cleanest EU conversion path",
     market: "EU",
     signal: "Balanced buy-side interest",
@@ -112,6 +125,7 @@ export const MARKET_TRENDS: MarketTrend[] = [
       "Practical city apartments with strong transport links are easier to market across multilingual buyer segments than oversized stock.",
   },
   {
+    marketCode: "PAKISTAN",
     title: "Direct-response channels continue to win in Pakistan",
     market: "Pakistan",
     signal: "WhatsApp-first lead capture",
@@ -122,6 +136,7 @@ export const MARKET_TRENDS: MarketTrend[] = [
 
 export const INVESTMENT_OPPORTUNITIES: InvestmentOpportunity[] = [
   {
+    marketCode: "SWEDEN",
     title: "Stockholm commuter-belt rentals with transparent queue rules",
     market: "Sweden",
     profile: "Income-focused hold",
@@ -130,6 +145,7 @@ export const INVESTMENT_OPPORTUNITIES: InvestmentOpportunity[] = [
     watchFor: "Queue transparency, landlord notes, and transport proximity",
   },
   {
+    marketCode: "EU",
     title: "Berlin family apartments in resilient inner-ring neighborhoods",
     market: "EU",
     profile: "Capital preservation plus long-term demand",
@@ -138,6 +154,7 @@ export const INVESTMENT_OPPORTUNITIES: InvestmentOpportunity[] = [
     watchFor: "School access, transport links, and multilingual presentation quality",
   },
   {
+    marketCode: "PAKISTAN",
     title: "Lahore villas with direct-response developer or agent coverage",
     market: "Pakistan",
     profile: "Premium upside with active lead flow",

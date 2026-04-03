@@ -1,9 +1,11 @@
+import { headers } from "next/headers";
 import { PropertyCard } from "@/components/property/property-card";
 import { RecommendedPropertyGrid } from "@/components/smart/recommended-property-grid";
 import { SearchFilters } from "@/components/property/search-filters";
 import { EmptyState } from "@/components/ui/empty-state";
 import { PageIntro } from "@/components/ui/page-intro";
 import { getProperties } from "@/lib/data";
+import { detectPreferredMarket, getPreferredMarketCopy, prioritizeByMarket } from "@/lib/market-personalization";
 import type { PropertyFilters } from "@/lib/types";
 import { readSearchParam } from "@/lib/utils";
 
@@ -12,6 +14,7 @@ type PropertiesPageProps = {
 };
 
 export default async function PropertiesPage({ searchParams }: PropertiesPageProps) {
+  const headerStore = await headers();
   const params = await searchParams;
   const filters: PropertyFilters = {
     country: readSearchParam(params.country),
@@ -24,17 +27,25 @@ export default async function PropertiesPage({ searchParams }: PropertiesPagePro
       : undefined,
   };
 
-  const properties = await getProperties(filters);
-  const allProperties = await getProperties();
+  const preferredMarket = detectPreferredMarket(headerStore);
+  const preferenceCopy = getPreferredMarketCopy(preferredMarket);
+  const properties = filters.marketCode
+    ? await getProperties(filters)
+    : prioritizeByMarket(await getProperties(filters), preferredMarket, (property) => property.marketCode);
+  const allProperties = prioritizeByMarket(await getProperties(), preferredMarket, (property) => property.marketCode);
 
   return (
     <main className="section-spacing">
       <div className="page-shell space-y-8">
         <PageIntro
           eyebrow="Property search"
-          title="Search verified and incoming inventory across Sweden, EU, and Pakistan."
-          description="Filter by market, location, price, and listing type to move between Sweden queue rentals, EU homes, and Pakistan lead-first listings."
+          title="Search verified and incoming inventory with the most relevant market first."
+          description="Filter by market, location, price, and listing type while the platform prioritizes the strongest local fit for the visitor."
+          size="compact"
         />
+        {preferenceCopy && !filters.marketCode ? (
+          <div className="status-note status-note-warning">{preferenceCopy}</div>
+        ) : null}
 
         <SearchFilters filters={filters} />
 

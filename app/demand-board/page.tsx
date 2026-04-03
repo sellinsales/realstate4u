@@ -1,3 +1,4 @@
+import { headers } from "next/headers";
 import { DemandHub } from "@/components/community/demand-hub";
 import { PageIntro } from "@/components/ui/page-intro";
 import {
@@ -5,18 +6,28 @@ import {
   MARKET_TRENDS,
   OPEN_DEMANDS,
 } from "@/lib/community-data";
+import { detectPreferredMarket, getPreferredMarketCopy, prioritizeByMarket } from "@/lib/market-personalization";
 
-export default function DemandBoardPage() {
+export default async function DemandBoardPage() {
+  const headerStore = await headers();
+  const preferredMarket = detectPreferredMarket(headerStore);
+  const preferenceCopy = getPreferredMarketCopy(preferredMarket);
+  const orderedDemands = prioritizeByMarket(OPEN_DEMANDS, preferredMarket, (item) => item.marketCode);
+  const orderedTrends = prioritizeByMarket(MARKET_TRENDS, preferredMarket, (item) => item.marketCode);
+  const orderedOpportunities = prioritizeByMarket(INVESTMENT_OPPORTUNITIES, preferredMarket, (item) => item.marketCode);
+
   return (
     <main className="section-spacing">
       <div className="page-shell space-y-8">
         <PageIntro
           eyebrow="Demand and market board"
-          title="Share open requirements, see market demand, and track current investment opportunities."
-          description="This is the public-facing layer for what people need right now: rentals, services, construction work, investor briefs, and market opportunities worth watching."
+          title="Open requirements, market signals, and investment opportunities."
+          description="Share what is needed, see what is moving, and surface useful opportunities without turning the page into an oversized static hero."
+          size="compact"
         />
+        {preferenceCopy ? <div className="status-note status-note-warning">{preferenceCopy}</div> : null}
 
-        <DemandHub seededDemands={OPEN_DEMANDS} />
+        <DemandHub seededDemands={orderedDemands} />
 
         <section className="space-y-6">
           <div>
@@ -29,7 +40,7 @@ export default function DemandBoardPage() {
           </div>
 
           <div className="grid gap-5 lg:grid-cols-3">
-            {MARKET_TRENDS.map((trend) => (
+            {orderedTrends.map((trend) => (
               <article key={trend.title} className="panel rounded-[2rem] p-6">
                 <p className="text-sm font-bold uppercase tracking-[0.16em] text-[var(--brand-green)]">
                   {trend.market}
@@ -53,7 +64,7 @@ export default function DemandBoardPage() {
           </div>
 
           <div className="grid gap-5 lg:grid-cols-3">
-            {INVESTMENT_OPPORTUNITIES.map((opportunity) => (
+            {orderedOpportunities.map((opportunity) => (
               <article key={opportunity.title} className="panel rounded-[2rem] p-6">
                 <p className="text-sm font-bold uppercase tracking-[0.16em] text-[var(--brand-green)]">
                   {opportunity.market}

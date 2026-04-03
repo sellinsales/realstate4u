@@ -369,6 +369,11 @@ textarea {
   padding: 1.8rem;
 }
 
+.page-intro-grid-compact {
+  gap: 1.2rem;
+  padding: 1.35rem;
+}
+
 .page-intro-grid-single {
   max-width: 56rem;
 }
@@ -393,12 +398,26 @@ textarea {
   color: var(--brand-blue);
 }
 
+.page-title-compact {
+  margin-top: 0.95rem;
+  max-width: 48rem;
+  font-size: clamp(1.85rem, 3.6vw, 2.85rem);
+  line-height: 1.02;
+}
+
 .page-copy {
   margin-top: 1rem;
   max-width: 44rem;
   font-size: 1.05rem;
   line-height: 1.95;
   color: var(--muted);
+}
+
+.page-copy-compact {
+  margin-top: 0.8rem;
+  max-width: 40rem;
+  font-size: 0.96rem;
+  line-height: 1.8;
 }
 
 .page-actions {

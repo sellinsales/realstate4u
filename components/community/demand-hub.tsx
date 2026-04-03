@@ -2,8 +2,10 @@
 
 import { useEffect, useMemo, useState } from "react";
 import type { OpenDemand } from "@/lib/community-data";
+import type { MarketCode } from "@/lib/types";
 
 type DemandDraft = {
+  marketCode: MarketCode;
   title: string;
   category: string;
   location: string;
@@ -16,6 +18,7 @@ type DemandDraft = {
 const STORAGE_KEY = "realstate4u.public-demands";
 
 const initialDraft: DemandDraft = {
+  marketCode: "EU",
   title: "",
   category: "Property requirement",
   location: "",
@@ -65,6 +68,7 @@ export function DemandHub({ seededDemands }: { seededDemands: OpenDemand[] }) {
 
     const created: OpenDemand = {
       id: `local-${Date.now()}`,
+      marketCode: draft.marketCode,
       title: draft.title.trim(),
       category: draft.category.trim(),
       location: draft.location.trim(),
@@ -98,6 +102,22 @@ export function DemandHub({ seededDemands }: { seededDemands: OpenDemand[] }) {
         </p>
 
         <form onSubmit={handleSubmit} className="mt-6 grid gap-4">
+          <div>
+            <label htmlFor="marketCode" className="field-label">
+              Market
+            </label>
+            <select
+              id="marketCode"
+              className="field"
+              value={draft.marketCode}
+              onChange={(event) => updateField("marketCode", event.target.value as MarketCode)}
+            >
+              <option value="PAKISTAN">Pakistan</option>
+              <option value="SWEDEN">Sweden</option>
+              <option value="EU">EU</option>
+            </select>
+          </div>
+
           <div>
             <label htmlFor="title" className="field-label">
               Demand title

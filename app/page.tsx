@@ -1,3 +1,4 @@
+import { headers } from "next/headers";
 import Link from "next/link";
 import { PropertyCard } from "@/components/property/property-card";
 import { RecommendedPropertyGrid } from "@/components/smart/recommended-property-grid";
@@ -12,13 +13,25 @@ import {
 import { HERO_METRICS, HOME_VERTICALS, OPERATOR_WORKFLOWS, PHASE_NOTES } from "@/lib/demo-data";
 import { getFeaturedProperties, getProperties } from "@/lib/data";
 import { MARKET_CONFIG } from "@/lib/markets";
+import { detectPreferredMarket, getPreferredMarketCopy, prioritizeByMarket } from "@/lib/market-personalization";
 
 export default async function HomePage() {
-  const allProperties = await getProperties();
-  const featured = await getFeaturedProperties();
-  const trendLead = MARKET_TRENDS[0];
-  const opportunityLead = INVESTMENT_OPPORTUNITIES[0];
-  const demandLead = OPEN_DEMANDS[0];
+  const headerStore = await headers();
+  const preferredMarket = detectPreferredMarket(headerStore);
+  const preferenceCopy = getPreferredMarketCopy(preferredMarket);
+  const allProperties = prioritizeByMarket(await getProperties(), preferredMarket, (property) => property.marketCode);
+  const featured = prioritizeByMarket(await getFeaturedProperties(), preferredMarket, (property) => property.marketCode);
+  const orderedTrends = prioritizeByMarket(MARKET_TRENDS, preferredMarket, (item) => item.marketCode);
+  const orderedOpportunities = prioritizeByMarket(INVESTMENT_OPPORTUNITIES, preferredMarket, (item) => item.marketCode);
+  const orderedDemands = prioritizeByMarket(OPEN_DEMANDS, preferredMarket, (item) => item.marketCode);
+  const orderedMarketEntries = prioritizeByMarket(
+    Object.entries(MARKET_CONFIG),
+    preferredMarket,
+    ([code]) => code as keyof typeof MARKET_CONFIG,
+  );
+  const trendLead = orderedTrends[0];
+  const opportunityLead = orderedOpportunities[0];
+  const demandLead = orderedDemands[0];
   const highlightListing = featured[0];
 
   return (
@@ -27,14 +40,19 @@ export default async function HomePage() {
         <div className="hero-grid absolute inset-0 opacity-80" aria-hidden="true" />
         <div className="page-shell relative grid gap-8 lg:grid-cols-[1fr_0.96fr] lg:items-start">
           <div className="space-y-6">
-            <span className="eyebrow">Property marketplace for Sweden, EU, and Pakistan</span>
+            <span className="eyebrow">Professional property marketplace</span>
             <div className="space-y-5">
               <h1 className="max-w-4xl text-4xl leading-[0.96] font-semibold text-[var(--brand-blue)] md:text-6xl">
-                Search, publish, and qualify property demand across Sweden, Europe, and Pakistan.
+                Search listings, publish opportunities, and respond to real property demand.
               </h1>
               <p className="max-w-2xl text-base leading-8 text-[var(--muted)] md:text-lg">
-                RealState4U combines property discovery, public demand sharing, queue-based rental applications, agent lead capture, and admin review inside one operating layer.
+                RealState4U brings listings, public requirements, market signals, smart discovery, and operator-ready workflows into one organized marketplace.
               </p>
+              {preferenceCopy ? (
+                <div className="inline-flex rounded-full border border-[var(--brand-line)] bg-white/72 px-4 py-2 text-sm font-semibold text-[var(--brand-blue)]">
+                  {preferenceCopy}
+                </div>
+              ) : null}
             </div>
 
             <div className="flex flex-col gap-3 sm:flex-row">
@@ -144,7 +162,7 @@ export default async function HomePage() {
             }
           />
           <div className="grid gap-5 lg:grid-cols-3">
-            {OPEN_DEMANDS.map((demand) => (
+            {orderedDemands.map((demand) => (
               <article key={demand.id} className="panel rounded-[2rem] p-6">
                 <p className="text-sm font-bold uppercase tracking-[0.16em] text-[var(--brand-green)]">
                   {demand.category}
@@ -198,7 +216,7 @@ export default async function HomePage() {
           />
 
           <div className="grid gap-5 lg:grid-cols-3">
-            {Object.entries(MARKET_CONFIG).map(([code, market]) => (
+            {orderedMarketEntries.map(([code, market]) => (
               <article key={code} className="panel rounded-[2rem] p-6">
                 <p className="text-sm font-bold uppercase tracking-[0.16em] text-[var(--brand-green)]">
                   {market.accent}

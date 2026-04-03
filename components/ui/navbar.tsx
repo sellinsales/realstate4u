@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { headers } from "next/headers";
 import Link from "next/link";
 import { auth } from "@/lib/auth";
 import { DesktopNavLinks } from "@/components/ui/desktop-nav-links";
@@ -6,14 +7,18 @@ import { MarketPulseStrip } from "@/components/ui/market-pulse-strip";
 import { LogoutButton } from "@/components/ui/logout-button";
 import { MobileMenu } from "@/components/ui/mobile-menu";
 import { MARKET_FLASHES } from "@/lib/community-data";
+import { detectPreferredMarket, prioritizeByMarket } from "@/lib/market-personalization";
 
 export async function Navbar() {
+  const headerStore = await headers();
   const session = await auth();
   const isAdmin = session?.user.role === "ADMIN";
+  const preferredMarket = detectPreferredMarket(headerStore);
+  const orderedFlashes = prioritizeByMarket(MARKET_FLASHES, preferredMarket, (item) => item.marketCode);
 
   return (
     <header className="sticky top-0 z-40 border-b border-[var(--brand-line)] bg-white/82 backdrop-blur-2xl">
-      <MarketPulseStrip items={MARKET_FLASHES} />
+      <MarketPulseStrip items={orderedFlashes} />
       <div className="page-shell flex items-center justify-between gap-4 py-3">
         <div className="flex items-center gap-4 md:gap-8">
           <Link href="/" className="brand-lockup" aria-label="RealState4U home">
