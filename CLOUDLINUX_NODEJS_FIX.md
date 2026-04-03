@@ -40,6 +40,27 @@ npm run prisma:deploy
 
 Then restart the application.
 
+## If Build Still Fails With `EAGAIN`
+
+Some shared hosts block both child processes and worker threads during `next build`.
+If that happens, do not build on the server.
+
+Instead:
+
+1. Build locally or in CI.
+2. Upload the generated `.next` folder to the server.
+3. Run the prebuilt setup script on the server:
+
+```bash
+node setup-prebuilt-server.cjs
+```
+
+For later updates with a freshly uploaded `.next` folder:
+
+```bash
+node update-prebuilt-server.cjs
+```
+
 If CloudLinux gives you a "Run JS Script" option and you do not have terminal access, run:
 
 ```bash

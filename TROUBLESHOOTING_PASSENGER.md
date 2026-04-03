@@ -45,6 +45,17 @@ If `next build` fails with `spawn ... EAGAIN` or `ERR_WORKER_INIT_FAILED`, keep 
 
 These settings are already configured in [`next.config.ts`](d:/projects/realstate4u/next.config.ts).
 
+If the host still fails with `EAGAIN` after that, it is blocking both child processes and worker threads.
+At that point, the correct workaround is a prebuilt deployment:
+
+1. Build locally or in CI.
+2. Upload `.next` to the server.
+3. Run:
+
+```bash
+node setup-prebuilt-server.cjs
+```
+
 ## MariaDB/MySQL Auth Plugin Fix
 
 If Prisma cannot connect, ask hosting support to switch the database user to `mysql_native_password`.

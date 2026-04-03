@@ -23,10 +23,10 @@ Services and jobs are scaffolded as future verticals, but Phase 1 is intentional
 ## Stack
 
 - Next.js App Router
-- Tailwind CSS v4
+- Tailwind CSS
 - NextAuth credentials provider
 - Prisma ORM
-- PostgreSQL
+- MySQL / MariaDB
 - Cloudinary-ready image URL field
 - OpenStreetMap link integration
 
@@ -204,6 +204,34 @@ If Passenger still shows the generic error page, check the app error log first. 
 - `DATABASE_URL` is invalid
 - the startup file was not set to `app.js`
 - the MySQL user is using the unsupported `sha256_password` authentication plugin
+
+## Prebuilt Deployment For Restricted Shared Hosting
+
+If your host fails during `next build` with `EAGAIN`, it is blocking the worker model Next.js uses during production builds.
+In that case, build locally or in CI and upload the generated `.next` folder.
+
+Server steps for a prebuilt upload:
+
+1. Activate the CloudLinux Node runtime:
+
+```bash
+source /home/USERNAME/nodevenv/public_html/APP_ROOT/20/bin/activate
+```
+
+2. Run the prebuilt setup script:
+
+```bash
+node setup-prebuilt-server.cjs
+```
+
+3. Keep the startup file as `app.js`.
+4. Restart the app.
+
+For later updates after uploading a fresh `.next` folder:
+
+```bash
+node update-prebuilt-server.cjs
+```
 
 ## Next Phase Notes
 
