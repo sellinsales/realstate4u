@@ -1,84 +1,57 @@
-# Fix: CloudLinux NodeJS Selector Virtual Environment Issue
+# CloudLinux NodeJS Selector Setup (REQUIRED for Your Host)
 
-## Problem
-CloudLinux NodeJS Selector requires node_modules to be in a virtual environment (separate folder) with a symlink, NOT in the app root.
+## **You MUST Use CloudLinux NodeJS Selector**
 
-## Solution
+Your cPanel has CloudLinux enabled, which requires a different Node.js setup. The error you got is from CloudLinux NodeJS Selector, not regular Node.js Manager.
 
-### Step 1: Delete Local node_modules
+## **Find CloudLinux NodeJS Selector**
 
-In cPanel → File Manager:
-1. Navigate to: `/home/realstate4u/public_html/rs4u/`
-2. Find and **delete** the `node_modules` folder (if it exists)
-3. Also delete `package-lock.json`
+In cPanel, look for:
+- **CloudLinux NodeJS Selector** (under "Software" or "CloudLinux" section)
+- **NodeJS** (with CloudLinux icon)
+- **Node.js Selector** (CloudLinux version)
 
-### Step 2: Use CloudLinux NodeJS Selector (NOT Regular cPanel Node.js Manager)
+**Do NOT use** the regular "Setup Node.js App" or "Node.js Manager" - that's for non-CloudLinux hosts.
 
-1. Go to cPanel → **CloudLinux NodeJS Selector** (or look for "NodeJS" in CloudLinux section)
-2. Click **Create New Application**
-3. Set:
-   - **Application root:** `/home/realstate4u/public_html/rs4u`
-   - **Application domain/URL:** `http://realstate4u.com/`
-   - **Node.js version:** 20.x (latest available)
-   - **Application startup file:** Leave default or set to `app.js`
-   - **Application mode:** `production`
+## **If You Can't Find It**
 
-4. **Add Environment Variables:**
-   ```
-   DATABASE_URL=mysql://realstate4u_online:Z4%5D%24bE7TPdF%3Fg5%5E8@localhost:3306/realstate4u_marketplace?authPlugin=mysql_native_password
-   NEXTAUTH_URL=http://realstate4u.com
-   NEXTAUTH_SECRET=7f9d2c8e1a4b6k9m3p5q8t2v6x1z4c7j9n2r5u8w
-   NODE_ENV=production
-   ```
+1. Check if CloudLinux is enabled: Look for "CloudLinux" in cPanel sidebar
+2. Contact your host: "Please enable CloudLinux NodeJS Selector in cPanel"
+3. Most hosts with CloudLinux have it available
 
-5. Click **Create**
+## **Setup Steps**
 
-### Step 3: CloudLinux Will Create Virtual Environment
+1. **Delete node_modules** from `/home/realstate4u/public_html/rs4u/` (if exists)
+2. **Open CloudLinux NodeJS Selector**
+3. **Create New Application**:
+   - Application root: `/home/realstate4u/public_html/rs4u`
+   - Application URL: `http://realstate4u.com/`
+   - Node.js version: 20.x
+   - Application mode: `production`
+   - Environment variables:
+     ```
+     DATABASE_URL=mysql://realstate4u_online:Z4%5D%24bE7TPdF%3Fg5%5E8@localhost:3306/realstate4u_marketplace?authPlugin=mysql_native_password
+     NEXTAUTH_URL=http://realstate4u.com
+     NEXTAUTH_SECRET=7f9d2c8e1a4b6k9m3p5q8t2v6x1z4c7j9n2r5u8w
+     NODE_ENV=production
+     ```
 
-CloudLinux will automatically:
-- Create a virtual environment folder
-- Create a `node_modules` symlink pointing to it
-- Handle all npm operations in that virtual environment
+4. **Run NPM Install** (CloudLinux will create virtual environment)
+5. **Restart** the application
+6. **Test** `http://realstate4u.com/`
 
-### Step 4: Run npm install
+## **Why CloudLinux is Different**
 
-Once the application is created in CloudLinux:
-1. Click on your application
-2. Click **Run NPM Install**
-3. Wait for completion
+- **Virtual Environment**: node_modules stored separately with symlink
+- **Resource Limits**: Better isolation and security
+- **Automatic Management**: CloudLinux handles npm operations
+- **Required**: Your host uses CloudLinux, so regular Node.js Manager won't work
 
-### Step 5: Restart and Test
+## **Common Mistake**
 
-1. Click **Restart** in CloudLinux NodeJS Selector
-2. Visit `http://realstate4u.com/`
-3. Should load without Passenger errors
+Users often use "Setup Node.js App" (regular) instead of "CloudLinux NodeJS Selector" - this causes the error you saw.
 
-## Key Differences
-
-**Regular cPanel Node.js Manager:**
-- Direct node_modules in app root
-- SimpleNode/Passenger handling
-- Not suitable for CloudLinux
-
-**CloudLinux NodeJS Selector:**
-- Virtual environment management
-- Automatic symlink creation
-- Proper isolation and resource limits
-- Better for cPanel + CloudLinux setups
-
-## If You Don't See CloudLinux NodeJS Selector
-
-1. Check if CloudLinux is enabled (cPanel usually shows it)
-2. If only regular Node.js Manager available: contact cPanel support to enable CloudLinux NodeJS Selector
-3. Or ask host to enable it - most hosts with CloudLinux have it available
-
-## Common Issues After Setup
-
-**If still errors:**
-1. Verify `node_modules` is a symlink (→ arrow in file manager indicates symlink)
-2. Don't manually edit node_modules - let CloudLinux manage it
-3. Use CloudLinux panel for all npm operations
-4. Restart from CloudLinux panel, not server restart
+**Use CloudLinux NodeJS Selector** - it's the correct tool for your hosting environment.
 
 ---
 
