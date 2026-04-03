@@ -19,7 +19,7 @@ export default async function DashboardListingsPage() {
         <PageIntro
           eyebrow="Dashboard listings"
           title="Your most recent property records."
-          description="Use this view to quickly inspect the published experience of your latest listings."
+          description="Use this view to inspect recent listings exactly as they appear inside the marketplace experience."
         />
         {snapshot.listings.length ? (
           <div className="grid gap-6 lg:grid-cols-3">
@@ -29,6 +29,7 @@ export default async function DashboardListingsPage() {
           </div>
         ) : (
           <EmptyState
+            eyebrow="Listings"
             title="No listings have been posted yet."
             copy="Start by creating the first property record for your account."
           />

@@ -16,7 +16,7 @@ export async function POST(request: Request) {
   if (!process.env.DATABASE_URL) {
     return NextResponse.json(
       {
-        message: "Lead captured in demo mode. Connect PostgreSQL to persist inquiries.",
+        message: "Inquiry captured in preview mode. Connect the live database to store leads permanently.",
         demoMode: true,
       },
       { status: 200 },

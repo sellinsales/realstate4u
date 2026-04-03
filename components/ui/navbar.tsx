@@ -13,23 +13,21 @@ export async function Navbar() {
     <header className="sticky top-0 z-40 border-b border-[var(--brand-line)] bg-white/82 backdrop-blur-2xl">
       <div className="page-shell flex items-center justify-between gap-4 py-3">
         <div className="flex items-center gap-4 md:gap-8">
-          <Link href="/" className="flex items-center" aria-label="RealState4U home">
-            <Image
-              src="/logo-mark.png"
-              alt="RealState4U"
-              width={126}
-              height={154}
-              priority
-              className="h-12 w-auto sm:hidden"
-            />
-            <Image
-              src="/logo-web.png"
-              alt="RealState4U"
-              width={666}
-              height={231}
-              priority
-              className="hidden h-12 w-auto sm:block"
-            />
+          <Link href="/" className="brand-lockup" aria-label="RealState4U home">
+            <span className="brand-mark-shell">
+              <Image
+                src="/logo-mark.png"
+                alt=""
+                width={126}
+                height={154}
+                priority
+                className="brand-mark"
+              />
+            </span>
+            <span className="brand-copy">
+              <span className="brand-name">RealState4U</span>
+              <span className="brand-tag">Cross-market property operations</span>
+            </span>
           </Link>
           <DesktopNavLinks />
         </div>

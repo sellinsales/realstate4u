@@ -44,7 +44,9 @@ export function PropertyCard({ property }: { property: PropertyCardData }) {
         <div className="flex flex-wrap gap-2 text-xs font-bold uppercase tracking-[0.12em] text-[var(--brand-blue)]">
           <span className="pill">{property.propertyType.toLowerCase()}</span>
           {property.queueType ? <span className="pill">{property.queueType.toLowerCase()}</span> : null}
-          {property.isVerified ? <span className="pill">verified</span> : <span className="pill">pending</span>}
+          {property.firstHand ? <span className="pill">first-hand</span> : null}
+          {property.marketCode === "PAKISTAN" && property.whatsappPhone ? <span className="pill">whatsapp ready</span> : null}
+          {property.isVerified ? <span className="pill">verified listing</span> : <span className="pill">review pending</span>}
         </div>
 
         <div className="flex items-center justify-between text-sm text-[var(--muted)]">
@@ -60,7 +62,7 @@ export function PropertyCard({ property }: { property: PropertyCardData }) {
         </div>
 
         <Link href={`/properties/${property.slug}`} className="btn-primary w-full">
-          View property
+          Open listing
         </Link>
       </div>
     </article>

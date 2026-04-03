@@ -77,7 +77,7 @@ export default async function PropertyDetailPage({ params }: PropertyDetailPageP
             <div className="panel rounded-[2rem] p-6">
               <SectionHeader
                 eyebrow="Property overview"
-                title="Listing narrative and core details."
+                title="Listing narrative and operational details."
                 description={property.description}
               />
               <div className="mt-6 flex flex-wrap gap-4 text-sm font-semibold text-[var(--muted)]">
@@ -103,8 +103,8 @@ export default async function PropertyDetailPage({ params }: PropertyDetailPageP
                 {formatPrice(property.price, currency)}
               </p>
               <div className="mt-6 space-y-3 text-sm text-[var(--muted)]">
-                <p>Lead source style: {property.marketCode === "PAKISTAN" ? "WhatsApp-first" : "Web inquiry"}</p>
-                <p>Verification: {property.isVerified ? "Verified listing" : "Pending review"}</p>
+                <p>Primary contact: {property.marketCode === "PAKISTAN" ? "WhatsApp and direct call" : "Web inquiry and direct call"}</p>
+                <p>Verification status: {property.isVerified ? "Verified listing" : "Pending review"}</p>
                 {property.leadCount ? <p>Tracked leads: {property.leadCount}</p> : null}
               </div>
               <div className="mt-6 grid gap-3">
@@ -135,7 +135,7 @@ export default async function PropertyDetailPage({ params }: PropertyDetailPageP
             <div className="panel rounded-[2rem] p-5">
               <p className="form-section-title">Map</p>
               <p className="mt-3 text-sm leading-7 text-[var(--muted)]">
-                OpenStreetMap stays as the default mapping layer for the MVP and keeps the listing page lightweight.
+                OpenStreetMap is the default map layer for fast location checks and lightweight listing pages.
               </p>
               {property.latitude && property.longitude ? (
                 <Link

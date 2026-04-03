@@ -2,7 +2,7 @@ import Link from "next/link";
 import { PropertyCard } from "@/components/property/property-card";
 import { SectionHeader } from "@/components/ui/section-header";
 import { StatCard } from "@/components/ui/stat-card";
-import { HERO_METRICS, HOME_VERTICALS, PHASE_NOTES } from "@/lib/demo-data";
+import { HERO_METRICS, HOME_VERTICALS, OPERATOR_WORKFLOWS, PHASE_NOTES } from "@/lib/demo-data";
 import { getFeaturedProperties } from "@/lib/data";
 import { MARKET_CONFIG } from "@/lib/markets";
 
@@ -15,13 +15,13 @@ export default async function HomePage() {
         <div className="hero-grid absolute inset-0 opacity-80" aria-hidden="true" />
         <div className="page-shell relative grid gap-10 lg:grid-cols-[1.1fr_0.9fr] lg:items-end">
           <div className="space-y-8">
-            <span className="eyebrow">Multi-vertical housing ecosystem</span>
+            <span className="eyebrow">Property marketplace for Sweden, EU, and Pakistan</span>
             <div className="space-y-5">
               <h1 className="max-w-4xl text-5xl leading-[0.94] font-semibold text-[var(--brand-blue)] md:text-7xl">
-                RealState4U is building one platform for housing, queue rentals, and market-specific property leads.
+                Search, publish, and qualify property demand across Sweden, Europe, and Pakistan.
               </h1>
               <p className="max-w-2xl text-lg leading-8 text-[var(--muted)]">
-                Phase 1 ships the property marketplace core for Sweden, EU, and Pakistan with queue housing basics, auth, admin review, and direct inquiry handling.
+                RealState4U combines property discovery, queue-based rental applications, agent lead capture, and admin review inside one operating layer.
               </p>
             </div>
 
@@ -36,17 +36,17 @@ export default async function HomePage() {
 
             <div className="grid gap-4 sm:grid-cols-3">
               {HERO_METRICS.map((metric) => (
-                <StatCard key={metric.label} label={metric.label} value={metric.value} />
+                <StatCard key={metric.label} label={metric.label} value={metric.value} hint={metric.hint} />
               ))}
             </div>
           </div>
 
           <div className="panel rounded-[2.3rem] p-6">
             <p className="text-sm font-bold uppercase tracking-[0.16em] text-[var(--brand-green)]">
-              MVP focus
+              Marketplace standard
             </p>
             <h2 className="mt-4 text-4xl font-semibold text-[var(--brand-blue)]">
-              Properties first. Services and jobs stay scaffolded until later phases.
+              Built for live inventory operations, not static brochure pages.
             </h2>
             <div className="mt-8 space-y-4">
               {PHASE_NOTES.map((note) => (
@@ -62,9 +62,27 @@ export default async function HomePage() {
       <section className="section-spacing">
         <div className="page-shell">
           <SectionHeader
+            eyebrow="Operator workflow"
+            title="A standardized flow from discovery to lead handling."
+            description="The product is organized for real property operations: search, convert, and moderate supply without splitting market logic across separate sites."
+          />
+          <div className="grid gap-5 lg:grid-cols-3">
+            {OPERATOR_WORKFLOWS.map((workflow) => (
+              <article key={workflow.title} className="panel rounded-[2rem] p-6">
+                <h3 className="text-3xl font-semibold text-[var(--brand-blue)]">{workflow.title}</h3>
+                <p className="mt-4 text-base leading-7 text-[var(--muted)]">{workflow.description}</p>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="section-spacing">
+        <div className="page-shell">
+          <SectionHeader
             eyebrow="Core verticals"
             title="One brand, multiple housing workflows."
-            description="Each vertical shares the same brand system, while market-specific rules stay modular under the surface."
+            description="Each vertical shares the same navigation, data model, and brand system while market-specific rules stay modular under the surface."
           />
           <div className="grid gap-5 lg:grid-cols-3">
             {HOME_VERTICALS.map((vertical) => (
@@ -108,11 +126,11 @@ export default async function HomePage() {
         <div className="page-shell">
           <SectionHeader
             eyebrow="Featured inventory"
-            title="Starter listings for the MVP flow."
-            description="These sample records cover Sweden queue housing, EU marketplace discovery, and Pakistan lead-first contact journeys."
+            title="Listings that reflect the live market model."
+            description="These records cover Sweden queue housing, EU discovery journeys, and Pakistan lead-first contact patterns."
             action={
               <Link href="/properties" className="btn-secondary">
-                View all listings
+                View all properties
               </Link>
             }
           />

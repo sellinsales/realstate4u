@@ -4,12 +4,13 @@ type EmptyStateProps = {
   title: string;
   copy: string;
   action?: ReactNode;
+  eyebrow?: string;
 };
 
-export function EmptyState({ title, copy, action }: EmptyStateProps) {
+export function EmptyState({ title, copy, action, eyebrow = "No matching results" }: EmptyStateProps) {
   return (
     <div className="panel empty-state">
-      <span className="eyebrow">Nothing here yet</span>
+      <span className="eyebrow">{eyebrow}</span>
       <h2 className="section-title">{title}</h2>
       <p className="section-copy">{copy}</p>
       {action ? <div className="page-actions">{action}</div> : null}

@@ -13,7 +13,7 @@ export default async function QueueHousingPage() {
         <PageIntro
           eyebrow="Sweden queue housing"
           title="Queue-friendly rental listings with first-hand and second-hand signals."
-          description="Phase 1 includes the basic application flow, queue type storage, and landlord selection notes without overcomplicating the rental UX."
+          description="Queue-aware rentals combine application intake, landlord selection notes, and first-hand versus second-hand context in one flow."
         />
 
         {properties.length ? (
@@ -29,6 +29,7 @@ export default async function QueueHousingPage() {
           </div>
         ) : (
           <EmptyState
+            eyebrow="Queue rentals"
             title="No queue-ready rentals are available right now."
             copy="Add Sweden rental listings with queue metadata to activate this route."
             action={

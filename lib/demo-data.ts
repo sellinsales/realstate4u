@@ -31,9 +31,9 @@ export const DEMO_CREDENTIALS = [
 ] as const;
 
 export const HERO_METRICS = [
-  { label: "Verticals", value: "3" },
-  { label: "Phase 1 flows", value: "9" },
-  { label: "Target markets", value: "3" },
+  { label: "Markets", value: "3", hint: "Sweden, EU, Pakistan" },
+  { label: "Core workflows", value: "9", hint: "search, leads, queue, admin" },
+  { label: "Operator views", value: "4", hint: "guest, user, agent, admin" },
 ];
 
 export const DEMO_PROPERTIES: PropertyCardData[] = [
@@ -162,25 +162,43 @@ export const HOME_VERTICALS = [
   {
     title: "Properties",
     description:
-      "Buy, rent, and queue-ready housing across Sweden, EU markets, and Pakistan.",
+      "Search, publish, and qualify residential inventory with market-specific contact flows and moderation.",
   },
   {
     title: "Home Services",
     description:
-      "A future vertical for verified movers, cleaners, maintenance teams, and inspection providers.",
+      "Prepared for vetted movers, cleaners, maintenance teams, and inspection partners under the same brand system.",
   },
   {
     title: "Construction Jobs",
     description:
-      "Phase 4 expansion for project hiring, trade workers, and development-focused job posts.",
+      "Structured for developer hiring, site staffing, and skilled trade recruitment as the platform expands.",
   },
 ];
 
 export const PHASE_NOTES = [
-  "Phase 1 focuses on properties, auth, queue MVP, leads, and admin basics.",
-  "Services and jobs have placeholder routes so the architecture is ready without shipping those verticals yet.",
-  "All market differences are modeled as data and feature flags instead of hard-coded pages.",
+  "Sweden supports queue-aware rentals, first-hand flags, and landlord selection notes.",
+  "EU listings stay multilingual-ready with clean buy and rent discovery flows.",
+  "Pakistan listings prioritize direct call and WhatsApp conversion paths for agents and developers.",
 ];
+
+export const OPERATOR_WORKFLOWS = [
+  {
+    title: "Search with market logic",
+    description:
+      "Country, city, price, and market filters keep Sweden queue rentals, EU listings, and Pakistan inventory inside one discovery flow.",
+  },
+  {
+    title: "Convert demand faster",
+    description:
+      "Web inquiries, call buttons, and WhatsApp CTAs adapt to the listing market instead of forcing a single contact pattern.",
+  },
+  {
+    title: "Moderate supply centrally",
+    description:
+      "Agents, landlords, and admins can publish listings, monitor review status, and keep marketplace quality consistent.",
+  },
+] as const;
 
 export const FILTER_OPTIONS = {
   countries: ["Sweden", "Germany", "Pakistan"],

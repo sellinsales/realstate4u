@@ -23,7 +23,7 @@ export const metadata: Metadata = {
     template: "%s | RealState4U",
   },
   description:
-    "RealState4U is a multi-vertical housing marketplace for Sweden, EU, and Pakistan with properties, queue housing, and lead capture.",
+    "Cross-market property marketplace for Sweden queue rentals, EU buy-and-rent discovery, and Pakistan lead-first listings.",
   keywords: [
     "real estate marketplace",
     "Sweden queue housing",
@@ -34,7 +34,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "RealState4U",
     description:
-      "Housing marketplace for Sweden queue rentals, EU property discovery, and Pakistan lead-first listings.",
+      "Search, publish, and convert property demand across Sweden, EU markets, and Pakistan.",
     url: "https://realstate4u.com",
     siteName: "RealState4U",
     type: "website",
@@ -51,7 +51,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "RealState4U",
     description:
-      "Cross-border housing marketplace for Sweden, EU, and Pakistan.",
+      "Cross-market property platform for Sweden, EU, and Pakistan.",
     images: ["/logo-web.png"],
   },
   icons: {

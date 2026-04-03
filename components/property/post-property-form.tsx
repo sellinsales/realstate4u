@@ -108,19 +108,19 @@ export function PostPropertyForm() {
             <label htmlFor="country" className="field-label">
               Country
             </label>
-            <input id="country" name="country" placeholder="Country" className="field" required />
+            <input id="country" name="country" placeholder="Sweden" className="field" required />
           </div>
           <div>
             <label htmlFor="city" className="field-label">
               City
             </label>
-            <input id="city" name="city" placeholder="City" className="field" required />
+            <input id="city" name="city" placeholder="Stockholm" className="field" required />
           </div>
           <div>
             <label htmlFor="address" className="field-label">
               Address
             </label>
-            <input id="address" name="address" placeholder="Address" className="field" />
+            <input id="address" name="address" placeholder="Street and area" className="field" />
           </div>
         </div>
       </div>
@@ -171,19 +171,19 @@ export function PostPropertyForm() {
             <label htmlFor="bedrooms" className="field-label">
               Bedrooms
             </label>
-            <input id="bedrooms" name="bedrooms" type="number" min={0} placeholder="Bedrooms" className="field" />
+            <input id="bedrooms" name="bedrooms" type="number" min={0} placeholder="2" className="field" />
           </div>
           <div>
             <label htmlFor="bathrooms" className="field-label">
               Bathrooms
             </label>
-            <input id="bathrooms" name="bathrooms" type="number" min={0} placeholder="Bathrooms" className="field" />
+            <input id="bathrooms" name="bathrooms" type="number" min={0} placeholder="1" className="field" />
           </div>
           <div>
             <label htmlFor="areaSqm" className="field-label">
               Area sqm
             </label>
-            <input id="areaSqm" name="areaSqm" type="number" min={0} placeholder="Area sqm" className="field" />
+            <input id="areaSqm" name="areaSqm" type="number" min={0} placeholder="74" className="field" />
           </div>
         </div>
       </div>
@@ -195,7 +195,7 @@ export function PostPropertyForm() {
             <label htmlFor="contactPhone" className="field-label">
               Contact phone
             </label>
-            <input id="contactPhone" name="contactPhone" placeholder="Contact phone" className="field" required />
+            <input id="contactPhone" name="contactPhone" placeholder="+46 70 000 1000" className="field" required />
           </div>
           <div>
             <label htmlFor="whatsappPhone" className="field-label">
@@ -204,7 +204,7 @@ export function PostPropertyForm() {
             <input
               id="whatsappPhone"
               name="whatsappPhone"
-              placeholder="WhatsApp phone for Pakistan mode"
+              placeholder="923001234567"
               className="field"
             />
           </div>
@@ -215,7 +215,7 @@ export function PostPropertyForm() {
             <label htmlFor="latitude" className="field-label">
               Latitude
             </label>
-            <input id="latitude" name="latitude" type="number" step="any" placeholder="Latitude" className="field" />
+            <input id="latitude" name="latitude" type="number" step="any" placeholder="59.315" className="field" />
           </div>
           <div>
             <label htmlFor="longitude" className="field-label">
@@ -226,7 +226,7 @@ export function PostPropertyForm() {
               name="longitude"
               type="number"
               step="any"
-              placeholder="Longitude"
+              placeholder="18.069"
               className="field"
             />
           </div>
@@ -242,7 +242,7 @@ export function PostPropertyForm() {
           </label>
           <input
             name="landlordSelection"
-            placeholder="Landlord selection method or queue notes"
+            placeholder="Shortlist by queue position and income verification"
             className="field"
           />
         </div>
@@ -256,11 +256,11 @@ export function PostPropertyForm() {
             name="imageUrls"
             rows={4}
             className="field"
-            placeholder="Paste one image URL per line. Cloudinary upload wiring can be connected to this field next."
+            placeholder="Paste one image URL per line until direct uploads are connected."
             required
           />
           <p className="field-hint">
-            For production, replace this input with signed Cloudinary uploads and store the resulting asset URLs.
+            This field can later be replaced with signed Cloudinary uploads without changing the listing flow.
           </p>
         </div>
       </div>
@@ -269,7 +269,7 @@ export function PostPropertyForm() {
       {error ? <p className="status-note status-note-error">{error}</p> : null}
 
       <button type="submit" disabled={loading} className="btn-primary w-full">
-        {loading ? "Submitting..." : "Submit property"}
+        {loading ? "Submitting..." : "Publish listing"}
       </button>
     </form>
   );

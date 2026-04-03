@@ -29,7 +29,7 @@ export function LoginForm() {
     setLoading(false);
 
     if (!result || result.error) {
-      setError("Invalid credentials. Use the seeded demo account or configure the database.");
+      setError("Invalid credentials. Check your email and password and try again.");
       return;
     }
 

@@ -14,7 +14,7 @@ export async function POST(request: Request) {
   if (!process.env.DATABASE_URL) {
     return NextResponse.json(
       {
-        error: "Registration needs the database configured. Use the seeded demo accounts until DATABASE_URL is set.",
+        error: "Registration is temporarily unavailable until the live account database is configured.",
       },
       { status: 503 },
     );

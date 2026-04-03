@@ -5,6 +5,16 @@ import type { PropertyFilters } from "@/lib/types";
 export function SearchFilters({ filters }: { filters: PropertyFilters }) {
   return (
     <form className="panel grid gap-4 rounded-[2rem] p-5 lg:grid-cols-6">
+      <div className="lg:col-span-6 flex flex-col gap-2 border-b border-[var(--brand-line)] pb-4 md:flex-row md:items-end md:justify-between">
+        <div>
+          <p className="text-sm font-bold uppercase tracking-[0.16em] text-[var(--brand-green)]">
+            Refine search
+          </p>
+          <p className="mt-2 text-sm leading-7 text-[var(--muted)]">
+            Match listings by market, location, listing type, and budget without leaving the same marketplace view.
+          </p>
+        </div>
+      </div>
       <div>
         <label htmlFor="country" className="field-label">
           Country
@@ -78,7 +88,7 @@ export function SearchFilters({ filters }: { filters: PropertyFilters }) {
           type="number"
           min={0}
           defaultValue={filters.maxPrice || ""}
-          placeholder="No limit"
+          placeholder="Any budget"
           className="field"
         />
       </div>
@@ -87,7 +97,7 @@ export function SearchFilters({ filters }: { filters: PropertyFilters }) {
           Reset filters
         </Link>
         <button type="submit" className="btn-primary">
-          Search listings
+          Apply filters
         </button>
       </div>
     </form>

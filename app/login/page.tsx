@@ -19,7 +19,7 @@ export default async function LoginPage({ searchParams }: LoginPageProps) {
         <PageIntro
           eyebrow="Authentication"
           title="Log in to manage listings, queue applications, and dashboard views."
-          description="Credentials auth is in place for the MVP, with demo fallback when the database is unavailable."
+          description="Access listing operations, queue applications, lead tracking, and account management from one sign-in flow."
           aside={
             <div className="space-y-4">
               {registered ? (
@@ -30,7 +30,7 @@ export default async function LoginPage({ searchParams }: LoginPageProps) {
               {demoMode ? (
                 <div className="panel rounded-[1.8rem] p-5">
                   <p className="text-sm font-bold uppercase tracking-[0.16em] text-[var(--brand-green)]">
-                    Demo accounts
+                    Sandbox access
                   </p>
                   <div className="mt-4 space-y-3 text-sm text-[var(--muted)]">
                     {DEMO_CREDENTIALS.map((account) => (
@@ -42,7 +42,7 @@ export default async function LoginPage({ searchParams }: LoginPageProps) {
                 </div>
               ) : (
                 <div className="status-note status-note-warning">
-                  Live authentication is active. Use your real marketplace account credentials.
+                  Live authentication is active. Use your marketplace account credentials.
                 </div>
               )}
             </div>
@@ -57,7 +57,7 @@ export default async function LoginPage({ searchParams }: LoginPageProps) {
               </p>
               <div className="mt-4 space-y-3 text-sm leading-7 text-[var(--muted)]">
                 <p>Track inbound leads, manage published listings, and review queue applications.</p>
-                <p>Admins can move directly into listing moderation and verification workflows.</p>
+                <p>Admins can move directly into moderation, review status, and inventory oversight.</p>
               </div>
             </div>
             <p className="text-sm text-[var(--muted)]">
@@ -68,7 +68,7 @@ export default async function LoginPage({ searchParams }: LoginPageProps) {
               .
             </p>
           </div>
-        <LoginForm />
+          <LoginForm />
         </div>
       </div>
     </main>

@@ -53,16 +53,16 @@ export function LeadForm({
     <form onSubmit={handleSubmit} className="panel form-panel">
       <div>
         <p className="form-section-title">Lead capture</p>
-        <h2 className="mt-3 text-2xl font-semibold text-[var(--brand-blue)]">Message the listing contact</h2>
+        <h2 className="mt-3 text-2xl font-semibold text-[var(--brand-blue)]">Send an inquiry</h2>
         <p className="field-hint">
-          Your inquiry is stored against the listing so the team can track intent and follow up.
+          Your message is stored against the listing so the owner or agent can qualify interest and follow up.
         </p>
       </div>
       <div className="grid gap-4 sm:grid-cols-2">
-        <input name="name" placeholder="Your name" className="field" required />
-        <input name="phone" placeholder="Phone" className="field" />
+        <input name="name" placeholder="Full name" className="field" required />
+        <input name="phone" placeholder="Phone number" className="field" />
       </div>
-      <input name="email" type="email" placeholder="Email" className="field" />
+      <input name="email" type="email" placeholder="Email address" className="field" />
       <textarea
         name="message"
         rows={4}

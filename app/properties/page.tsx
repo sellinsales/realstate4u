@@ -30,15 +30,15 @@ export default async function PropertiesPage({ searchParams }: PropertiesPagePro
       <div className="page-shell space-y-8">
         <PageIntro
           eyebrow="Property search"
-          title="Search across Sweden rentals, EU homes, and Pakistan lead-first listings."
-          description="Use the filters to shift between queue-housing rentals, standard buy and rent inventory, and Pakistan listings built around direct agent contact."
+          title="Search verified and incoming inventory across Sweden, EU, and Pakistan."
+          description="Filter by market, location, price, and listing type to move between Sweden queue rentals, EU homes, and Pakistan lead-first listings."
         />
 
         <SearchFilters filters={filters} />
 
         <div className="flex items-center justify-between">
           <p className="text-sm font-semibold uppercase tracking-[0.14em] text-[var(--muted)]">
-            {properties.length} results
+            {properties.length} listings
           </p>
         </div>
 
@@ -51,7 +51,7 @@ export default async function PropertiesPage({ searchParams }: PropertiesPagePro
         ) : (
           <EmptyState
             title="No properties matched those filters."
-            copy="Adjust the market, type, or price filters and try again."
+            copy="Adjust the market, location, or budget filters and try again."
           />
         )}
       </div>

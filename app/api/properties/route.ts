@@ -40,7 +40,7 @@ export async function POST(request: Request) {
   if (!process.env.DATABASE_URL || session.user.id.startsWith("demo-")) {
     return NextResponse.json(
       {
-        error: "Connect PostgreSQL and seed a real user account to persist new listings.",
+        error: "Live listing storage is unavailable. Sign in with a database-backed account to publish listings.",
       },
       { status: 503 },
     );

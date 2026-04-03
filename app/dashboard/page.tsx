@@ -19,7 +19,7 @@ export default async function DashboardPage() {
         <PageIntro
           eyebrow="Dashboard"
           title={`Welcome back, ${session.user.email}`}
-          description="Track listing volume, lead flow, and queue applications from one operator view."
+          description="Track listing volume, lead flow, review status, and queue applications from one operator view."
           actions={
             <>
               <Link href="/dashboard/listings" className="btn-secondary">

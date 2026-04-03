@@ -20,7 +20,7 @@ export async function POST(request: Request) {
   if (!process.env.DATABASE_URL || session.user.id.startsWith("demo-")) {
     return NextResponse.json(
       {
-        message: "Queue application accepted in demo mode. Connect PostgreSQL for persistence.",
+        message: "Queue application captured in preview mode. Connect the live database to store applications permanently.",
         demoMode: true,
       },
       { status: 200 },

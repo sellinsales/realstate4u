@@ -19,7 +19,7 @@ export default async function AdminPage() {
         <PageIntro
           eyebrow="Admin"
           title="Listing review and user oversight."
-          description="Moderate incoming listings, verify records, and keep the marketplace inventory trustworthy."
+          description="Moderate incoming listings, verify records, and keep marketplace inventory trustworthy across all markets."
           aside={
             demoMode ? (
               <div className="status-note status-note-warning">

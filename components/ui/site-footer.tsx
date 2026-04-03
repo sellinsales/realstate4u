@@ -8,25 +8,31 @@ export function SiteFooter() {
     <footer className="site-footer">
       <div className="page-shell grid gap-10 py-12 lg:grid-cols-[1.1fr_0.8fr_0.9fr_1fr]">
         <div className="space-y-5">
-          <Link href="/" className="inline-flex items-center" aria-label="RealState4U home">
-            <Image
-              src="/logo-web.png"
-              alt="RealState4U"
-              width={666}
-              height={231}
-              className="h-14 w-auto"
-            />
+          <Link href="/" className="brand-lockup" aria-label="RealState4U home">
+            <span className="brand-mark-shell">
+              <Image
+                src="/logo-mark.png"
+                alt=""
+                width={126}
+                height={154}
+                className="brand-mark"
+              />
+            </span>
+            <span className="brand-copy">
+              <span className="brand-name">RealState4U</span>
+              <span className="brand-tag">Search, publish, and convert demand</span>
+            </span>
           </Link>
           <p className="max-w-sm text-sm leading-7 text-[var(--muted)]">
-            A housing marketplace for cross-border property discovery, Sweden queue rentals,
-            and direct lead capture for Pakistan and EU markets.
+            RealState4U connects property discovery, queue-based rentals, lead capture, and
+            listing operations across Sweden, EU markets, and Pakistan.
           </p>
           <div className="flex flex-wrap gap-3">
             <Link href="/properties" className="btn-secondary">
-              Browse inventory
+              Browse listings
             </Link>
             <Link href="/post-property" className="btn-primary">
-              List a property
+              List property
             </Link>
           </div>
         </div>
@@ -55,10 +61,10 @@ export function SiteFooter() {
         </div>
 
         <div className="panel rounded-[2rem] p-6">
-          <p className="footer-heading">Launch Notes</p>
+          <p className="footer-heading">Platform standard</p>
           <div className="mt-4 space-y-3 text-sm leading-7 text-[var(--muted)]">
-            <p>Phase 1 is live with listings, auth, queue housing basics, and admin review.</p>
-            <p>Services and construction jobs are structured but intentionally deferred.</p>
+            <p>Properties, inquiries, queue applications, and admin review are managed in one interface.</p>
+            <p>Pakistan contact flows prioritize WhatsApp and calls, while Sweden rentals stay queue-aware.</p>
           </div>
           <div className="mt-5 footer-links">
             {secondaryLinks.map((link) => (
