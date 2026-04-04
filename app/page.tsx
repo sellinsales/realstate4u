@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { CeoMessage } from "@/components/home/ceo-message";
 import { HomeSearchHero } from "@/components/home/home-search-hero";
 import { SectionHeader } from "@/components/ui/section-header";
 import { StatCard } from "@/components/ui/stat-card";
@@ -44,6 +45,8 @@ export default async function HomePage() {
           <HomeSearchHero />
         </div>
       </section>
+
+      <CeoMessage />
 
       <section className="section-spacing">
         <div className="page-shell">

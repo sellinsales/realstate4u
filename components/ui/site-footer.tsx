@@ -75,6 +75,19 @@ export function SiteFooter() {
           </div>
         </div>
       </div>
+      <div className="border-t border-[var(--brand-line)]">
+        <div className="page-shell flex flex-col gap-2 py-5 text-sm text-[var(--muted)] md:flex-row md:items-center md:justify-between">
+          <p>Powered by <a href="https://www.softthinkers.com" target="_blank" rel="noreferrer" className="font-semibold text-[var(--brand-blue)]">SoftThinkers</a></p>
+          <a
+            href="https://www.softthinkers.com"
+            target="_blank"
+            rel="noreferrer"
+            className="font-semibold text-[var(--brand-blue)]"
+          >
+            www.softthinkers.com
+          </a>
+        </div>
+      </div>
     </footer>
   );
 }
