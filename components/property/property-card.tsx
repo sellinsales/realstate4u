@@ -18,12 +18,13 @@ export function PropertyCard({
 }) {
   const market = MARKET_CONFIG[property.marketCode];
   const currency = property.marketCode === "PAKISTAN" ? "PKR" : property.marketCode === "SWEDEN" ? "SEK" : "EUR";
+  const coverImage = property.imageUrls[0] || "/logo-web.png";
 
   return (
     <article className="panel overflow-hidden rounded-[1.9rem]">
       <div className="relative h-64 overflow-hidden">
         <Image
-          src={property.imageUrls[0]}
+          src={coverImage}
           alt={property.title}
           fill
           sizes="(max-width: 1024px) 100vw, 33vw"
