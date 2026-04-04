@@ -33,3 +33,17 @@ export const MARKET_CONFIG: Record<
 };
 
 export const MARKET_CODES = Object.keys(MARKET_CONFIG) as MarketCode[];
+
+export function normalizeMarketCode(value?: string | null): MarketCode {
+  const normalized = value?.trim().toUpperCase();
+
+  if (normalized === "SWEDEN" || normalized === "EU" || normalized === "PAKISTAN") {
+    return normalized;
+  }
+
+  return "EU";
+}
+
+export function getMarketConfig(value?: string | null) {
+  return MARKET_CONFIG[normalizeMarketCode(value)];
+}

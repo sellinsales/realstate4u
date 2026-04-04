@@ -10,7 +10,7 @@ import { PageIntro } from "@/components/ui/page-intro";
 import { SectionHeader } from "@/components/ui/section-header";
 import { auth } from "@/lib/auth";
 import { getProperties, getPropertyBySlug } from "@/lib/data";
-import { MARKET_CONFIG } from "@/lib/markets";
+import { getMarketConfig, normalizeMarketCode } from "@/lib/markets";
 import { formatPrice } from "@/lib/utils";
 
 type PropertyDetailPageProps = {
@@ -29,9 +29,11 @@ export default async function PropertyDetailPage({ params }: PropertyDetailPageP
     notFound();
   }
 
-  const market = MARKET_CONFIG[property.marketCode];
-  const currency = property.marketCode === "PAKISTAN" ? "PKR" : property.marketCode === "SWEDEN" ? "SEK" : "EUR";
+  const marketCode = normalizeMarketCode(property.marketCode);
+  const market = getMarketConfig(property.marketCode);
+  const currency = marketCode === "PAKISTAN" ? "PKR" : marketCode === "SWEDEN" ? "SEK" : "EUR";
   const loginHref = `/login?callbackUrl=${encodeURIComponent(`/properties/${property.slug}`)}`;
+  const gallery = property.imageUrls.length ? property.imageUrls : ["/logo-web.png"];
 
   return (
     <main className="section-spacing">
@@ -63,7 +65,7 @@ export default async function PropertyDetailPage({ params }: PropertyDetailPageP
         <div className="grid gap-8 lg:grid-cols-[1.1fr_0.9fr]">
           <div className="space-y-6">
             <div className="grid gap-4 sm:grid-cols-3">
-              {property.imageUrls.map((imageUrl) => (
+              {gallery.map((imageUrl) => (
                 <div key={imageUrl} className="panel overflow-hidden rounded-[1.8rem]">
                   <div className="relative h-64 w-full">
                     <Image
@@ -106,7 +108,7 @@ export default async function PropertyDetailPage({ params }: PropertyDetailPageP
                 {formatPrice(property.price, currency)}
               </p>
               <div className="mt-6 space-y-3 text-sm text-[var(--muted)]">
-                <p>Primary contact: {property.marketCode === "PAKISTAN" ? "WhatsApp and direct call" : "Web inquiry and direct call"}</p>
+                <p>Primary contact: {marketCode === "PAKISTAN" ? "WhatsApp and direct call" : "Web inquiry and direct call"}</p>
                 <p>Verification status: {property.isVerified ? "Verified listing" : "Pending review"}</p>
                 {property.leadCount ? <p>Tracked leads: {property.leadCount}</p> : null}
               </div>
@@ -116,14 +118,14 @@ export default async function PropertyDetailPage({ params }: PropertyDetailPageP
                     Call contact
                   </a>
                 ) : null}
-                {property.marketCode === "PAKISTAN" && property.whatsappPhone ? (
+                {marketCode === "PAKISTAN" && property.whatsappPhone ? (
                   <WhatsAppButton
                     propertyId={property.id}
                     propertyTitle={property.title}
                     phone={property.whatsappPhone}
                   />
                 ) : null}
-                {property.marketCode === "SWEDEN" && property.queueType ? (
+                {marketCode === "SWEDEN" && property.queueType ? (
                   <QueueApplyButton
                     propertyId={property.id}
                     canApply={Boolean(session?.user)}

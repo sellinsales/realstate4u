@@ -3,7 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { SavePropertyButton } from "@/components/property/save-property-button";
-import { MARKET_CONFIG } from "@/lib/markets";
+import { getMarketConfig, normalizeMarketCode } from "@/lib/markets";
 import type { PropertyCardData } from "@/lib/types";
 import { formatPrice, formatRelativeDate } from "@/lib/utils";
 
@@ -16,8 +16,9 @@ export function PropertyCard({
   recommendationLabel?: string;
   matchReasons?: string[];
 }) {
-  const market = MARKET_CONFIG[property.marketCode];
-  const currency = property.marketCode === "PAKISTAN" ? "PKR" : property.marketCode === "SWEDEN" ? "SEK" : "EUR";
+  const marketCode = normalizeMarketCode(property.marketCode);
+  const market = getMarketConfig(property.marketCode);
+  const currency = marketCode === "PAKISTAN" ? "PKR" : marketCode === "SWEDEN" ? "SEK" : "EUR";
   const coverImage = property.imageUrls[0] || "/logo-web.png";
 
   return (
@@ -77,7 +78,7 @@ export function PropertyCard({
           <span className="pill">{property.propertyType.toLowerCase()}</span>
           {property.queueType ? <span className="pill">{property.queueType.toLowerCase()}</span> : null}
           {property.firstHand ? <span className="pill">first-hand</span> : null}
-          {property.marketCode === "PAKISTAN" && property.whatsappPhone ? <span className="pill">whatsapp ready</span> : null}
+          {marketCode === "PAKISTAN" && property.whatsappPhone ? <span className="pill">whatsapp ready</span> : null}
           {property.isVerified ? <span className="pill">verified listing</span> : <span className="pill">review pending</span>}
         </div>
 

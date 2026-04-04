@@ -172,6 +172,7 @@ async function main() {
   await checkPage("/login");
   await checkPage("/register");
   await checkPage("/forgot-password");
+  await checkPage("/smart-match");
   await checkAuthPreflight();
 
   if (runRegister) {
