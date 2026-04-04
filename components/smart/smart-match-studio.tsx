@@ -31,20 +31,21 @@ export function SmartMatchStudio({ properties }: { properties: PropertyCardData[
         <div className="page-intro-grid">
           <div className="page-intro-copy">
             <span className="eyebrow">AI-guided property discovery</span>
-            <h1 className="page-title">Build a smart brief and let the marketplace prioritize your next move.</h1>
+            <h1 className="page-title">Tell us what you want and let AI sort the strongest property fits first.</h1>
             <p className="page-copy">
-              Smart Match uses your market focus, budget, space needs, and contact preferences to rank listings with clear reasons instead of generic sorting.
+              Use your goal, budget, market, and space needs to rank homes with practical reasons instead of scrolling
+              through the same generic order every time.
             </p>
           </div>
           <div className="page-intro-aside">
             <div className="panel rounded-[1.8rem] p-5">
               <p className="text-sm font-bold uppercase tracking-[0.16em] text-[var(--brand-green)]">
-                Why it works
+                Why people use it
               </p>
               <div className="mt-4 space-y-3 text-sm leading-7 text-[var(--muted)]">
-                <p>Scores listings against your brief instead of using one-size-fits-all ranking.</p>
-                <p>Favors queue-ready, WhatsApp-ready, or value-focused inventory depending on your intent.</p>
-                <p>Persists your brief and shortlist so returning visits feel progressively smarter.</p>
+                <p>It scores listings against your brief instead of showing one-size-fits-all sorting.</p>
+                <p>It can favor queue rentals, WhatsApp-ready leads, or stronger-value inventory depending on your goal.</p>
+                <p>Your brief and shortlist stay available so coming back feels faster and more relevant.</p>
               </div>
             </div>
           </div>
@@ -58,7 +59,7 @@ export function SmartMatchStudio({ properties }: { properties: PropertyCardData[
               <p className="text-sm font-bold uppercase tracking-[0.16em] text-[var(--brand-green)]">
                 Smart brief
               </p>
-              <h2 className="mt-3 text-3xl font-semibold text-[var(--brand-blue)]">Tell the platform how you want to search.</h2>
+              <h2 className="mt-3 text-3xl font-semibold text-[var(--brand-blue)]">Describe the kind of property you want.</h2>
             </div>
             <button type="button" onClick={resetMatchProfile} className="btn-secondary">
               Reset
@@ -272,7 +273,7 @@ export function SmartMatchStudio({ properties }: { properties: PropertyCardData[
                 </h2>
               </div>
               <p className="max-w-md text-sm leading-7 text-[var(--muted)]">
-                Save the strongest ones to your shortlist and revisit them from the dashboard.
+                Save the strongest options to your shortlist and come back to them later from the dashboard.
               </p>
             </div>
           </div>

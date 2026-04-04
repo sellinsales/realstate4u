@@ -79,7 +79,7 @@ export function RecommendedPropertyGrid({
           <p className="mt-3 max-w-3xl text-sm leading-7 text-[var(--muted)]">{description}</p>
         </div>
         <Link href="/smart-match" className="btn-secondary">
-          Open Smart Match
+          Open AI Match
         </Link>
       </div>
 

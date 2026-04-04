@@ -20,12 +20,12 @@ export function SiteFooter() {
             </span>
             <span className="brand-copy">
               <span className="brand-name">RealState4U</span>
-              <span className="brand-tag">Search, list, and manage property demand</span>
+              <span className="brand-tag">Search, hire, apply, and share demand</span>
             </span>
           </Link>
           <p className="max-w-sm text-sm leading-7 text-[var(--muted)]">
-            RealState4U is a clean marketplace for property search, listing operations, queue-aware
-            rentals, inquiries, and demand visibility across multiple markets.
+            RealState4U helps visitors search property, hire service teams, explore jobs, and share open requirements
+            without mixing everything into one feed.
           </p>
           <div className="flex flex-wrap gap-3">
             <Link href="/properties" className="btn-secondary">
@@ -61,10 +61,10 @@ export function SiteFooter() {
         </div>
 
         <div className="panel rounded-[2rem] p-6">
-          <p className="footer-heading">Platform standard</p>
+          <p className="footer-heading">Why it is easier to use</p>
           <div className="mt-4 space-y-3 text-sm leading-7 text-[var(--muted)]">
-            <p>Properties, services, jobs, and open demand stay separated so each user path is easier to understand.</p>
-            <p>Account access, inquiries, queue applications, moderation, and publishing run inside one consistent interface.</p>
+            <p>Property search stays focused on listings, while services, jobs, and demand each have their own clearer route.</p>
+            <p>Your account, inquiries, queue applications, and saved progress continue across the marketplace instead of starting over on each page.</p>
           </div>
           <div className="mt-5 footer-links">
             {secondaryLinks.map((link) => (

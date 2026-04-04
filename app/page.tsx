@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { HomeSearchHero } from "@/components/home/home-search-hero";
 import { SectionHeader } from "@/components/ui/section-header";
 import { StatCard } from "@/components/ui/stat-card";
 import { HERO_METRICS, HOME_VERTICALS, OPERATOR_WORKFLOWS, PHASE_NOTES } from "@/lib/demo-data";
@@ -13,11 +14,11 @@ export default async function HomePage() {
             <span className="eyebrow">Professional property marketplace</span>
             <div className="space-y-4">
               <h1 className="max-w-4xl text-[clamp(2.7rem,5.2vw,4.9rem)] leading-[0.94] font-semibold text-[var(--brand-blue)]">
-                A clearer marketplace for property search, listings, leads, and housing operations.
+                Find property, service teams, jobs, and live market demand from one clean search-led homepage.
               </h1>
               <p className="max-w-2xl text-base leading-8 text-[var(--muted)] md:text-[1.02rem]">
-                RealState4U gives buyers, renters, landlords, and agents one structured place to search inventory,
-                publish listings, qualify demand, and manage account-driven workflows without cluttered navigation.
+                Start with what you need right now: a home to buy or rent, a team to hire, a job to apply for, or a
+                demand brief to share with the market.
               </p>
             </div>
 
@@ -25,11 +26,11 @@ export default async function HomePage() {
               <Link href="/properties" className="btn-primary">
                 Search property
               </Link>
+              <Link href="/smart-match" className="btn-secondary">
+                Open AI Match
+              </Link>
               <Link href="/post-property" className="btn-secondary">
                 Post a property
-              </Link>
-              <Link href="/login" className="btn-secondary">
-                Sign in
               </Link>
             </div>
 
@@ -40,87 +41,16 @@ export default async function HomePage() {
             </div>
           </div>
 
-          <div className="utility-grid">
-            <div className="panel utility-card">
-              <p className="text-sm font-bold uppercase tracking-[0.16em] text-[var(--brand-green)]">
-                Marketplace focus
-              </p>
-              <h2 className="utility-card-title mt-3">
-                Property, services, jobs, and public demand each stay on their own track.
-              </h2>
-              <p className="utility-card-copy">
-                Property search remains focused on buy and rent inventory. Home services handle vendors and work teams.
-                Construction jobs stay candidate-facing. Demand Board keeps open requirements visible without mixing
-                them into search results.
-              </p>
-            </div>
-
-            <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-1">
-              <div className="panel utility-card">
-                <p className="text-sm font-bold uppercase tracking-[0.16em] text-[var(--brand-green)]">
-                  Core actions
-                </p>
-                <div className="mt-4 grid gap-3">
-                  <Link href="/register" className="btn-secondary">
-                    Create account
-                  </Link>
-                  <Link href="/forgot-password" className="btn-secondary">
-                    Reset password
-                  </Link>
-                  <Link href="/demand-board" className="btn-secondary">
-                    Share a requirement
-                  </Link>
-                </div>
-              </div>
-              <div className="panel utility-card">
-                <p className="text-sm font-bold uppercase tracking-[0.16em] text-[var(--brand-green)]">
-                  Marketplace structure
-                </p>
-                <ul className="mt-4 space-y-3 text-sm leading-7 text-[var(--muted)]">
-                  <li>Property Search is for sale and rent inventory only.</li>
-                  <li>Home Services is for contractors, maintenance teams, and vendors.</li>
-                  <li>Construction Jobs is for hiring and work opportunities.</li>
-                </ul>
-              </div>
-            </div>
-
-            <div className="panel utility-card">
-              <p className="text-sm font-bold uppercase tracking-[0.16em] text-[var(--brand-green)]">
-                Production-ready now
-              </p>
-              <p className="utility-card-copy">
-                Live account creation, password reset, search, posting, queue-aware rentals, and inquiry capture are
-                already in the operating flow. The design pass here keeps those live paths visually aligned.
-              </p>
-            </div>
-          </div>
+          <HomeSearchHero />
         </div>
       </section>
 
       <section className="section-spacing">
         <div className="page-shell">
           <SectionHeader
-            eyebrow="Operator workflow"
-            title="A standardized flow from search to response."
-            description="The marketplace is organized for live property operations: discover, qualify, moderate, and manage access without splitting the experience across multiple systems."
-          />
-          <div className="grid gap-5 lg:grid-cols-3">
-            {OPERATOR_WORKFLOWS.map((workflow) => (
-              <article key={workflow.title} className="panel utility-card">
-                <h3 className="utility-card-title">{workflow.title}</h3>
-                <p className="utility-card-copy">{workflow.description}</p>
-              </article>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <section className="section-spacing">
-        <div className="page-shell">
-          <SectionHeader
-            eyebrow="Core verticals"
-            title="One brand, clearly separated user paths."
-            description="Properties stay focused on sale and rent inventory, while services, jobs, and demand remain separate workflows under the same marketplace brand."
+            eyebrow="Popular paths"
+            title="Choose the route that matches what you are trying to do."
+            description="Each part of the site is built around a user goal, so visitors can move directly into search, hiring, or demand instead of reading through platform explanations first."
           />
           <div className="grid gap-5 lg:grid-cols-3">
             {HOME_VERTICALS.map((vertical) => (
@@ -136,9 +66,27 @@ export default async function HomePage() {
       <section className="section-spacing">
         <div className="page-shell">
           <SectionHeader
-            eyebrow="Operational focus"
-            title="What is active in the platform right now."
-            description="These notes reflect the practical marketplace features that are already available and stable."
+            eyebrow="How people use it"
+            title="Move from search to action without leaving the marketplace."
+            description="The main experience is designed around what visitors usually want next: find options, compare them, contact the right side, and keep returning to the same shortlist or workflow."
+          />
+          <div className="grid gap-5 lg:grid-cols-3">
+            {OPERATOR_WORKFLOWS.map((workflow) => (
+              <article key={workflow.title} className="panel utility-card">
+                <h3 className="utility-card-title">{workflow.title}</h3>
+                <p className="utility-card-copy">{workflow.description}</p>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="section-spacing">
+        <div className="page-shell">
+          <SectionHeader
+            eyebrow="Helpful signals"
+            title="Useful marketplace details at a glance."
+            description="These highlights help visitors understand what they can already do here today without turning the homepage into an internal status dashboard."
           />
           <div className="grid gap-4 lg:grid-cols-3">
             {PHASE_NOTES.map((note) => (
@@ -153,9 +101,9 @@ export default async function HomePage() {
       <section className="section-spacing">
         <div className="page-shell">
           <SectionHeader
-            eyebrow="Next step"
-            title="Go directly into the live marketplace flows."
-            description="Use the core routes below to search inventory, publish listings, create accounts, and manage property demand without depending on homepage-only data blocks."
+            eyebrow="Go directly"
+            title="Start with the area that fits your goal."
+            description="These links take you straight into the main live journeys: property search, posting, account access, and public demand."
           />
           <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-4">
             <Link href="/properties" className="panel utility-card">

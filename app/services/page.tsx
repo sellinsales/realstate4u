@@ -22,8 +22,8 @@ export default function ServicesPage() {
       <div className="page-shell space-y-8">
         <PageIntro
           eyebrow="Property services"
-          title="Hire operational support without mixing service providers into property listings."
-          description="This area is for movers, cleaners, maintenance teams, inspectors, and setup partners. Properties stay for sale or rent; services stay focused on work providers you can hire."
+          title="Find movers, maintenance teams, cleaners, and property support in one place."
+          description="Use this area when you need work done around a property. It keeps service providers easy to find without making the property listing pages harder to browse."
           actions={
             <>
               <Link href="/demand-board" className="btn-primary">
@@ -40,7 +40,7 @@ export default function ServicesPage() {
           {serviceTracks.map((track) => (
             <article key={track.title} className="panel rounded-[2rem] p-6">
               <p className="text-sm font-bold uppercase tracking-[0.16em] text-[var(--brand-green)]">Service track</p>
-              <h2 className="mt-4 text-3xl font-semibold text-[var(--brand-blue)]">{track.title}</h2>
+              <h2 className="mt-4 text-[1.9rem] leading-[1.08] font-semibold text-[var(--brand-blue)]">{track.title}</h2>
               <p className="mt-4 text-base leading-7 text-[var(--muted)]">{track.description}</p>
             </article>
           ))}

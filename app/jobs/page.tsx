@@ -22,8 +22,8 @@ export default function JobsPage() {
       <div className="page-shell space-y-8">
         <PageIntro
           eyebrow="Construction jobs"
-          title="Find project roles, trade work, and construction hiring in a dedicated jobs layer."
-          description="Jobs are role-based opportunities for workers, contractors, and project teams. They stay separate from property listings so visitors can move directly into hiring and staffing workflows."
+          title="Find site roles, trade work, and construction hiring in one dedicated jobs section."
+          description="Use this section when you are hiring or looking for work. It keeps job opportunities separate from property listings so both journeys stay easier to use."
           actions={
             <>
               <Link href="/demand-board" className="btn-primary">
@@ -40,7 +40,7 @@ export default function JobsPage() {
           {jobTracks.map((track) => (
             <article key={track.title} className="panel rounded-[2rem] p-6">
               <p className="text-sm font-bold uppercase tracking-[0.16em] text-[var(--brand-green)]">Hiring track</p>
-              <h2 className="mt-4 text-3xl font-semibold text-[var(--brand-blue)]">{track.title}</h2>
+              <h2 className="mt-4 text-[1.9rem] leading-[1.08] font-semibold text-[var(--brand-blue)]">{track.title}</h2>
               <p className="mt-4 text-base leading-7 text-[var(--muted)]">{track.description}</p>
             </article>
           ))}
