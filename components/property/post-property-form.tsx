@@ -59,7 +59,7 @@ export type PropertyFormInitialData = {
 };
 
 const DRAFT_KEY = "realstate4u-post-property-draft-v2";
-const steps: { id: WizardStep; label: string; helper: string }[] = [
+const baseSteps: { id: WizardStep; label: string; helper: string }[] = [
   { id: "BASICS", label: "Basics", helper: "Market, city, title" },
   { id: "SPECS", label: "Specs", helper: "Price, area, beds" },
   { id: "MEDIA", label: "Media", helper: "Images, video, contact" },
@@ -207,6 +207,15 @@ export function PostPropertyForm({
   draftKey?: string;
 }) {
   const router = useRouter();
+  const isEditing = mode === "edit";
+  const steps = isEditing
+    ? baseSteps.map((item) => (item.id === "REVIEW" ? { ...item, helper: "Check and update" } : item))
+    : baseSteps;
+  const reviewHeading = isEditing ? "Review before updating" : "Review before publishing";
+  const reviewPrompt = isEditing ? "Add a description before updating." : "Add a description before publishing.";
+  const highlightedFieldsMessage = isEditing
+    ? "Please review the highlighted fields before updating."
+    : "Please review the highlighted fields before publishing.";
   const [step, setStep] = useState<WizardStep>("BASICS");
   const [state, setState] = useState<FormState>(() => toFormState(initialData));
   const [images, setImages] = useState<UploadedImage[]>(() => toUploadedImages(initialData));
@@ -399,7 +408,7 @@ export function PostPropertyForm({
         if (!nextErrors[key]) nextErrors[key] = issue.message;
       });
       setErrors(nextErrors);
-      setGeneralError("Please review the highlighted fields before publishing.");
+      setGeneralError(highlightedFieldsMessage);
       return;
     }
 
@@ -437,7 +446,7 @@ export function PostPropertyForm({
         return;
       }
 
-      setMessage(data.message || "Listing submitted.");
+      setMessage(data.message || (isEditing ? "Listing updated." : "Listing submitted."));
     } catch (error) {
       setGeneralError(error instanceof Error ? error.message : "Unable to save listing.");
     } finally {
@@ -686,7 +695,7 @@ export function PostPropertyForm({
 
         {step === "REVIEW" ? (
           <div className="form-section">
-            <p className="form-section-title">Review before publishing</p>
+            <p className="form-section-title">{reviewHeading}</p>
             <div className="grid gap-4 lg:grid-cols-2">
               <div className="rounded-[1.4rem] border border-[var(--brand-line)] bg-white/72 p-4 text-sm leading-7 text-[var(--muted)]">
                 <p className="font-semibold text-[var(--brand-blue)]">Basic details</p>
@@ -712,7 +721,7 @@ export function PostPropertyForm({
             </div>
             <div className="rounded-[1.4rem] border border-[var(--brand-line)] bg-white/72 p-4 text-sm leading-7 text-[var(--muted)]">
               <p className="font-semibold text-[var(--brand-blue)]">Description preview</p>
-              <p className="mt-2">{state.description || "Add a description before publishing."}</p>
+              <p className="mt-2">{state.description || reviewPrompt}</p>
             </div>
           </div>
         ) : null}
@@ -747,7 +756,7 @@ export function PostPropertyForm({
           </div>
         </div>
         <div className="panel rounded-[2rem] p-6">
-          <p className="form-section-title">Publishing notes</p>
+          <p className="form-section-title">{isEditing ? "Update notes" : "Publishing notes"}</p>
           <div className="mt-4 space-y-3 text-sm leading-7 text-[var(--muted)]">
             <p>Every new listing enters pending review before it appears as verified marketplace inventory.</p>
             <p>Primary contact should be a real call number and, for Pakistan, a working WhatsApp number.</p>
