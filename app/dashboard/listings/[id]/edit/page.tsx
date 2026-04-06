@@ -8,7 +8,7 @@ import {
 import { PageIntro } from "@/components/ui/page-intro";
 import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/db/prisma";
-import { normalizeYouTubeUrl } from "@/lib/property-video";
+import { getPropertyVideoMap } from "@/lib/property-video";
 import { getFriendlyUserName } from "@/lib/utils";
 
 type EditListingPageProps = {
@@ -33,7 +33,6 @@ export default async function EditListingPage({ params }: EditListingPageProps) 
           sortOrder: "asc",
         },
       },
-      video: true,
     },
   });
 
@@ -46,6 +45,8 @@ export default async function EditListingPage({ params }: EditListingPageProps) 
   if (!isAdmin && property.createdById !== session.user.id) {
     redirect("/dashboard/listings");
   }
+
+  const videoMap = await getPropertyVideoMap([property.id]);
 
   const initialData: PropertyFormInitialData = {
     id: property.id,
@@ -64,7 +65,7 @@ export default async function EditListingPage({ params }: EditListingPageProps) 
     areaSqm: property.areaSqm ?? undefined,
     contactPhone: property.contactPhone ?? undefined,
     whatsappPhone: property.whatsappPhone ?? undefined,
-    youtubeUrl: normalizeYouTubeUrl(property.video?.youtubeUrl) ?? property.video?.youtubeUrl ?? undefined,
+    youtubeUrl: videoMap.get(property.id),
     firstHand: property.firstHand,
     landlordSelection: property.landlordSelection ?? undefined,
     latitude: property.latitude ?? undefined,
