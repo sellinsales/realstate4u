@@ -1,4 +1,3 @@
-import { getUploadsPublicBase } from "@/lib/upload-storage";
 import { toSlug } from "@/lib/utils";
 
 const allowedRemoteImageHosts = new Set(["images.unsplash.com", "res.cloudinary.com"]);
@@ -11,6 +10,11 @@ export function buildListingAssetName(title: string, index: number) {
 
 function normalizeBasePath(value: string) {
   return value.replace(/\/$/, "");
+}
+
+function getUploadsPublicBase() {
+  const customBase = process.env.LOCAL_UPLOADS_PUBLIC_BASE?.trim();
+  return customBase ? customBase.replace(/\/$/, "") : "/uploads";
 }
 
 function getUploadsBasePath() {
