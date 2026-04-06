@@ -85,6 +85,7 @@ export const primaryLinks = [
   { href: "/properties", label: "Property Search" },
   { href: "/smart-match", label: "AI Match" },
   { href: "/house-designs", label: "House Plans" },
+  { href: "/insights", label: "Insights" },
   { href: "/demand-board", label: "Demand Board" },
   { href: "/services", label: "Home Services" },
   { href: "/jobs", label: "Construction Jobs" },

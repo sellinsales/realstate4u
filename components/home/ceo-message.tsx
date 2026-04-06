@@ -41,8 +41,8 @@ export function CeoMessage() {
             </div>
             <div className="rounded-[1.25rem] border border-[var(--brand-line)] bg-white/72 p-4 text-sm leading-7 text-[var(--muted)]">
               <p>
-                “A strong property marketplace should help people discover the right opportunity with clarity, trust,
-                and a smoother path from search to response.”
+                &ldquo;A strong property marketplace should help people discover the right opportunity with clarity,
+                trust, and a smoother path from search to response.&rdquo;
               </p>
               <p className="mt-3 font-semibold text-[var(--brand-blue)]">Asif Nazeer</p>
               <p className="text-xs font-semibold uppercase tracking-[0.14em] text-[var(--muted)]">CEO, RealState4U</p>
