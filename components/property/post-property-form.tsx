@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
+import { PAKISTAN_CITIES, SWEDEN_CITIES } from "@/lib/city-options";
 import { buildListingAssetName } from "@/lib/media";
 import { propertyFormSchema } from "@/lib/validators";
 
@@ -42,7 +43,7 @@ const steps: { id: WizardStep; label: string; helper: string }[] = [
 const marketProfiles = {
   PAKISTAN: {
     country: "Pakistan",
-    cities: ["Lahore", "Karachi", "Islamabad", "Rawalpindi", "Multan"],
+    cities: [...PAKISTAN_CITIES],
     pricePresets: [25000000, 45000000, 75000000, 125000000],
     plotPresets: [
       { label: "5 marla", sqm: 113 },
@@ -54,7 +55,7 @@ const marketProfiles = {
   },
   SWEDEN: {
     country: "Sweden",
-    cities: ["Stockholm", "Gothenburg", "Malmo", "Uppsala", "Vasteras"],
+    cities: [...SWEDEN_CITIES],
     pricePresets: [8500, 12500, 24000, 4200000],
     plotPresets: [
       { label: "Apartment", sqm: 72 },

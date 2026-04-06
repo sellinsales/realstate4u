@@ -1,4 +1,5 @@
 import type { AdminSnapshot, DashboardSnapshot, MarketCode, PropertyCardData } from "@/lib/types";
+import { PAKISTAN_CITIES, SWEDEN_CITIES } from "@/lib/city-options";
 
 export const DEMO_CREDENTIALS = [
   {
@@ -204,7 +205,7 @@ export const OPERATOR_WORKFLOWS = [
 
 export const FILTER_OPTIONS = {
   countries: ["Sweden", "Germany", "Pakistan"],
-  cities: ["Stockholm", "Gothenburg", "Berlin", "Lahore"],
+  cities: [...SWEDEN_CITIES, "Berlin", "Hamburg", "Munich", "Amsterdam", "Lisbon", ...PAKISTAN_CITIES],
   listingTypes: ["BUY", "RENT"],
   propertyTypes: ["APARTMENT", "HOUSE", "VILLA", "ROOM"],
 };
