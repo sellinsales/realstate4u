@@ -36,7 +36,10 @@ export interface PropertyFilters {
   city?: string;
   listingType?: string;
   propertyType?: string;
+  minPrice?: number;
   maxPrice?: number;
+  minArea?: number;
+  bedrooms?: number;
   marketCode?: MarketCode;
 }
 

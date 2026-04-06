@@ -3,146 +3,148 @@
 import Link from "next/link";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { NavIcon } from "@/components/ui/nav-icon";
+import { FILTER_OPTIONS } from "@/lib/demo-data";
+import { HOME_QUICK_LINKS } from "@/lib/marketplace-home-data";
 import { cn } from "@/lib/utils";
+
+type SearchMode = "BUY" | "RENT" | "PROJECTS";
+
+const areaPresets = [
+  { label: "Any Area", value: "" },
+  { label: "5 Marla", value: "113" },
+  { label: "7 Marla", value: "158" },
+  { label: "10 Marla", value: "225" },
+  { label: "1 Kanal", value: "450" },
+] as const;
+
+const pricePresets = [
+  { label: "Any Price", value: "" },
+  { label: "Up to 5M", value: "5000000" },
+  { label: "Up to 10M", value: "10000000" },
+  { label: "Up to 25M", value: "25000000" },
+  { label: "Up to 50M", value: "50000000" },
+] as const;
+
+const bedOptions = ["", "1", "2", "3", "4", "5"] as const;
 
 export function HomeSearchHero() {
   const router = useRouter();
-  const [marketCode, setMarketCode] = useState("ANY");
-  const [listingType, setListingType] = useState("BUY");
-  const [propertyType, setPropertyType] = useState("ANY");
-  const [query, setQuery] = useState("");
+  const [mode, setMode] = useState<SearchMode>("BUY");
+  const [city, setCity] = useState("");
+  const [propertyType, setPropertyType] = useState("");
+  const [maxPrice, setMaxPrice] = useState("");
+  const [minArea, setMinArea] = useState("");
+  const [bedrooms, setBedrooms] = useState("");
 
   function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
+
+    if (mode === "PROJECTS") {
+      router.push("/projects");
+      return;
+    }
+
     const params = new URLSearchParams();
+    params.set("listingType", mode);
 
-    if (marketCode !== "ANY") {
-      params.set("marketCode", marketCode);
+    if (city) {
+      params.set("city", city);
     }
-
-    if (listingType !== "ANY") {
-      params.set("listingType", listingType);
-    }
-
-    if (propertyType !== "ANY") {
+    if (propertyType) {
       params.set("propertyType", propertyType);
     }
-
-    if (query.trim()) {
-      params.set("city", query.trim());
+    if (maxPrice) {
+      params.set("maxPrice", maxPrice);
+    }
+    if (minArea) {
+      params.set("minArea", minArea);
+    }
+    if (bedrooms) {
+      params.set("bedrooms", bedrooms);
     }
 
-    router.push(params.size ? `/properties?${params.toString()}` : "/properties");
+    router.push(`/properties?${params.toString()}`);
   }
 
   return (
-    <div className="hero-search-shell">
-      <div className="panel hero-search-card">
-        <p className="text-sm font-bold uppercase tracking-[0.16em] text-[var(--brand-green)]">
-          Search listings
-        </p>
-        <h2 className="utility-card-title mt-3">Find homes, plots, rentals, and commercial property fast.</h2>
-        <p className="utility-card-copy">Start with market, city, property type, and buy or rent intent. Everything here leads straight into live listings.</p>
-
-        <div className="mt-5 flex flex-wrap gap-2">
+    <section className="market-hero panel">
+      <div className="text-center">
+        <h1 className="market-hero-title">Find your next property</h1>
+        <div className="market-hero-tabs">
           {[
-            { value: "BUY", label: "Buy", icon: "search" as const },
-            { value: "RENT", label: "Rent", icon: "queue" as const },
+            { value: "BUY", label: "Buy" },
+            { value: "RENT", label: "Rent" },
+            { value: "PROJECTS", label: "Projects" },
           ].map((option) => (
             <button
               key={option.value}
               type="button"
-              className={cn("hero-search-chip", listingType === option.value && "hero-search-chip-active")}
-              onClick={() => setListingType(option.value)}
+              className={cn("market-hero-tab", mode === option.value && "market-hero-tab-active")}
+              onClick={() => setMode(option.value as SearchMode)}
             >
-              <NavIcon name={option.icon} />
-              <span>{option.label}</span>
+              {option.label}
             </button>
           ))}
         </div>
-
-        <form onSubmit={handleSubmit} className="mt-5 grid gap-3">
-          <div className="grid gap-3 md:grid-cols-3">
-            <div>
-              <label htmlFor="hero-market" className="field-label">
-                Market
-              </label>
-              <select
-                id="hero-market"
-                className="field"
-                value={marketCode}
-                onChange={(event) => setMarketCode(event.target.value)}
-              >
-                <option value="ANY">All markets</option>
-                <option value="PAKISTAN">Pakistan</option>
-                <option value="SWEDEN">Sweden</option>
-                <option value="EU">Europe</option>
-              </select>
-            </div>
-
-            <div>
-              <label htmlFor="hero-property-type" className="field-label">
-                Property type
-              </label>
-              <select
-                id="hero-property-type"
-                className="field"
-                value={propertyType}
-                onChange={(event) => setPropertyType(event.target.value)}
-              >
-                <option value="ANY">All property types</option>
-                <option value="HOUSE">House</option>
-                <option value="APARTMENT">Apartment</option>
-                <option value="VILLA">Villa</option>
-                <option value="PLOT">Plot</option>
-                <option value="OFFICE">Office</option>
-                <option value="SHOP">Shop</option>
-                <option value="ROOM">Room</option>
-              </select>
-            </div>
-
-            <div>
-              <label htmlFor="hero-open-route" className="field-label">
-                Quick route
-              </label>
-              <select
-                id="hero-open-route"
-                className="field"
-                value={listingType}
-                onChange={(event) => setListingType(event.target.value)}
-              >
-                <option value="BUY">For sale</option>
-                <option value="RENT">For rent</option>
-              </select>
-            </div>
-          </div>
-
-          <div>
-            <label htmlFor="hero-query" className="field-label">
-              City or location
-            </label>
-            <input
-              id="hero-query"
-              className="field"
-              value={query}
-              placeholder="Lahore, Karachi, Stockholm, Gothenburg"
-              onChange={(event) => setQuery(event.target.value)}
-            />
-          </div>
-
-          <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
-            <div className="flex flex-wrap gap-2 text-sm text-[var(--muted)]">
-              <Link href="/post-property" className="pill">Post property</Link>
-              <Link href="/smart-match" className="pill">Smart Match</Link>
-              <Link href="/queue-housing" className="pill">Rental queue</Link>
-            </div>
-            <button type="submit" className="btn-primary">
-              Search property
-            </button>
-          </div>
-        </form>
       </div>
-    </div>
+
+      <form onSubmit={handleSubmit} className="market-search-box">
+        <select className="market-select" value={city} onChange={(event) => setCity(event.target.value)}>
+          <option value="">City</option>
+          {FILTER_OPTIONS.cities.map((option) => (
+            <option key={option} value={option}>
+              {option}
+            </option>
+          ))}
+        </select>
+
+        <select className="market-select" value={propertyType} onChange={(event) => setPropertyType(event.target.value)}>
+          <option value="">Property Type</option>
+          {FILTER_OPTIONS.propertyTypes.map((option) => (
+            <option key={option} value={option}>
+              {option.charAt(0) + option.slice(1).toLowerCase()}
+            </option>
+          ))}
+        </select>
+
+        <select className="market-select" value={maxPrice} onChange={(event) => setMaxPrice(event.target.value)}>
+          {pricePresets.map((option) => (
+            <option key={option.label} value={option.value}>
+              {option.label}
+            </option>
+          ))}
+        </select>
+
+        <select className="market-select" value={minArea} onChange={(event) => setMinArea(event.target.value)}>
+          {areaPresets.map((option) => (
+            <option key={option.label} value={option.value}>
+              {option.label}
+            </option>
+          ))}
+        </select>
+
+        <select className="market-select" value={bedrooms} onChange={(event) => setBedrooms(event.target.value)}>
+          <option value="">Beds</option>
+          {bedOptions.slice(1).map((option) => (
+            <option key={option} value={option}>
+              {option}+ Beds
+            </option>
+          ))}
+        </select>
+
+        <button type="submit" className="market-search-button">
+          Search
+        </button>
+      </form>
+
+      <div className="market-quick-links">
+        <span className="market-quick-label">Quick links:</span>
+        {HOME_QUICK_LINKS.map((item) => (
+          <Link key={item.href} href={item.href} className="market-quick-chip">
+            {item.label}
+          </Link>
+        ))}
+      </div>
+    </section>
   );
 }

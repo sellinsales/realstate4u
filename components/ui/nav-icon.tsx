@@ -8,6 +8,15 @@ type NavIconName =
   | "queue"
   | "list"
   | "plan"
+  | "project"
+  | "guide"
+  | "commercial"
+  | "plot"
+  | "apartment"
+  | "villa"
+  | "farm"
+  | "map"
+  | "chart"
   | "arrow";
 
 export function NavIcon({ name, className = "h-4 w-4" }: { name: NavIconName; className?: string }) {
@@ -98,6 +107,91 @@ export function NavIcon({ name, className = "h-4 w-4" }: { name: NavIconName; cl
           <path d="M12 4v16" />
           <path d="M4 10h8" />
           <path d="M12 14h8" />
+        </svg>
+      );
+    case "project":
+      return (
+        <svg {...shared}>
+          <path d="M4 20V8l5-3 5 3v12" />
+          <path d="M14 20V4l6 3v13" />
+          <path d="M8 11h1" />
+          <path d="M8 15h1" />
+          <path d="M17 11h1" />
+          <path d="M17 15h1" />
+        </svg>
+      );
+    case "guide":
+      return (
+        <svg {...shared}>
+          <path d="M6 4.5h9a3 3 0 0 1 3 3V19H9a3 3 0 0 0-3 3Z" />
+          <path d="M6 4.5v17" />
+          <path d="M9.5 8.5h5" />
+          <path d="M9.5 12h5" />
+        </svg>
+      );
+    case "commercial":
+      return (
+        <svg {...shared}>
+          <path d="M5 20V7l7-3 7 3v13" />
+          <path d="M9 20v-4h6v4" />
+          <path d="M9 9h.01" />
+          <path d="M15 9h.01" />
+          <path d="M9 13h.01" />
+          <path d="M15 13h.01" />
+        </svg>
+      );
+    case "plot":
+      return (
+        <svg {...shared}>
+          <path d="M4 6h16v12H4z" />
+          <path d="M8 6v12" />
+          <path d="M4 12h16" />
+          <path d="m4 6 16 12" />
+        </svg>
+      );
+    case "apartment":
+      return (
+        <svg {...shared}>
+          <rect x="5" y="4" width="14" height="16" rx="2" />
+          <path d="M9 8h.01" />
+          <path d="M15 8h.01" />
+          <path d="M9 12h.01" />
+          <path d="M15 12h.01" />
+          <path d="M11 20v-3h2v3" />
+        </svg>
+      );
+    case "villa":
+      return (
+        <svg {...shared}>
+          <path d="M3 11 12 4l9 7" />
+          <path d="M5 10.5V20h14v-9.5" />
+          <path d="M9 20v-5h6v5" />
+        </svg>
+      );
+    case "farm":
+      return (
+        <svg {...shared}>
+          <path d="M4 20h16" />
+          <path d="M6 20v-8l5-3 5 3v8" />
+          <path d="M15 7c0-1.7 1.3-3 3-3" />
+          <path d="M18 4v5" />
+        </svg>
+      );
+    case "map":
+      return (
+        <svg {...shared}>
+          <path d="M9 5 15 3l5 2v14l-5-2-6 2-5-2V3z" />
+          <path d="M9 5v14" />
+          <path d="M15 3v14" />
+        </svg>
+      );
+    case "chart":
+      return (
+        <svg {...shared}>
+          <path d="M4 20h16" />
+          <path d="M7 16v-4" />
+          <path d="M12 16V8" />
+          <path d="M17 16v-7" />
         </svg>
       );
     case "arrow":

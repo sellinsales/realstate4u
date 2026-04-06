@@ -44,66 +44,27 @@ export function MobileMenu({ isAuthenticated, isAdmin }: MobileMenuProps) {
 
           <div className="mobile-menu-panel">
             <div className="space-y-2">
-              <p className="text-xs font-bold uppercase tracking-[0.18em] text-[var(--muted)]">
-                Navigation
-              </p>
-              {mainNavItems.map((item) =>
-                item.href ? (
-                  <Link
-                    key={item.href}
-                    href={item.href}
-                    onClick={closeMenu}
-                    className={cn(
-                      "mobile-nav-link",
-                      (item.href === "/"
-                        ? pathname === item.href
-                        : pathname === item.href || pathname.startsWith(`${item.href}/`)) &&
-                        "mobile-nav-link-active",
-                    )}
-                  >
-                    <span className="flex items-center gap-3">
-                      <NavIcon name={item.icon} />
-                      <span>{item.label}</span>
-                    </span>
-                  </Link>
-                ) : (
-                  <div key={item.label} className="space-y-2 rounded-[1.2rem] border border-[var(--brand-line)] bg-white/70 p-3">
-                    <p className="text-xs font-bold uppercase tracking-[0.16em] text-[var(--brand-green)]">
-                      {item.label}
-                    </p>
-                    {item.children.map((child) => {
-                      const childActive = pathname === child.href || pathname.startsWith(`${child.href}/`);
-
-                      return (
-                        <Link
-                          key={child.href}
-                          href={child.href}
-                          onClick={closeMenu}
-                          className={cn("mobile-nav-link", childActive && "mobile-nav-link-active")}
-                        >
-                          <span className="flex items-start gap-3">
-                            <span className="mt-0.5">
-                              <NavIcon name={child.icon} />
-                            </span>
-                            <span className="min-w-0">
-                              <span className="block">{child.label}</span>
-                              <span className="mt-1 block text-xs font-medium leading-5 text-[var(--muted)]">
-                                {child.description}
-                              </span>
-                            </span>
-                          </span>
-                        </Link>
-                      );
-                    })}
-                  </div>
-                ),
-              )}
+              <p className="text-xs font-bold uppercase tracking-[0.18em] text-[var(--muted)]">Navigation</p>
+              {mainNavItems.map((item) => (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  onClick={closeMenu}
+                  className={cn(
+                    "mobile-nav-link",
+                    (pathname === item.href || pathname.startsWith(`${item.href}/`)) && "mobile-nav-link-active",
+                  )}
+                >
+                  <span className="flex items-center gap-3">
+                    <NavIcon name={item.icon} />
+                    <span>{item.label}</span>
+                  </span>
+                </Link>
+              ))}
             </div>
 
             <div className="mt-6 space-y-3">
-              <p className="text-xs font-bold uppercase tracking-[0.18em] text-[var(--muted)]">
-                Account
-              </p>
+              <p className="text-xs font-bold uppercase tracking-[0.18em] text-[var(--muted)]">Account</p>
               {isAuthenticated ? (
                 <>
                   <Link href="/dashboard" onClick={closeMenu} className="btn-secondary w-full">
@@ -125,7 +86,7 @@ export function MobileMenu({ isAuthenticated, isAdmin }: MobileMenuProps) {
               ) : (
                 <>
                   <Link href="/login" onClick={closeMenu} className="btn-secondary w-full">
-                    Log in
+                    Sign In
                   </Link>
                   <Link href="/register" onClick={closeMenu} className="btn-primary w-full">
                     Create account

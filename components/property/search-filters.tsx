@@ -16,11 +16,20 @@ export function SearchFilters({ filters }: { filters: PropertyFilters }) {
     if (filters.propertyType) {
       params.set("propertyType", filters.propertyType);
     }
+    if (filters.minPrice) {
+      params.set("minPrice", String(filters.minPrice));
+    }
     if (filters.marketCode) {
       params.set("marketCode", filters.marketCode);
     }
     if (filters.maxPrice) {
       params.set("maxPrice", String(filters.maxPrice));
+    }
+    if (filters.minArea) {
+      params.set("minArea", String(filters.minArea));
+    }
+    if (filters.bedrooms) {
+      params.set("bedrooms", String(filters.bedrooms));
     }
     if (listingType) {
       params.set("listingType", listingType);
@@ -34,7 +43,7 @@ export function SearchFilters({ filters }: { filters: PropertyFilters }) {
   const listingTypeLabel = (value: string) => (value === "BUY" ? "For sale" : "For rent");
 
   return (
-    <form className="panel grid gap-4 rounded-[2rem] p-5 lg:grid-cols-6">
+    <form className="panel grid gap-4 rounded-[2rem] p-5 lg:grid-cols-8">
       <div className="flex flex-col gap-3 border-b border-[var(--brand-line)] pb-4 lg:col-span-6 md:flex-row md:items-end md:justify-between">
         <div className="space-y-3">
           <p className="text-sm font-bold uppercase tracking-[0.16em] text-[var(--brand-green)]">
@@ -141,6 +150,20 @@ export function SearchFilters({ filters }: { filters: PropertyFilters }) {
         </select>
       </div>
       <div>
+        <label htmlFor="minPrice" className="field-label">
+          Min price
+        </label>
+        <input
+          id="minPrice"
+          name="minPrice"
+          type="number"
+          min={0}
+          defaultValue={filters.minPrice || ""}
+          placeholder="No minimum"
+          className="field"
+        />
+      </div>
+      <div>
         <label htmlFor="maxPrice" className="field-label">
           Max price
         </label>
@@ -154,7 +177,34 @@ export function SearchFilters({ filters }: { filters: PropertyFilters }) {
           className="field"
         />
       </div>
-      <div className="flex flex-col gap-3 sm:flex-row lg:col-span-6 lg:justify-end">
+      <div>
+        <label htmlFor="minArea" className="field-label">
+          Min area
+        </label>
+        <input
+          id="minArea"
+          name="minArea"
+          type="number"
+          min={0}
+          defaultValue={filters.minArea || ""}
+          placeholder="Any size"
+          className="field"
+        />
+      </div>
+      <div>
+        <label htmlFor="bedrooms" className="field-label">
+          Beds
+        </label>
+        <select id="bedrooms" name="bedrooms" defaultValue={filters.bedrooms || ""} className="field">
+          <option value="">Any</option>
+          {[1, 2, 3, 4, 5].map((option) => (
+            <option key={option} value={option}>
+              {option}+ beds
+            </option>
+          ))}
+        </select>
+      </div>
+      <div className="flex flex-col gap-3 sm:flex-row lg:col-span-8 lg:justify-end">
         <Link href="/properties" className="btn-secondary">
           Reset filters
         </Link>

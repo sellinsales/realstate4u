@@ -1,98 +1,51 @@
 import type { Route } from "next";
 
-export type NavChildItem = {
+export type NavIconName =
+  | "home"
+  | "search"
+  | "spark"
+  | "demand"
+  | "service"
+  | "jobs"
+  | "queue"
+  | "list"
+  | "plan"
+  | "project"
+  | "guide"
+  | "commercial"
+  | "plot"
+  | "apartment"
+  | "villa"
+  | "farm"
+  | "map"
+  | "chart";
+
+export type NavItem = {
   href: Route;
   label: string;
-  description: string;
-  icon: "search" | "spark" | "queue" | "list" | "service" | "jobs" | "plan";
+  icon: NavIconName;
 };
 
-export type NavItem =
-  | {
-      href: Route;
-      label: string;
-      icon: "home" | "demand" | "spark";
-      children?: undefined;
-    }
-  | {
-      href?: undefined;
-      label: string;
-      icon: "search" | "service";
-      children: NavChildItem[];
-    };
-
 export const mainNavItems: readonly NavItem[] = [
-  { href: "/", label: "Home", icon: "home" },
-  {
-    label: "Search",
-    icon: "search",
-    children: [
-      {
-        href: "/properties",
-        label: "Property Search",
-        description: "Browse homes and commercial listings for sale or rent.",
-        icon: "search",
-      },
-      {
-        href: "/smart-match",
-        label: "AI Match",
-        description: "Get ranked property picks based on your brief and budget.",
-        icon: "spark",
-      },
-      {
-        href: "/house-designs",
-        label: "House Plans",
-        description: "Explore free concept layouts for marla, kanal, and farmhouse homes.",
-        icon: "plan",
-      },
-      {
-        href: "/queue-housing",
-        label: "Rental Queue",
-        description: "Review queue-ready rental opportunities and application flow.",
-        icon: "queue",
-      },
-      {
-        href: "/post-property",
-        label: "Post Property",
-        description: "Publish a listing and move it into the live marketplace.",
-        icon: "list",
-      },
-    ],
-  },
-  { href: "/demand-board", label: "Demand Board", icon: "demand" },
-  {
-    label: "Services",
-    icon: "service",
-    children: [
-      {
-        href: "/services",
-        label: "Home Services",
-        description: "Find movers, maintenance teams, and property support vendors.",
-        icon: "service",
-      },
-      {
-        href: "/jobs",
-        label: "Construction Jobs",
-        description: "Explore hiring needs, site roles, and construction work.",
-        icon: "jobs",
-      },
-    ],
-  },
+  { href: "/buy", label: "Buy", icon: "search" },
+  { href: "/rent", label: "Rent", icon: "queue" },
+  { href: "/projects", label: "Projects", icon: "project" },
+  { href: "/area-guides", label: "Area Guides", icon: "guide" },
+  { href: "/commercial", label: "Commercial", icon: "commercial" },
+  { href: "/plot-finder", label: "Plot Finder", icon: "plot" },
 ] as const;
 
 export const primaryLinks = [
-  { href: "/", label: "Home" },
-  { href: "/properties", label: "Property Search" },
-  { href: "/properties?listingType=BUY", label: "Buy Property" },
-  { href: "/properties?listingType=RENT", label: "Rent Property" },
-  { href: "/post-property", label: "Post Property" },
-  { href: "/smart-match", label: "Smart Match" },
-  { href: "/queue-housing", label: "Rental Queue" },
-  { href: "/house-designs", label: "House Plans" },
+  { href: "/buy", label: "Buy" },
+  { href: "/rent", label: "Rent" },
+  { href: "/projects", label: "Projects" },
+  { href: "/area-guides", label: "Area Guides" },
+  { href: "/commercial", label: "Commercial" },
+  { href: "/plot-finder", label: "Plot Finder" },
 ] as const;
 
 export const secondaryLinks = [
-  { href: "/post-property", label: "Post property" },
-  { href: "/login", label: "Log in" },
+  { href: "/post-property", label: "Post Listing" },
+  { href: "/login", label: "Sign In" },
   { href: "/register", label: "Create account" },
 ] as const;

@@ -1,128 +1,115 @@
 import Link from "next/link";
-import { HomeActionLauncher } from "@/components/home/home-action-launcher";
 import { HomeSearchHero } from "@/components/home/home-search-hero";
-import { PropertyCard } from "@/components/property/property-card";
-import { SectionHeader } from "@/components/ui/section-header";
-import { getFeaturedProperties } from "@/lib/data";
-
-const marketRoutes = [
-  {
-    title: "Pakistan sale listings",
-    description: "Open active homes, plots, and villas for sale with call and WhatsApp-ready contact.",
-    href: "/properties?marketCode=PAKISTAN&listingType=BUY",
-  },
-  {
-    title: "Sweden rentals",
-    description: "Browse queue-aware apartments and rental homes in Stockholm, Gothenburg, and more.",
-    href: "/properties?marketCode=SWEDEN&listingType=RENT",
-  },
-  {
-    title: "EU buy and rent",
-    description: "Compare family flats, offices, and cross-market inventory inside one cleaner search route.",
-    href: "/properties?marketCode=EU",
-  },
-] as const;
-
-const sellerActions = [
-  {
-    title: "Post a sale listing",
-    description: "Use the guided wizard with presets, uploads, and validation instead of filling a raw form.",
-    href: "/post-property",
-  },
-  {
-    title: "Get matched faster",
-    description: "Use Smart Match when you want ranked property options from budget, city, and property goals.",
-    href: "/smart-match",
-  },
-  {
-    title: "Register as agent or landlord",
-    description: "Create a seller account, get admin approval, then publish live sale and rent inventory.",
-    href: "/register",
-  },
-] as const;
+import {
+  FeaturedListingCard,
+  GuideShortcutCard,
+  IconShortcutCard,
+  ImageTileCard,
+} from "@/components/home/marketplace-cards";
+import { getProperties } from "@/lib/data";
+import {
+  CITY_SHORTCUTS,
+  GUIDE_SHORTCUTS,
+  POPULAR_AREAS,
+  PROJECT_OPPORTUNITIES,
+  PROPERTY_TYPE_SHORTCUTS,
+} from "@/lib/marketplace-home-data";
 
 export default async function HomePage() {
-  const featuredProperties = await getFeaturedProperties();
+  const featuredListings = (await getProperties()).slice(0, 8);
 
   return (
-    <main>
-      <section className="section-spacing relative overflow-hidden">
-        <div className="hero-grid absolute inset-0 opacity-75" aria-hidden="true" />
-        <div className="page-shell relative space-y-6">
-          <div className="panel rounded-[2rem] p-6 md:p-7">
-            <div className="max-w-4xl">
-              <span className="eyebrow">Property marketplace</span>
-              <h1 className="mt-4 max-w-5xl text-[clamp(1.85rem,3.3vw,2.85rem)] leading-[1.08] font-semibold text-[var(--brand-blue)]">
-                Search, buy, rent, and list property without getting lost in extra sections first.
-              </h1>
-              <p className="mt-4 max-w-3xl text-[0.97rem] leading-8 text-[var(--muted)]">
-                Start from live property search, sale listings, rental listings, or seller actions right away.
-              </p>
-            </div>
-            <div className="mt-6">
-              <HomeActionLauncher />
-            </div>
-          </div>
+    <main className="section-spacing">
+      <div className="page-shell space-y-8">
+        <HomeSearchHero />
 
-          <HomeSearchHero />
-        </div>
-      </section>
-
-      <section className="section-spacing">
-        <div className="page-shell">
-          <SectionHeader
-            eyebrow="Featured listings"
-            title="Open current property listings from the live marketplace."
-            description="Start with a few strong listings, then move into full search when you want more options."
-          />
-          <div className="grid gap-5 lg:grid-cols-3">
-            {featuredProperties.map((property) => (
-              <PropertyCard key={property.id} property={property} />
-            ))}
-          </div>
-          <div className="mt-6 flex justify-end">
-            <Link href="/properties" className="btn-primary">
-              View all listings
+        <section className="market-section">
+          <div className="market-section-head">
+            <h2 className="market-section-title">Featured Properties</h2>
+            <Link href="/properties" className="market-inline-link">
+              View All Listings
             </Link>
           </div>
-        </div>
-      </section>
-
-      <section className="section-spacing">
-        <div className="page-shell">
-          <SectionHeader
-            eyebrow="Market routes"
-            title="Jump straight into the market you want."
-            description="Open a market-specific route instead of re-filtering from scratch every time."
-          />
-          <div className="grid gap-5 lg:grid-cols-3">
-            {marketRoutes.map((route) => (
-              <Link key={route.href} href={route.href} className="panel utility-card">
-                <h3 className="utility-card-title">{route.title}</h3>
-                <p className="utility-card-copy">{route.description}</p>
-              </Link>
+          <div className="market-listing-grid">
+            {featuredListings.map((property) => (
+              <FeaturedListingCard key={property.id} property={property} />
             ))}
           </div>
-        </div>
-      </section>
+        </section>
 
-      <section className="section-spacing">
-        <div className="page-shell">
-          <SectionHeader
-            eyebrow="Seller tools"
-            title="Everything needed to move listings into the marketplace."
-            description="Post inventory, get approval, and help buyers move from search to contact without friction."
-          />
-          <div className="grid gap-5 lg:grid-cols-3">
-            {sellerActions.map((action) => (
-              <Link key={action.href} href={action.href} className="panel utility-card">
-                <h3 className="utility-card-title">{action.title}</h3>
-                <p className="utility-card-copy">{action.description}</p>
-              </Link>
+        <section className="market-section">
+          <div className="market-section-head">
+            <h2 className="market-section-title">Popular Areas</h2>
+          </div>
+          <div className="market-tile-grid market-tile-grid-six">
+            {POPULAR_AREAS.map((area) => (
+              <ImageTileCard key={area.title} {...area} />
             ))}
           </div>
-        </div>
-      </section>
+        </section>
+
+        <section className="market-section">
+          <div className="market-section-head">
+            <h2 className="market-section-title">New Projects &amp; Investment Opportunities</h2>
+          </div>
+          <div className="market-tile-grid market-tile-grid-four">
+            {PROJECT_OPPORTUNITIES.map((project) => (
+              <ImageTileCard key={project.title} {...project} />
+            ))}
+          </div>
+        </section>
+
+        <section className="market-section">
+          <div className="market-section-head">
+            <h2 className="market-section-title">Explore by Property Type</h2>
+          </div>
+          <div className="market-icon-grid">
+            {PROPERTY_TYPE_SHORTCUTS.map((item) => (
+              <IconShortcutCard key={item.label} {...item} />
+            ))}
+          </div>
+        </section>
+
+        <section className="market-section">
+          <div className="market-section-head">
+            <h2 className="market-section-title">Explore by City</h2>
+          </div>
+          <div className="market-tile-grid market-tile-grid-six">
+            {CITY_SHORTCUTS.map((city) => (
+              <ImageTileCard key={city.title} {...city} />
+            ))}
+          </div>
+        </section>
+
+        <section className="market-section">
+          <div className="market-section-head">
+            <h2 className="market-section-title">Area Guides / Price Trends / Society Maps</h2>
+          </div>
+          <div className="market-guide-grid">
+            {GUIDE_SHORTCUTS.map((guide) => (
+              <GuideShortcutCard key={guide.title} {...guide} />
+            ))}
+          </div>
+        </section>
+
+        <section className="market-cta-panel">
+          <div>
+            <p className="market-cta-label">Investment CTA</p>
+            <h2 className="market-cta-title">Looking for the best investment opportunity?</h2>
+          </div>
+          <div className="market-cta-actions">
+            <Link href="/projects" className="market-cta-link">
+              Browse Projects
+            </Link>
+            <Link href="/plot-finder" className="market-cta-link">
+              Explore Plots
+            </Link>
+            <Link href="/area-guides" className="market-cta-link">
+              See Top Areas
+            </Link>
+          </div>
+        </section>
+      </div>
     </main>
   );
 }

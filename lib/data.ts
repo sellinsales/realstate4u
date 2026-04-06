@@ -73,18 +73,24 @@ function filterProperties(properties: PropertyCardData[], filters: PropertyFilte
     const matchesPropertyType = filters.propertyType
       ? property.propertyType === filters.propertyType
       : true;
+    const matchesMinPrice = filters.minPrice ? property.price >= filters.minPrice : true;
     const matchesMarket = filters.marketCode
       ? property.marketCode === filters.marketCode
       : true;
     const matchesPrice = filters.maxPrice ? property.price <= filters.maxPrice : true;
+    const matchesArea = filters.minArea ? (property.areaSqm ?? 0) >= filters.minArea : true;
+    const matchesBedrooms = filters.bedrooms ? (property.bedrooms ?? 0) >= filters.bedrooms : true;
 
     return (
       matchesCountry &&
       matchesCity &&
       matchesListingType &&
       matchesPropertyType &&
+      matchesMinPrice &&
       matchesMarket &&
-      matchesPrice
+      matchesPrice &&
+      matchesArea &&
+      matchesBedrooms
     );
   });
 }
@@ -106,9 +112,20 @@ export async function getProperties(filters: PropertyFilters = {}) {
           ? (filters.propertyType as PropertyType)
           : undefined,
         marketCode: filters.marketCode || undefined,
-        price: filters.maxPrice
+        price: filters.minPrice || filters.maxPrice
           ? {
-              lte: filters.maxPrice,
+              ...(filters.minPrice ? { gte: filters.minPrice } : {}),
+              ...(filters.maxPrice ? { lte: filters.maxPrice } : {}),
+            }
+          : undefined,
+        areaSqm: filters.minArea
+          ? {
+              gte: filters.minArea,
+            }
+          : undefined,
+        bedrooms: filters.bedrooms
+          ? {
+              gte: filters.bedrooms,
             }
           : undefined,
       },

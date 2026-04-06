@@ -23,8 +23,17 @@ export default async function PropertiesPage({ searchParams }: PropertiesPagePro
     listingType: readSearchParam(params.listingType),
     propertyType: readSearchParam(params.propertyType),
     marketCode: readSearchParam(params.marketCode) as PropertyFilters["marketCode"],
+    minPrice: readSearchParam(params.minPrice)
+      ? Number(readSearchParam(params.minPrice))
+      : undefined,
     maxPrice: readSearchParam(params.maxPrice)
       ? Number(readSearchParam(params.maxPrice))
+      : undefined,
+    minArea: readSearchParam(params.minArea)
+      ? Number(readSearchParam(params.minArea))
+      : undefined,
+    bedrooms: readSearchParam(params.bedrooms)
+      ? Number(readSearchParam(params.bedrooms))
       : undefined,
   };
 
