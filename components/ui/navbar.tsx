@@ -8,11 +8,13 @@ import { LogoutButton } from "@/components/ui/logout-button";
 import { MobileMenu } from "@/components/ui/mobile-menu";
 import { MARKET_FLASHES } from "@/lib/community-data";
 import { detectPreferredMarket, prioritizeByMarket } from "@/lib/market-personalization";
+import { getFriendlyUserName } from "@/lib/utils";
 
 export async function Navbar() {
   const headerStore = await headers();
   const session = await auth();
   const isAdmin = session?.user.role === "ADMIN";
+  const friendlyName = session?.user ? getFriendlyUserName(session.user.name, session.user.email) : null;
   const preferredMarket = detectPreferredMarket(headerStore);
   const orderedFlashes = prioritizeByMarket(MARKET_FLASHES, preferredMarket, (item) => item.marketCode);
 
@@ -54,7 +56,7 @@ export async function Navbar() {
                 </Link>
               ) : null}
               <div className="hidden rounded-full border border-[var(--brand-line)] bg-white/70 px-4 py-2 text-sm font-semibold text-[var(--brand-blue)] xl:block">
-                {session.user.email}
+                Welcome, {friendlyName}
               </div>
               <LogoutButton />
             </>

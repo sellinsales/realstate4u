@@ -4,6 +4,7 @@ import { auth } from "@/lib/auth";
 import { getProperties } from "@/lib/data";
 import { prisma } from "@/lib/db/prisma";
 import { buildWatermarkedImageUrl } from "@/lib/media";
+import { maybeCreatePropertyVideo } from "@/lib/property-video";
 import { toSlug } from "@/lib/utils";
 import { propertyFormSchema } from "@/lib/validators";
 
@@ -102,6 +103,8 @@ export async function POST(request: Request) {
         slug: true,
       },
     });
+
+    await maybeCreatePropertyVideo(property.id, payload.youtubeUrl || null);
 
     return NextResponse.json({ property }, { status: 201 });
   } catch {

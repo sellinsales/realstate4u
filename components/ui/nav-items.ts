@@ -4,7 +4,7 @@ export type NavChildItem = {
   href: Route;
   label: string;
   description: string;
-  icon: "search" | "spark" | "queue" | "list" | "service" | "jobs";
+  icon: "search" | "spark" | "queue" | "list" | "service" | "jobs" | "plan";
 };
 
 export type NavItem =
@@ -38,6 +38,12 @@ export const mainNavItems: readonly NavItem[] = [
         label: "AI Match",
         description: "Get ranked property picks based on your brief and budget.",
         icon: "spark",
+      },
+      {
+        href: "/house-designs",
+        label: "House Plans",
+        description: "Explore free concept layouts for marla, kanal, and farmhouse homes.",
+        icon: "plan",
       },
       {
         href: "/queue-housing",
@@ -78,6 +84,7 @@ export const primaryLinks = [
   { href: "/", label: "Home" },
   { href: "/properties", label: "Property Search" },
   { href: "/smart-match", label: "AI Match" },
+  { href: "/house-designs", label: "House Plans" },
   { href: "/demand-board", label: "Demand Board" },
   { href: "/services", label: "Home Services" },
   { href: "/jobs", label: "Construction Jobs" },

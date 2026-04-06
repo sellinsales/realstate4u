@@ -24,8 +24,8 @@ export function SiteFooter() {
             </span>
           </Link>
           <p className="max-w-sm text-sm leading-7 text-[var(--muted)]">
-            RealState4U helps visitors search property, hire service teams, explore jobs, and share open requirements
-            without mixing everything into one feed.
+            RealState4U helps visitors find homes, compare service teams, explore jobs, and share requirements without
+            getting lost between unrelated sections.
           </p>
           <div className="flex flex-wrap gap-3">
             <Link href="/properties" className="btn-secondary">
@@ -63,8 +63,8 @@ export function SiteFooter() {
         <div className="panel rounded-[2rem] p-6">
           <p className="footer-heading">Why it is easier to use</p>
           <div className="mt-4 space-y-3 text-sm leading-7 text-[var(--muted)]">
-            <p>Property search stays focused on listings, while services, jobs, and demand each have their own clearer route.</p>
-            <p>Your account, inquiries, queue applications, and saved progress continue across the marketplace instead of starting over on each page.</p>
+            <p>Search stays cleaner because homes, services, jobs, and public demand each keep their own clearer route.</p>
+            <p>Your account, inquiries, saved items, and next steps continue across the marketplace instead of starting over on every page.</p>
           </div>
           <div className="mt-5 footer-links">
             {secondaryLinks.map((link) => (

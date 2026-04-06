@@ -7,6 +7,7 @@ type NavIconName =
   | "jobs"
   | "queue"
   | "list"
+  | "plan"
   | "arrow";
 
 export function NavIcon({ name, className = "h-4 w-4" }: { name: NavIconName; className?: string }) {
@@ -88,6 +89,15 @@ export function NavIcon({ name, className = "h-4 w-4" }: { name: NavIconName; cl
           <path d="M4 6h.01" />
           <path d="M4 12h.01" />
           <path d="M4 18h.01" />
+        </svg>
+      );
+    case "plan":
+      return (
+        <svg {...shared}>
+          <rect x="4" y="4" width="16" height="16" rx="2.5" />
+          <path d="M12 4v16" />
+          <path d="M4 10h8" />
+          <path d="M12 14h8" />
         </svg>
       );
     case "arrow":

@@ -45,6 +45,7 @@ export const propertyFormSchema = z.object({
   landlordSelection: z.string().optional(),
   latitude: z.coerce.number().optional(),
   longitude: z.coerce.number().optional(),
+  youtubeUrl: z.union([z.literal(""), z.url()]).optional(),
   imageUrls: z.array(z.url()).min(1),
 });
 

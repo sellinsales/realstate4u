@@ -34,3 +34,24 @@ export function buildWhatsAppUrl(phone: string, propertyTitle: string) {
 export function readSearchParam(value: string | string[] | undefined) {
   return Array.isArray(value) ? value[0] : value;
 }
+
+export function getFriendlyUserName(name?: string | null, email?: string | null) {
+  const rawValue = (name || email || "").trim();
+
+  if (!rawValue) {
+    return "there";
+  }
+
+  const normalized = rawValue.includes("@") ? rawValue.split("@")[0] : rawValue;
+  const cleaned = normalized
+    .replace(/[._-]+/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+
+  if (!cleaned) {
+    return "there";
+  }
+
+  const firstWord = cleaned.split(" ")[0];
+  return firstWord.slice(0, 1).toUpperCase().concat(firstWord.slice(1));
+}

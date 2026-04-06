@@ -113,6 +113,7 @@ model PropertyListing {
   updatedAt           DateTime             @updatedAt
   createdBy           User                 @relation("PropertyCreator", fields: [createdById], references: [id], onDelete: Cascade)
   media               PropertyMedia[]
+  video               PropertyVideo?
   leads               Lead[]
   housingQueue        HousingQueue?
   housingApplications HousingApplication[]
@@ -123,6 +124,15 @@ model PropertyMedia {
   propertyId String
   imageUrl   String
   sortOrder  Int             @default(0)
+  property   PropertyListing @relation(fields: [propertyId], references: [id], onDelete: Cascade)
+}
+
+model PropertyVideo {
+  id         String          @id @default(cuid())
+  propertyId String          @unique
+  youtubeUrl String
+  createdAt  DateTime        @default(now())
+  updatedAt  DateTime        @updatedAt
   property   PropertyListing @relation(fields: [propertyId], references: [id], onDelete: Cascade)
 }
 

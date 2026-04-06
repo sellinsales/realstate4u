@@ -25,6 +25,7 @@ export interface PropertyCardData {
   latitude?: number;
   longitude?: number;
   imageUrls: string[];
+  youtubeUrl?: string;
   queueType?: string;
   leadCount?: number;
 }

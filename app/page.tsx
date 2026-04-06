@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { CeoMessage } from "@/components/home/ceo-message";
 import { DesignGuidesSection } from "@/components/home/design-guides-section";
+import { HouseDesignLibrary } from "@/components/house-designs/house-design-library";
 import { HomeSearchHero } from "@/components/home/home-search-hero";
 import { SectionHeader } from "@/components/ui/section-header";
 import { StatCard } from "@/components/ui/stat-card";
@@ -16,11 +17,10 @@ export default async function HomePage() {
             <span className="eyebrow">Professional property marketplace</span>
             <div className="space-y-4">
               <h1 className="max-w-4xl text-[clamp(2.25rem,4.3vw,3.95rem)] leading-[1.01] font-semibold text-[var(--brand-blue)]">
-                Search homes, services, jobs, and market demand in one place.
+                Find the right home, team, job, or market lead without the usual clutter.
               </h1>
               <p className="max-w-2xl text-[0.98rem] leading-8 text-[var(--muted)] md:text-[1rem]">
-                Start with the search that fits you best: find a home, post a listing, hire a service team, apply for
-                work, or share what you need with the market.
+                Start with property search, move into house-plan ideas, share your requirement, or go straight to services and jobs from the same clean marketplace.
               </p>
             </div>
 
@@ -31,8 +31,8 @@ export default async function HomePage() {
               <Link href="/smart-match" className="btn-secondary">
                 Open AI Match
               </Link>
-              <Link href="/post-property" className="btn-secondary">
-                Post a property
+              <Link href="/house-designs" className="btn-secondary">
+                View house plans
               </Link>
             </div>
 
@@ -51,12 +51,14 @@ export default async function HomePage() {
 
       <DesignGuidesSection />
 
+      <HouseDesignLibrary limit={3} />
+
       <section className="section-spacing">
         <div className="page-shell">
           <SectionHeader
             eyebrow="Popular paths"
             title="Choose the route that fits what you want to do today."
-            description="The main paths are organized to help visitors search faster, contact the right side, and move into action with less confusion."
+            description="Each route is arranged to help you compare options, contact the right people faster, and keep moving with less confusion."
           />
           <div className="grid gap-5 lg:grid-cols-3">
             {HOME_VERTICALS.map((vertical) => (
@@ -74,7 +76,7 @@ export default async function HomePage() {
           <SectionHeader
             eyebrow="How people use it"
             title="Move from search to action without leaving the same marketplace."
-            description="People usually want to compare options, contact someone quickly, and return later without starting over. The site is shaped around that flow."
+            description="Most people want to compare, contact, save, and come back later without starting from zero. The site is shaped around that real flow."
           />
           <div className="grid gap-5 lg:grid-cols-3">
             {OPERATOR_WORKFLOWS.map((workflow) => (
@@ -92,7 +94,7 @@ export default async function HomePage() {
           <SectionHeader
             eyebrow="Helpful signals"
             title="Useful details at a glance."
-            description="These highlights help visitors understand what is available here now in a simpler and more practical way."
+            description="These quick highlights show what visitors can do here now in a simpler and more useful way."
           />
           <div className="grid gap-4 lg:grid-cols-3">
             {PHASE_NOTES.map((note) => (
@@ -111,7 +113,7 @@ export default async function HomePage() {
             title="Go straight into the route you need."
             description="Use these direct links to move into search, posting, account access, and public demand without extra steps."
           />
-          <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-4">
+          <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
             <Link href="/properties" className="panel utility-card">
               <p className="text-sm font-bold uppercase tracking-[0.16em] text-[var(--brand-green)]">Search</p>
               <h3 className="utility-card-title mt-4">Find property</h3>
@@ -130,7 +132,7 @@ export default async function HomePage() {
               <p className="text-sm font-bold uppercase tracking-[0.16em] text-[var(--brand-green)]">Access</p>
               <h3 className="utility-card-title mt-4">Create account</h3>
               <p className="utility-card-copy">
-                Register buyers, renters, landlords, and agents with the new live auth flow.
+                Create your account to save progress, post listings, and manage inquiries from one place.
               </p>
             </Link>
             <Link href="/demand-board" className="panel utility-card">
@@ -138,6 +140,13 @@ export default async function HomePage() {
               <h3 className="utility-card-title mt-4">Open demand board</h3>
               <p className="utility-card-copy">
                 Share requirements, review open market needs, and keep demand visible.
+              </p>
+            </Link>
+            <Link href="/house-designs" className="panel utility-card">
+              <p className="text-sm font-bold uppercase tracking-[0.16em] text-[var(--brand-green)]">Ideas</p>
+              <h3 className="utility-card-title mt-4">House plan concepts</h3>
+              <p className="utility-card-copy">
+                Review free layout ideas for marla, kanal, and farmhouse homes before you build or renovate.
               </p>
             </Link>
           </div>

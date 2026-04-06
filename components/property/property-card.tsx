@@ -81,6 +81,7 @@ export function PropertyCard({
           <span className="pill">{property.propertyType.toLowerCase()}</span>
           {property.queueType ? <span className="pill">{property.queueType.toLowerCase()}</span> : null}
           {property.firstHand ? <span className="pill">first-hand</span> : null}
+          {property.youtubeUrl ? <span className="pill">video tour</span> : null}
           {marketCode === "PAKISTAN" && property.whatsappPhone ? <span className="pill">whatsapp ready</span> : null}
           {property.isVerified ? <span className="pill">verified listing</span> : <span className="pill">review pending</span>}
         </div>

@@ -191,25 +191,24 @@ export function HomeSearchHero() {
         </form>
       </div>
 
-      <div className="grid gap-3 sm:grid-cols-2">
-        <div className="panel utility-card">
-          <p className="text-sm font-bold uppercase tracking-[0.16em] text-[var(--brand-green)]">
-            Popular today
-          </p>
-          <p className="utility-card-copy">
-            Property buyers usually start with sale or rent search, then use AI Match to shortlist stronger options.
-          </p>
+        <div className="grid gap-3 sm:grid-cols-2">
+          <div className="panel utility-card">
+            <p className="text-sm font-bold uppercase tracking-[0.16em] text-[var(--brand-green)]">
+              Popular today
+            </p>
+            <p className="utility-card-copy">
+              Most buyers start with sale or rent search, then use AI Match or house-plan ideas to narrow what really fits.
+            </p>
+          </div>
+          <div className="panel utility-card">
+            <p className="text-sm font-bold uppercase tracking-[0.16em] text-[var(--brand-green)]">
+              Quick route
+            </p>
+            <p className="utility-card-copy">
+              If you are not looking for a live listing, jump straight to house plans, services, jobs, or the demand board.
+            </p>
+          </div>
         </div>
-        <div className="panel utility-card">
-          <p className="text-sm font-bold uppercase tracking-[0.16em] text-[var(--brand-green)]">
-            Quick route
-          </p>
-          <p className="utility-card-copy">
-            If you are not looking for a property, jump directly to services, jobs, or the demand board instead of
-            filtering through listings.
-          </p>
-        </div>
-      </div>
     </div>
   );
 }

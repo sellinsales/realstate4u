@@ -4,6 +4,7 @@ import { auth } from "@/lib/auth";
 import { PageIntro } from "@/components/ui/page-intro";
 import { StatCard } from "@/components/ui/stat-card";
 import { getDashboardSnapshot, getProperties } from "@/lib/data";
+import { getFriendlyUserName } from "@/lib/utils";
 
 export default async function DashboardPage() {
   const session = await auth();
@@ -14,14 +15,15 @@ export default async function DashboardPage() {
 
   const snapshot = await getDashboardSnapshot(session.user.id);
   const allProperties = await getProperties();
+  const friendlyName = getFriendlyUserName(session.user.name, session.user.email);
 
   return (
     <main className="section-spacing">
       <div className="page-shell space-y-8">
         <PageIntro
           eyebrow="Dashboard"
-          title={`Welcome back, ${session.user.email}`}
-          description="Track listing volume, lead flow, review status, and queue applications from one operator view."
+          title={`Welcome back, ${friendlyName}`}
+          description="Track your listings, incoming leads, review status, and rental queue activity from one cleaner workspace."
           actions={
             <>
               <Link href="/dashboard/listings" className="btn-secondary">

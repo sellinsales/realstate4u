@@ -125,6 +125,7 @@ export const DEMO_PROPERTIES: PropertyCardData[] = [
       "https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?auto=format&fit=crop&w=1200&q=80",
       "https://images.unsplash.com/photo-1493809842364-78817add7ffb?auto=format&fit=crop&w=1200&q=80",
     ],
+    youtubeUrl: "https://www.youtube.com/watch?v=Scxs7L0vhZ4",
     leadCount: 8,
   },
   {
@@ -154,49 +155,50 @@ export const DEMO_PROPERTIES: PropertyCardData[] = [
       "https://images.unsplash.com/photo-1600585154526-990dced4db0d?auto=format&fit=crop&w=1200&q=80",
       "https://images.unsplash.com/photo-1600047509807-ba8f99d2cdde?auto=format&fit=crop&w=1200&q=80",
     ],
+    youtubeUrl: "https://www.youtube.com/watch?v=RkFQH0G8J8g",
     leadCount: 15,
   },
 ];
 
 export const HOME_VERTICALS = [
   {
-    title: "Properties",
+    title: "Property search",
     description:
-      "Search, publish, and qualify residential inventory with market-specific contact flows and moderation.",
+      "Browse homes, plots, offices, and rental listings with simpler filters and faster contact options.",
   },
   {
-    title: "Home Services",
+    title: "Home services",
     description:
-      "Prepared for vetted movers, cleaners, maintenance teams, and inspection partners under the same brand system.",
+      "Find contractors, maintenance teams, movers, cleaners, and practical home support in one place.",
   },
   {
-    title: "Construction Jobs",
+    title: "Construction jobs",
     description:
-      "Structured for developer hiring, site staffing, and skilled trade recruitment as the platform expands.",
+      "Explore site hiring, technical roles, and skilled trade opportunities without digging through property listings.",
   },
 ];
 
 export const PHASE_NOTES = [
-  "Sweden supports queue-aware rentals, first-hand flags, and landlord selection notes.",
-  "EU listings stay multilingual-ready with clean buy and rent discovery flows.",
-  "Pakistan listings prioritize direct call and WhatsApp conversion paths for agents and developers.",
+  "Search by market, city, and budget without starting again every time you switch routes.",
+  "Contact listings faster through inquiry, call, and WhatsApp where that makes the most sense.",
+  "Keep your account, saved progress, and next steps in one cleaner marketplace flow.",
 ];
 
 export const OPERATOR_WORKFLOWS = [
   {
-    title: "Search with market logic",
+    title: "Compare options faster",
     description:
-      "Country, city, price, and market filters keep Sweden queue rentals, EU listings, and Pakistan inventory inside one discovery flow.",
+      "Use market, city, price, and listing type filters to narrow the right homes without extra noise.",
   },
   {
-    title: "Convert demand faster",
+    title: "Contact with confidence",
     description:
-      "Web inquiries, call buttons, and WhatsApp CTAs adapt to the listing market instead of forcing a single contact pattern.",
+      "Reach sellers, agents, and landlords through the contact method that fits the listing and your location.",
   },
   {
-    title: "Moderate supply centrally",
+    title: "Keep plans moving",
     description:
-      "Agents, landlords, and admins can publish listings, monitor review status, and keep marketplace quality consistent.",
+      "Move from discovery to inquiry, posting, queue rentals, and saved progress without leaving the same account.",
   },
 ] as const;
 

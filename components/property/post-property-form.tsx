@@ -53,6 +53,7 @@ export function PostPropertyForm() {
       areaSqm: Number(formData.get("areaSqm") || 0) || undefined,
       contactPhone: String(formData.get("contactPhone") || ""),
       whatsappPhone: String(formData.get("whatsappPhone") || ""),
+      youtubeUrl: String(formData.get("youtubeUrl") || ""),
       firstHand: formData.get("firstHand") === "on",
       landlordSelection: String(formData.get("landlordSelection") || ""),
       latitude: Number(formData.get("latitude") || 0) || undefined,
@@ -250,6 +251,21 @@ export function PostPropertyForm() {
               className="field"
             />
           </div>
+        </div>
+
+        <div>
+          <label htmlFor="youtubeUrl" className="field-label">
+            YouTube video tour
+          </label>
+          <input
+            id="youtubeUrl"
+            name="youtubeUrl"
+            placeholder="https://www.youtube.com/watch?v=..."
+            className="field"
+          />
+          <p className="field-hint">
+            Add a walkthrough or project video to show buyers and renters the space before they contact you.
+          </p>
         </div>
       </div>
 

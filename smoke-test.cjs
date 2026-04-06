@@ -173,6 +173,7 @@ async function main() {
   await checkPage("/register");
   await checkPage("/forgot-password");
   await checkPage("/smart-match");
+  await checkPage("/house-designs");
   await checkAuthPreflight();
 
   if (runRegister) {

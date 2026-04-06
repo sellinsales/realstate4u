@@ -3,6 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { LeadForm } from "@/components/property/lead-form";
 import { QueueApplyButton } from "@/components/property/queue-apply-button";
+import { ShareListingPanel } from "@/components/property/share-listing-panel";
 import { WhatsAppButton } from "@/components/property/whatsapp-button";
 import { PropertyEngagementPanel } from "@/components/smart/property-engagement-panel";
 import { RecommendedPropertyGrid } from "@/components/smart/recommended-property-grid";
@@ -12,6 +13,7 @@ import { auth } from "@/lib/auth";
 import { getProperties, getPropertyBySlug } from "@/lib/data";
 import { getMarketConfig, normalizeMarketCode } from "@/lib/markets";
 import { buildWatermarkedImageUrl } from "@/lib/media";
+import { getYouTubeEmbedUrl } from "@/lib/property-video";
 import { formatPrice } from "@/lib/utils";
 
 type PropertyDetailPageProps = {
@@ -34,9 +36,11 @@ export default async function PropertyDetailPage({ params }: PropertyDetailPageP
   const market = getMarketConfig(property.marketCode);
   const currency = marketCode === "PAKISTAN" ? "PKR" : marketCode === "SWEDEN" ? "SEK" : "EUR";
   const loginHref = `/login?callbackUrl=${encodeURIComponent(`/properties/${property.slug}`)}`;
+  const shareUrl = `${(process.env.NEXTAUTH_URL || "https://realstate4u.com").replace(/\/$/, "")}/properties/${property.slug}`;
   const gallery = property.imageUrls.length
     ? property.imageUrls.map((imageUrl, index) => buildWatermarkedImageUrl(imageUrl, property.title, index))
     : ["/logo-web.png"];
+  const youtubeEmbedUrl = getYouTubeEmbedUrl(property.youtubeUrl);
 
   return (
     <main className="section-spacing">
@@ -85,7 +89,7 @@ export default async function PropertyDetailPage({ params }: PropertyDetailPageP
             <div className="panel rounded-[2rem] p-6">
               <SectionHeader
                 eyebrow="Property overview"
-                title="Listing narrative and operational details."
+                title="Property details that help you decide faster."
                 description={property.description}
               />
               <div className="mt-6 flex flex-wrap gap-4 text-sm font-semibold text-[var(--muted)]">
@@ -100,6 +104,27 @@ export default async function PropertyDetailPage({ params }: PropertyDetailPageP
                 </div>
               ) : null}
             </div>
+
+            {youtubeEmbedUrl ? (
+              <div className="panel rounded-[2rem] p-6">
+                <SectionHeader
+                  eyebrow="Video walkthrough"
+                  title="Watch the listing before you call or inquire."
+                  description="A video can help you understand the feel, room movement, and presentation quality much faster than photos alone."
+                />
+                <div className="mt-5 overflow-hidden rounded-[1.6rem] border border-[var(--brand-line)] bg-white/80">
+                  <div className="aspect-video">
+                    <iframe
+                      src={youtubeEmbedUrl}
+                      title={`${property.title} video tour`}
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                      allowFullScreen
+                      className="h-full w-full"
+                    />
+                  </div>
+                </div>
+              </div>
+            ) : null}
           </div>
 
           <div className="space-y-5">
@@ -139,6 +164,13 @@ export default async function PropertyDetailPage({ params }: PropertyDetailPageP
             </div>
 
             <LeadForm propertyId={property.id} propertyTitle={property.title} />
+
+            <ShareListingPanel
+              title={property.title}
+              city={property.city}
+              country={property.country}
+              shareUrl={shareUrl}
+            />
 
             <PropertyEngagementPanel property={property} allProperties={allProperties} />
 

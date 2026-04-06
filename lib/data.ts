@@ -1,6 +1,7 @@
 import { ListingType, Prisma, PropertyType } from "@prisma/client";
 import { DEMO_ADMIN, DEMO_DASHBOARD, DEMO_PROPERTIES } from "@/lib/demo-data";
 import { prisma } from "@/lib/db/prisma";
+import { getPropertyVideoMap } from "@/lib/property-video";
 import type { AdminSnapshot, DashboardSnapshot, PropertyCardData, PropertyFilters } from "@/lib/types";
 
 const propertyInclude = {
@@ -26,7 +27,7 @@ export function isDatabaseConfigured() {
   return Boolean(process.env.DATABASE_URL);
 }
 
-function mapPropertyRecord(record: PropertyRecord): PropertyCardData {
+function mapPropertyRecord(record: PropertyRecord, youtubeUrl?: string): PropertyCardData {
   return {
     id: record.id,
     slug: record.slug,
@@ -52,6 +53,7 @@ function mapPropertyRecord(record: PropertyRecord): PropertyCardData {
     latitude: record.latitude ?? undefined,
     longitude: record.longitude ?? undefined,
     imageUrls: record.media.map((item) => item.imageUrl),
+    youtubeUrl,
     queueType: record.housingQueue?.type,
     leadCount: record.leads.length,
   };
@@ -116,7 +118,8 @@ export async function getProperties(filters: PropertyFilters = {}) {
       },
     });
 
-    return properties.map(mapPropertyRecord);
+    const videoMap = await getPropertyVideoMap(properties.map((property) => property.id));
+    return properties.map((property) => mapPropertyRecord(property, videoMap.get(property.id)));
   } catch {
     return filterProperties(DEMO_PROPERTIES, filters);
   }
@@ -138,7 +141,12 @@ export async function getPropertyBySlug(slug: string) {
       include: propertyInclude,
     });
 
-    return property ? mapPropertyRecord(property) : null;
+    if (!property) {
+      return null;
+    }
+
+    const videoMap = await getPropertyVideoMap([property.id]);
+    return mapPropertyRecord(property, videoMap.get(property.id));
   } catch {
     return DEMO_PROPERTIES.find((property) => property.slug === slug) ?? null;
   }
@@ -191,12 +199,14 @@ export async function getDashboardSnapshot(userId: string): Promise<DashboardSna
       }),
     ]);
 
+    const videoMap = await getPropertyVideoMap(listings.map((listing) => listing.id));
+
     return {
       listingCount,
       leadCount,
       queueApplications,
       pendingReview,
-      listings: listings.map(mapPropertyRecord),
+      listings: listings.map((listing) => mapPropertyRecord(listing, videoMap.get(listing.id))),
     };
   } catch {
     return DEMO_DASHBOARD;
@@ -223,8 +233,10 @@ export async function getAdminSnapshot(): Promise<AdminSnapshot> {
       prisma.user.count(),
     ]);
 
+    const videoMap = await getPropertyVideoMap(pendingListings.map((listing) => listing.id));
+
     return {
-      pendingListings: pendingListings.map(mapPropertyRecord),
+      pendingListings: pendingListings.map((listing) => mapPropertyRecord(listing, videoMap.get(listing.id))),
       verifiedCount,
       userCount,
     };
