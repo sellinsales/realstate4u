@@ -11,47 +11,46 @@ export function CeoMessage() {
   return (
     <section className="section-spacing">
       <div className="page-shell">
-        <div className="panel grid gap-6 rounded-[2rem] p-6 lg:grid-cols-[0.72fr_1.28fr] lg:items-center">
-          <div className="overflow-hidden rounded-[1.7rem] border border-[var(--brand-line)] bg-white/80">
+        <div className="panel welcome-note-shell">
+          <div className="welcome-note-avatar">
             {hasPortrait ? (
-              <div className="relative aspect-[4/3] w-full">
+              <div className="relative h-full w-full overflow-hidden rounded-full">
                 <Image
                   src={imagePath}
                   alt="Asif Nazeer, CEO of RealState4U"
                   fill
-                  sizes="(max-width: 1024px) 100vw, 32vw"
+                  sizes="96px"
                   className="object-cover"
                 />
               </div>
             ) : (
-              <div className="flex aspect-[4/3] items-center justify-center bg-[radial-gradient(circle_at_top_left,rgba(45,141,115,0.18),transparent_35%),linear-gradient(180deg,#ffffff,#e9f6f1)]">
-                <div className="text-center">
-                  <p className="text-sm font-bold uppercase tracking-[0.18em] text-[var(--brand-green)]">CEO message</p>
-                  <p className="mt-4 text-5xl font-semibold text-[var(--brand-blue)]">AN</p>
-                  <p className="mt-3 px-6 text-sm leading-7 text-[var(--muted)]">
-                    Upload the provided portrait to <strong className="text-[var(--brand-blue)]">public/ceo-asif-nazeer.jpg</strong>.
-                  </p>
-                </div>
+              <div className="flex h-full w-full items-center justify-center rounded-full bg-[radial-gradient(circle_at_top_left,rgba(45,141,115,0.18),transparent_35%),linear-gradient(180deg,#ffffff,#e9f6f1)] text-[1.45rem] font-semibold text-[var(--brand-blue)]">
+                AN
               </div>
             )}
           </div>
 
-          <div className="space-y-4">
-            <span className="eyebrow">Message from CEO</span>
+          <div className="space-y-3">
+            <span className="eyebrow">Welcome message</span>
             <div>
-              <h2 className="section-title">A note from Asif Nazeer on why property search should feel simpler.</h2>
-              <p className="section-copy">
-                RealState4U is being built to make property decisions clearer for everyday buyers, renters, agents,
-                and families. People should be able to search confidently, compare faster, connect with the right side,
-                and keep returning to one marketplace that stays organized instead of confusing.
+              <h2 className="welcome-note-title">Welcome to a simpler way to search property and act with confidence.</h2>
+              <p className="welcome-note-copy">
+                This marketplace is designed to help you find the right home, compare better options, and move faster
+                toward the next decision without unnecessary clutter.
               </p>
             </div>
-            <div className="rounded-[1.4rem] border border-[var(--brand-line)] bg-white/72 p-5 text-sm leading-7 text-[var(--muted)]">
+            <div className="rounded-[1.25rem] border border-[var(--brand-line)] bg-white/72 p-4 text-sm leading-7 text-[var(--muted)]">
               <p>
-                “A strong property marketplace should not overwhelm visitors. It should help them find the right home,
-                the right service support, the right investment path, or the right opportunity with clarity and trust.”
+                “A strong property marketplace should help people discover the right opportunity with clarity, trust,
+                and a smoother path from search to response.”
               </p>
-              <p className="mt-4 font-semibold text-[var(--brand-blue)]">Asif Nazeer, CEO</p>
+              <p className="mt-3 font-semibold text-[var(--brand-blue)]">Asif Nazeer</p>
+              <p className="text-xs font-semibold uppercase tracking-[0.14em] text-[var(--muted)]">CEO, RealState4U</p>
+              {!hasPortrait ? (
+                <p className="mt-3 text-xs leading-6">
+                  Add the portrait to <strong className="text-[var(--brand-blue)]">public/ceo-asif-nazeer.jpg</strong>.
+                </p>
+              ) : null}
             </div>
           </div>
         </div>
