@@ -7,7 +7,7 @@ import { FILTER_OPTIONS } from "@/lib/demo-data";
 import { HOME_QUICK_LINKS } from "@/lib/marketplace-home-data";
 import { cn } from "@/lib/utils";
 
-type SearchMode = "BUY" | "RENT" | "PROJECTS";
+type SearchMode = "BUY" | "RENT" | "PROJECTS" | "SELL";
 
 const areaPresets = [
   { label: "Any Area", value: "" },
@@ -44,6 +44,11 @@ export function HomeSearchHero() {
       return;
     }
 
+    if (mode === "SELL") {
+      router.push("/post-property");
+      return;
+    }
+
     const params = new URLSearchParams();
     params.set("listingType", mode);
 
@@ -75,6 +80,7 @@ export function HomeSearchHero() {
             { value: "BUY", label: "Buy" },
             { value: "RENT", label: "Rent" },
             { value: "PROJECTS", label: "Projects" },
+            { value: "SELL", label: "Sell" },
           ].map((option) => (
             <button
               key={option.value}
