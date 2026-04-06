@@ -21,7 +21,7 @@ const launcherItems = [
     icon: "plan" as const,
   },
   {
-    href: "/post-property",
+    href: "/sell",
     title: "Sell or list",
     description: "Publish a sale or rent listing through the guided wizard.",
     icon: "list" as const,

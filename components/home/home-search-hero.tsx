@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import type { Route } from "next";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { FILTER_OPTIONS } from "@/lib/demo-data";
@@ -29,7 +30,7 @@ const bedOptions = ["", "1", "2", "3", "4", "5"] as const;
 
 export function HomeSearchHero() {
   const router = useRouter();
-  const [mode, setMode] = useState<SearchMode>("BUY");
+  const [mode] = useState<SearchMode>("BUY");
   const [city, setCity] = useState("");
   const [propertyType, setPropertyType] = useState("");
   const [maxPrice, setMaxPrice] = useState("");
@@ -77,19 +78,18 @@ export function HomeSearchHero() {
         <h1 className="market-hero-title">Find your next property</h1>
         <div className="market-hero-tabs">
           {[
-            { value: "BUY", label: "Buy" },
-            { value: "RENT", label: "Rent" },
-            { value: "PROJECTS", label: "Projects" },
-            { value: "SELL", label: "Sell" },
+            { value: "BUY", label: "Buy", href: "/buy" as Route },
+            { value: "RENT", label: "Rent", href: "/rent" as Route },
+            { value: "PROJECTS", label: "Projects", href: "/projects" as Route },
+            { value: "SELL", label: "Sell", href: "/sell" as Route },
           ].map((option) => (
-            <button
+            <Link
               key={option.value}
-              type="button"
+              href={option.href}
               className={cn("market-hero-tab", mode === option.value && "market-hero-tab-active")}
-              onClick={() => setMode(option.value as SearchMode)}
             >
               {option.label}
-            </button>
+            </Link>
           ))}
         </div>
       </div>
