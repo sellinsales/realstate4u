@@ -1,7 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
+import { buildListingAssetName } from "@/lib/media";
 
 const marketOptions = ["SWEDEN", "EU", "PAKISTAN"];
 const listingOptions = ["BUY", "RENT"];
@@ -12,6 +13,18 @@ export function PostPropertyForm() {
   const [error, setError] = useState<string | null>(null);
   const [message, setMessage] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+  const [title, setTitle] = useState("");
+  const [imageUrlsText, setImageUrlsText] = useState("");
+
+  const assetNamePreview = useMemo(() => {
+    const urlCount = imageUrlsText
+      .split(/\r?\n/)
+      .map((item) => item.trim())
+      .filter(Boolean).length;
+
+    const count = Math.max(1, Math.min(urlCount || 1, 3));
+    return Array.from({ length: count }, (_, index) => buildListingAssetName(title || "listing", index));
+  }, [imageUrlsText, title]);
 
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -86,7 +99,14 @@ export function PostPropertyForm() {
             <label htmlFor="title" className="field-label">
               Title
             </label>
-            <input id="title" name="title" className="field" required />
+            <input
+              id="title"
+              name="title"
+              className="field"
+              value={title}
+              onChange={(event) => setTitle(event.target.value)}
+              required
+            />
           </div>
           <div>
             <label htmlFor="price" className="field-label">
@@ -257,11 +277,24 @@ export function PostPropertyForm() {
             rows={4}
             className="field"
             placeholder="Paste one image URL per line until direct uploads are connected."
+            value={imageUrlsText}
+            onChange={(event) => setImageUrlsText(event.target.value)}
             required
           />
           <p className="field-hint">
-            This field can later be replaced with signed Cloudinary uploads without changing the listing flow.
+            Cloudinary-hosted listing images are automatically displayed with a RealState4U watermark. Asset names are
+            prepared in the format below for the direct-upload flow.
           </p>
+          <div className="mt-3 rounded-[1.25rem] border border-[var(--brand-line)] bg-white/72 p-4 text-sm leading-7 text-[var(--muted)]">
+            <p className="font-semibold text-[var(--brand-blue)]">Asset naming preview</p>
+            <div className="mt-2 flex flex-wrap gap-2">
+              {assetNamePreview.map((assetName) => (
+                <span key={assetName} className="pill">
+                  {assetName}
+                </span>
+              ))}
+            </div>
+          </div>
         </div>
       </div>
 

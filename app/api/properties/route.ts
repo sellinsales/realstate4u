@@ -3,6 +3,7 @@ import { NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
 import { getProperties } from "@/lib/data";
 import { prisma } from "@/lib/db/prisma";
+import { buildWatermarkedImageUrl } from "@/lib/media";
 import { toSlug } from "@/lib/utils";
 import { propertyFormSchema } from "@/lib/validators";
 
@@ -81,7 +82,7 @@ export async function POST(request: Request) {
         status: PropertyStatus.PENDING,
         media: {
           create: payload.imageUrls.map((imageUrl, index) => ({
-            imageUrl,
+            imageUrl: buildWatermarkedImageUrl(imageUrl, payload.title, index),
             sortOrder: index,
           })),
         },

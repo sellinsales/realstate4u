@@ -11,6 +11,7 @@ import { SectionHeader } from "@/components/ui/section-header";
 import { auth } from "@/lib/auth";
 import { getProperties, getPropertyBySlug } from "@/lib/data";
 import { getMarketConfig, normalizeMarketCode } from "@/lib/markets";
+import { buildWatermarkedImageUrl } from "@/lib/media";
 import { formatPrice } from "@/lib/utils";
 
 type PropertyDetailPageProps = {
@@ -33,7 +34,9 @@ export default async function PropertyDetailPage({ params }: PropertyDetailPageP
   const market = getMarketConfig(property.marketCode);
   const currency = marketCode === "PAKISTAN" ? "PKR" : marketCode === "SWEDEN" ? "SEK" : "EUR";
   const loginHref = `/login?callbackUrl=${encodeURIComponent(`/properties/${property.slug}`)}`;
-  const gallery = property.imageUrls.length ? property.imageUrls : ["/logo-web.png"];
+  const gallery = property.imageUrls.length
+    ? property.imageUrls.map((imageUrl, index) => buildWatermarkedImageUrl(imageUrl, property.title, index))
+    : ["/logo-web.png"];
 
   return (
     <main className="section-spacing">

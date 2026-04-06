@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { SavePropertyButton } from "@/components/property/save-property-button";
 import { getMarketConfig, normalizeMarketCode } from "@/lib/markets";
+import { buildWatermarkedImageUrl } from "@/lib/media";
 import type { PropertyCardData } from "@/lib/types";
 import { formatPrice, formatRelativeDate } from "@/lib/utils";
 
@@ -19,7 +20,9 @@ export function PropertyCard({
   const marketCode = normalizeMarketCode(property.marketCode);
   const market = getMarketConfig(property.marketCode);
   const currency = marketCode === "PAKISTAN" ? "PKR" : marketCode === "SWEDEN" ? "SEK" : "EUR";
-  const coverImage = property.imageUrls[0] || "/logo-web.png";
+  const coverImage = property.imageUrls[0]
+    ? buildWatermarkedImageUrl(property.imageUrls[0], property.title, 0)
+    : "/logo-web.png";
 
   return (
     <article className="panel overflow-hidden rounded-[1.9rem]">

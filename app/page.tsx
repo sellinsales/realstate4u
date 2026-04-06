@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { CeoMessage } from "@/components/home/ceo-message";
+import { DesignGuidesSection } from "@/components/home/design-guides-section";
 import { HomeSearchHero } from "@/components/home/home-search-hero";
 import { SectionHeader } from "@/components/ui/section-header";
 import { StatCard } from "@/components/ui/stat-card";
@@ -14,12 +15,12 @@ export default async function HomePage() {
           <div className="space-y-5">
             <span className="eyebrow">Professional property marketplace</span>
             <div className="space-y-4">
-              <h1 className="max-w-4xl text-[clamp(2.7rem,5.2vw,4.9rem)] leading-[0.94] font-semibold text-[var(--brand-blue)]">
-                Find property, service teams, jobs, and live market demand from one clean search-led homepage.
+              <h1 className="max-w-4xl text-[clamp(2.25rem,4.3vw,3.95rem)] leading-[1.01] font-semibold text-[var(--brand-blue)]">
+                Search homes, services, jobs, and market demand in one place.
               </h1>
-              <p className="max-w-2xl text-base leading-8 text-[var(--muted)] md:text-[1.02rem]">
-                Start with what you need right now: a home to buy or rent, a team to hire, a job to apply for, or a
-                demand brief to share with the market.
+              <p className="max-w-2xl text-[0.98rem] leading-8 text-[var(--muted)] md:text-[1rem]">
+                Start with the search that fits you best: find a home, post a listing, hire a service team, apply for
+                work, or share what you need with the market.
               </p>
             </div>
 
@@ -48,12 +49,14 @@ export default async function HomePage() {
 
       <CeoMessage />
 
+      <DesignGuidesSection />
+
       <section className="section-spacing">
         <div className="page-shell">
           <SectionHeader
             eyebrow="Popular paths"
-            title="Choose the route that matches what you are trying to do."
-            description="Each part of the site is built around a user goal, so visitors can move directly into search, hiring, or demand instead of reading through platform explanations first."
+            title="Choose the route that fits what you want to do today."
+            description="The main paths are organized to help visitors search faster, contact the right side, and move into action with less confusion."
           />
           <div className="grid gap-5 lg:grid-cols-3">
             {HOME_VERTICALS.map((vertical) => (
@@ -70,8 +73,8 @@ export default async function HomePage() {
         <div className="page-shell">
           <SectionHeader
             eyebrow="How people use it"
-            title="Move from search to action without leaving the marketplace."
-            description="The main experience is designed around what visitors usually want next: find options, compare them, contact the right side, and keep returning to the same shortlist or workflow."
+            title="Move from search to action without leaving the same marketplace."
+            description="People usually want to compare options, contact someone quickly, and return later without starting over. The site is shaped around that flow."
           />
           <div className="grid gap-5 lg:grid-cols-3">
             {OPERATOR_WORKFLOWS.map((workflow) => (
@@ -88,8 +91,8 @@ export default async function HomePage() {
         <div className="page-shell">
           <SectionHeader
             eyebrow="Helpful signals"
-            title="Useful marketplace details at a glance."
-            description="These highlights help visitors understand what they can already do here today without turning the homepage into an internal status dashboard."
+            title="Useful details at a glance."
+            description="These highlights help visitors understand what is available here now in a simpler and more practical way."
           />
           <div className="grid gap-4 lg:grid-cols-3">
             {PHASE_NOTES.map((note) => (
@@ -105,8 +108,8 @@ export default async function HomePage() {
         <div className="page-shell">
           <SectionHeader
             eyebrow="Go directly"
-            title="Start with the area that fits your goal."
-            description="These links take you straight into the main live journeys: property search, posting, account access, and public demand."
+            title="Go straight into the route you need."
+            description="Use these direct links to move into search, posting, account access, and public demand without extra steps."
           />
           <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-4">
             <Link href="/properties" className="panel utility-card">
