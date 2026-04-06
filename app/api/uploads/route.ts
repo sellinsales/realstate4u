@@ -3,6 +3,7 @@ import path from "node:path";
 import { NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
 import { buildListingAssetName } from "@/lib/media";
+import { buildUploadsPublicUrl, getLocalUploadDirectory } from "@/lib/upload-storage";
 
 export const runtime = "nodejs";
 
@@ -12,18 +13,6 @@ const allowedMimeTypes = {
   "image/webp": "webp",
   "image/jpg": "jpg",
 } as const;
-
-function getUploadDirectory() {
-  const customDirectory = process.env.LOCAL_UPLOADS_DIR?.trim();
-  return customDirectory
-    ? path.resolve(customDirectory)
-    : path.join(process.cwd(), "public", "uploads", "listings");
-}
-
-function getPublicBasePath() {
-  const customBase = process.env.LOCAL_UPLOADS_PUBLIC_BASE?.trim();
-  return customBase ? customBase.replace(/\/$/, "") : "/uploads/listings";
-}
 
 export async function POST(request: Request) {
   const session = await auth();
@@ -53,8 +42,7 @@ export async function POST(request: Request) {
 
   const assetName = buildListingAssetName(title, index);
   const finalFileName = `${assetName}-${Date.now()}.${extension}`;
-  const uploadDirectory = getUploadDirectory();
-  const publicBasePath = getPublicBasePath();
+  const uploadDirectory = getLocalUploadDirectory();
 
   try {
     await mkdir(uploadDirectory, { recursive: true });
@@ -62,7 +50,7 @@ export async function POST(request: Request) {
     await writeFile(path.join(uploadDirectory, finalFileName), buffer);
 
     return NextResponse.json({
-      imageUrl: `${publicBasePath}/${finalFileName}`,
+      imageUrl: buildUploadsPublicUrl(finalFileName),
       assetName,
     });
   } catch {

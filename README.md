@@ -88,8 +88,8 @@ Notes:
 - The app uses MySQL / MariaDB, not PostgreSQL.
 - Email confirmation becomes required automatically when SMTP is configured.
 - You can force confirmation on or off with `AUTH_REQUIRE_EMAIL_VERIFICATION=true` or `false`.
-- If `LOCAL_UPLOADS_DIR` is empty, images are stored in `public/uploads/listings`.
-- If `LOCAL_UPLOADS_PUBLIC_BASE` is empty, uploaded images are served from `/uploads/listings`.
+- If `LOCAL_UPLOADS_DIR` is empty, images are stored outside the app folder in `~/realstate4u-storage/listings`.
+- If `LOCAL_UPLOADS_PUBLIC_BASE` is empty, uploaded images are served through `/uploads/listings/...`.
 
 ## Setup
 
@@ -142,6 +142,7 @@ These work when the database is not configured yet:
 - Posting new properties, registration, and live sign-in require a real database connection.
 - The post property form uses direct server uploads from the browser instead of pasted image URLs.
 - Password reset email and email confirmation delivery require SMTP settings.
+- For safer persistence on shared hosting, uploads are now stored outside the deployed app folder by default.
 
 ## Useful Commands
 
@@ -264,7 +265,7 @@ node update-prebuilt-server.cjs
 
 ## Next Phase Notes
 
-- Replace image URL input with signed Cloudinary uploads.
+- Add image reordering, cover selection, and deletion for uploaded media.
 - Expand Sweden queue ranking logic beyond the basic application record.
 - Add multilingual content fields and locale routing for EU markets.
 - Add Pakistan-specific featured listings and stronger agent lead routing.
