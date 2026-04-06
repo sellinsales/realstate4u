@@ -2,6 +2,7 @@ import { AccountApprovalStatus, UserRole } from "@prisma/client";
 import { NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/db/prisma";
+import { getAppUrl } from "@/lib/runtime-url";
 
 export async function POST(
   request: Request,
@@ -16,7 +17,7 @@ export async function POST(
   const { id } = await context.params;
 
   if (id === session.user.id) {
-    return NextResponse.redirect(new URL("/admin?account=self-blocked", request.url), 303);
+    return NextResponse.redirect(getAppUrl("/admin?account=self-blocked", request.url), 303);
   }
 
   const formData = await request.formData();
@@ -44,5 +45,5 @@ export async function POST(
     },
   });
 
-  return NextResponse.redirect(new URL("/admin?account=updated", request.url), 303);
+  return NextResponse.redirect(getAppUrl("/admin?account=updated", request.url), 303);
 }

@@ -36,10 +36,7 @@ export default async function DashboardListingsPage() {
                   : "Pending review";
 
               return (
-                <section
-                  key={property.id}
-                  className="panel rounded-[1.7rem] p-5"
-                >
+                <section key={property.id} className="panel rounded-[1.7rem] p-5">
                   <div className="flex flex-col gap-5 lg:flex-row lg:items-center lg:justify-between">
                     <div className="space-y-2">
                       <div className="flex flex-wrap items-center gap-2">

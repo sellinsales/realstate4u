@@ -2,6 +2,7 @@ import { PropertyStatus } from "@prisma/client";
 import { NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/db/prisma";
+import { getAppUrl } from "@/lib/runtime-url";
 
 type ReviewRouteProps = {
   params: Promise<{
@@ -17,7 +18,7 @@ export async function POST(request: Request, { params }: ReviewRouteProps) {
   }
 
   if (!process.env.DATABASE_URL || session.user.id.startsWith("demo-")) {
-    return NextResponse.redirect(new URL("/admin?mode=demo", request.url), 303);
+    return NextResponse.redirect(getAppUrl("/admin?mode=demo", request.url), 303);
   }
 
   const formData = await request.formData();
@@ -36,5 +37,5 @@ export async function POST(request: Request, { params }: ReviewRouteProps) {
     },
   });
 
-  return NextResponse.redirect(new URL("/admin?reviewed=1", request.url), 303);
+  return NextResponse.redirect(getAppUrl("/admin?reviewed=1", request.url), 303);
 }

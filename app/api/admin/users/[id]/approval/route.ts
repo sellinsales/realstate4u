@@ -2,6 +2,7 @@ import { AccountApprovalStatus, UserRole } from "@prisma/client";
 import { NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/db/prisma";
+import { getAppUrl } from "@/lib/runtime-url";
 
 export async function POST(
   request: Request,
@@ -36,5 +37,5 @@ export async function POST(
     },
   });
 
-  return NextResponse.redirect(new URL("/admin", request.url));
+  return NextResponse.redirect(getAppUrl("/admin", request.url), 303);
 }
