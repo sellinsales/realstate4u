@@ -1,6 +1,7 @@
 import { AccountApprovalStatus, ListingType, Prisma, PropertyType, UserRole } from "@prisma/client";
 import { DEMO_ADMIN, DEMO_DASHBOARD, DEMO_PROPERTIES } from "@/lib/demo-data";
 import { prisma } from "@/lib/db/prisma";
+import { isAllowedListingImageUrl } from "@/lib/media";
 import { getPropertyVideoMap } from "@/lib/property-video";
 import type { AdminSnapshot, DashboardSnapshot, PropertyCardData, PropertyFilters } from "@/lib/types";
 
@@ -28,6 +29,10 @@ export function isDatabaseConfigured() {
 }
 
 function mapPropertyRecord(record: PropertyRecord, youtubeUrl?: string): PropertyCardData {
+  const imageUrls = record.media
+    .map((item) => item.imageUrl)
+    .filter((imageUrl) => isAllowedListingImageUrl(imageUrl));
+
   return {
     id: record.id,
     slug: record.slug,
@@ -53,7 +58,7 @@ function mapPropertyRecord(record: PropertyRecord, youtubeUrl?: string): Propert
     whatsappPhone: record.whatsappPhone ?? undefined,
     latitude: record.latitude ?? undefined,
     longitude: record.longitude ?? undefined,
-    imageUrls: record.media.map((item) => item.imageUrl),
+    imageUrls,
     youtubeUrl,
     queueType: record.housingQueue?.type,
     leadCount: record.leads.length,

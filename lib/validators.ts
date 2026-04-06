@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { isAllowedListingImageUrl } from "@/lib/media";
 
 export const loginSchema = z.object({
   email: z.email(),
@@ -47,7 +48,13 @@ export const propertyFormSchema = z.object({
   latitude: z.coerce.number().optional(),
   longitude: z.coerce.number().optional(),
   youtubeUrl: z.union([z.literal(""), z.url()]).optional(),
-  imageUrls: z.array(z.url()).min(1),
+  imageUrls: z
+    .array(
+      z.string().trim().refine(isAllowedListingImageUrl, {
+        message: "Use uploaded images or approved image hosts only.",
+      }),
+    )
+    .min(1),
 });
 
 export const leadFormSchema = z.object({

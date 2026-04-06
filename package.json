@@ -13,6 +13,7 @@
     "update:server:prebuilt": "node update-prebuilt-server.cjs",
     "smoke:test": "node smoke-test.cjs",
     "lint": "eslint .",
+    "media:clean": "tsx scripts/clean-invalid-property-media.ts",
     "prisma:generate": "prisma generate",
     "prisma:push": "prisma db push",
     "prisma:migrate": "prisma migrate dev",

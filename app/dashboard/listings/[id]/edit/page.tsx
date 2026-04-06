@@ -8,6 +8,7 @@ import {
 import { PageIntro } from "@/components/ui/page-intro";
 import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/db/prisma";
+import { isAllowedListingImageUrl } from "@/lib/media";
 import { getPropertyVideoMap } from "@/lib/property-video";
 import { getFriendlyUserName } from "@/lib/utils";
 
@@ -70,7 +71,7 @@ export default async function EditListingPage({ params }: EditListingPageProps) 
     landlordSelection: property.landlordSelection ?? undefined,
     latitude: property.latitude ?? undefined,
     longitude: property.longitude ?? undefined,
-    imageUrls: property.media.map((item) => item.imageUrl),
+    imageUrls: property.media.map((item) => item.imageUrl).filter((imageUrl) => isAllowedListingImageUrl(imageUrl)),
   };
 
   const friendlyName = getFriendlyUserName(session.user.name, session.user.email);
