@@ -1,4 +1,4 @@
-import { ListingType, Prisma, PropertyType } from "@prisma/client";
+import { AccountApprovalStatus, ListingType, Prisma, PropertyType, UserRole } from "@prisma/client";
 import { DEMO_ADMIN, DEMO_DASHBOARD, DEMO_PROPERTIES } from "@/lib/demo-data";
 import { prisma } from "@/lib/db/prisma";
 import { getPropertyVideoMap } from "@/lib/property-video";
@@ -219,7 +219,7 @@ export async function getAdminSnapshot(): Promise<AdminSnapshot> {
   }
 
   try {
-    const [pendingListings, verifiedCount, userCount] = await Promise.all([
+    const [pendingListings, verifiedCount, userCount, approvedAgentCount, pendingUsers] = await Promise.all([
       prisma.propertyListing.findMany({
         where: { isVerified: false },
         include: propertyInclude,
@@ -231,6 +231,40 @@ export async function getAdminSnapshot(): Promise<AdminSnapshot> {
         where: { isVerified: true },
       }),
       prisma.user.count(),
+      prisma.user.count({
+        where: {
+          role: {
+            in: [UserRole.AGENT, UserRole.LANDLORD],
+          },
+          approvalStatus: AccountApprovalStatus.APPROVED,
+        },
+      }),
+      prisma.user.findMany({
+        where: {
+          role: {
+            in: [UserRole.AGENT, UserRole.LANDLORD],
+          },
+          approvalStatus: AccountApprovalStatus.PENDING,
+        },
+        select: {
+          id: true,
+          email: true,
+          role: true,
+          approvalStatus: true,
+          createdAt: true,
+          profile: {
+            select: {
+              name: true,
+              phone: true,
+              country: true,
+              city: true,
+            },
+          },
+        },
+        orderBy: {
+          createdAt: "desc",
+        },
+      }),
     ]);
 
     const videoMap = await getPropertyVideoMap(pendingListings.map((listing) => listing.id));
@@ -239,6 +273,18 @@ export async function getAdminSnapshot(): Promise<AdminSnapshot> {
       pendingListings: pendingListings.map((listing) => mapPropertyRecord(listing, videoMap.get(listing.id))),
       verifiedCount,
       userCount,
+      approvedAgentCount,
+      pendingUsers: pendingUsers.map((user) => ({
+        id: user.id,
+        email: user.email,
+        role: user.role,
+        approvalStatus: user.approvalStatus,
+        createdAt: user.createdAt.toISOString(),
+        name: user.profile?.name ?? user.email,
+        phone: user.profile?.phone ?? undefined,
+        country: user.profile?.country ?? undefined,
+        city: user.profile?.city ?? undefined,
+      })),
     };
   } catch {
     return DEMO_ADMIN;

@@ -11,6 +11,7 @@ export const registerSchema = z.object({
   name: z.string().min(2),
   phone: z.string().min(6),
   country: z.string().min(2),
+  role: z.enum(["USER", "AGENT", "LANDLORD"]),
 });
 
 export const forgotPasswordSchema = z.object({

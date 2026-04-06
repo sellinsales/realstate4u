@@ -21,6 +21,15 @@ export const DEMO_CREDENTIALS = [
     city: "Lahore",
   },
   {
+    email: "landlord@realstate4u.com",
+    password: "demo1234",
+    role: "LANDLORD",
+    name: "Maria Soderberg",
+    phone: "+46 70 111 2000",
+    country: "Sweden",
+    city: "Gothenburg",
+  },
+  {
     email: "user@realstate4u.com",
     password: "demo1234",
     role: "USER",
@@ -222,6 +231,20 @@ export const DEMO_ADMIN: AdminSnapshot = {
   pendingListings: DEMO_PROPERTIES.filter((property) => !property.isVerified),
   verifiedCount: DEMO_PROPERTIES.filter((property) => property.isVerified).length,
   userCount: DEMO_CREDENTIALS.length,
+  approvedAgentCount: DEMO_CREDENTIALS.filter((account) => account.role === "AGENT" || account.role === "LANDLORD").length,
+  pendingUsers: [
+    {
+      id: "demo-pending-agent-1",
+      email: "broker@realstate4u.com",
+      role: "AGENT",
+      approvalStatus: "PENDING",
+      createdAt: "2026-04-02T10:00:00.000Z",
+      name: "Saad Malik",
+      phone: "+92 300 5550101",
+      country: "Pakistan",
+      city: "Karachi",
+    },
+  ],
 };
 
 export const DEFAULT_MARKET: MarketCode = "SWEDEN";

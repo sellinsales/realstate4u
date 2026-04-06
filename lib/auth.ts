@@ -2,7 +2,7 @@ import { compare } from "bcryptjs";
 import type { NextAuthOptions } from "next-auth";
 import { getServerSession } from "next-auth/next";
 import CredentialsProvider from "next-auth/providers/credentials";
-import { UserRole } from "@prisma/client";
+import { AccountApprovalStatus, UserRole } from "@prisma/client";
 import { hasAccountSecuritySchema, normalizeEmail, shouldRequireEmailVerification } from "@/lib/account-security";
 import { prisma } from "@/lib/db/prisma";
 import { DEMO_CREDENTIALS } from "@/lib/demo-data";
@@ -13,6 +13,7 @@ type SessionUser = {
   email: string;
   name: string;
   role: UserRole;
+  approvalStatus: AccountApprovalStatus;
 };
 
 type CredentialCheckResult =
@@ -34,6 +35,7 @@ async function authorizeDemoUser(email: string, password: string): Promise<Sessi
     email: demoUser.email,
     name: demoUser.name,
     role: demoUser.role as UserRole,
+    approvalStatus: AccountApprovalStatus.APPROVED,
   };
 }
 
@@ -53,6 +55,7 @@ export async function validateCredentials(email: string, password: string): Prom
       email: true,
       password: true,
       role: true,
+      approvalStatus: true,
       profile: {
         select: {
           name: true,
@@ -86,6 +89,7 @@ export async function validateCredentials(email: string, password: string): Prom
       email: user.email,
       name: user.profile?.name ?? user.email,
       role: user.role,
+      approvalStatus: user.approvalStatus,
     },
   };
 }
@@ -125,6 +129,7 @@ export const authOptions: NextAuthOptions = {
     async jwt({ token, user }) {
       if (user) {
         token.role = user.role;
+        token.approvalStatus = user.approvalStatus;
         token.name = user.name;
         token.email = user.email;
       }
@@ -135,6 +140,8 @@ export const authOptions: NextAuthOptions = {
       if (session.user && token.sub) {
         session.user.id = token.sub;
         session.user.role = (token.role as UserRole | undefined) ?? UserRole.USER;
+        session.user.approvalStatus =
+          (token.approvalStatus as AccountApprovalStatus | undefined) ?? AccountApprovalStatus.APPROVED;
         session.user.name = typeof token.name === "string" ? token.name : session.user.name;
         session.user.email = typeof token.email === "string" ? token.email : session.user.email;
       }

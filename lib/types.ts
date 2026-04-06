@@ -1,4 +1,5 @@
 export type MarketCode = "SWEDEN" | "EU" | "PAKISTAN";
+export type ApprovalStatus = "PENDING" | "APPROVED" | "REJECTED" | "SUSPENDED";
 
 export interface PropertyCardData {
   id: string;
@@ -47,8 +48,22 @@ export interface DashboardSnapshot {
   listings: PropertyCardData[];
 }
 
+export interface AdminUserQueueItem {
+  id: string;
+  email: string;
+  role: "USER" | "AGENT" | "LANDLORD" | "ADMIN";
+  approvalStatus: ApprovalStatus;
+  createdAt: string;
+  name: string;
+  phone?: string;
+  country?: string;
+  city?: string;
+}
+
 export interface AdminSnapshot {
   pendingListings: PropertyCardData[];
   verifiedCount: number;
   userCount: number;
+  approvedAgentCount: number;
+  pendingUsers: AdminUserQueueItem[];
 }

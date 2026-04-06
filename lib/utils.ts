@@ -1,4 +1,5 @@
 import { clsx, type ClassValue } from "clsx";
+import { AccountApprovalStatus, UserRole } from "@prisma/client";
 
 export function cn(...inputs: ClassValue[]) {
   return clsx(inputs);
@@ -54,4 +55,32 @@ export function getFriendlyUserName(name?: string | null, email?: string | null)
 
   const firstWord = cleaned.split(" ")[0];
   return firstWord.slice(0, 1).toUpperCase().concat(firstWord.slice(1));
+}
+
+export function formatUserRole(role: UserRole) {
+  switch (role) {
+    case UserRole.AGENT:
+      return "Agent";
+    case UserRole.LANDLORD:
+      return "Landlord";
+    case UserRole.ADMIN:
+      return "Admin";
+    default:
+      return "User";
+  }
+}
+
+export function canPublishListings(role?: UserRole | null, approvalStatus?: AccountApprovalStatus | null) {
+  if (!role) {
+    return false;
+  }
+
+  if (role === UserRole.ADMIN) {
+    return true;
+  }
+
+  return (
+    (role === UserRole.AGENT || role === UserRole.LANDLORD) &&
+    approvalStatus === AccountApprovalStatus.APPROVED
+  );
 }

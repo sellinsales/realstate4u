@@ -83,12 +83,12 @@ export const mainNavItems: readonly NavItem[] = [
 export const primaryLinks = [
   { href: "/", label: "Home" },
   { href: "/properties", label: "Property Search" },
-  { href: "/smart-match", label: "AI Match" },
+  { href: "/properties?listingType=BUY", label: "Buy Property" },
+  { href: "/properties?listingType=RENT", label: "Rent Property" },
+  { href: "/post-property", label: "Post Property" },
+  { href: "/smart-match", label: "Smart Match" },
+  { href: "/queue-housing", label: "Rental Queue" },
   { href: "/house-designs", label: "House Plans" },
-  { href: "/insights", label: "Insights" },
-  { href: "/demand-board", label: "Demand Board" },
-  { href: "/services", label: "Home Services" },
-  { href: "/jobs", label: "Construction Jobs" },
 ] as const;
 
 export const secondaryLinks = [

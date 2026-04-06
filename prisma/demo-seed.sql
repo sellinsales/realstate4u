@@ -4,11 +4,11 @@
 
 -- Add demo users (password123 encrypted with bcryptjs)
 -- Password hash: $2a$10$mIw0xROZMJgGbJPjLYmG/OZo4P3xSPcJbL0M8p0kJc4PpDzLqbS12
-INSERT IGNORE INTO `User` (`id`, `email`, `password`, `role`, `createdAt`, `updatedAt`) VALUES
-('user-admin-001', 'admin@realstate4u.com', '$2a$10$mIw0xROZMJgGbJPjLYmG/OZo4P3xSPcJbL0M8p0kJc4PpDzLqbS12', 'ADMIN', NOW(), NOW()),
-('user-agent-001', 'agent@realstate4u.com', '$2a$10$mIw0xROZMJgGbJPjLYmG/OZo4P3xSPcJbL0M8p0kJc4PpDzLqbS12', 'AGENT', NOW(), NOW()),
-('user-landlord-001', 'landlord@realstate4u.com', '$2a$10$mIw0xROZMJgGbJPjLYmG/OZo4P3xSPcJbL0M8p0kJc4PpDzLqbS12', 'LANDLORD', NOW(), NOW()),
-('user-regular-001', 'user@realstate4u.com', '$2a$10$mIw0xROZMJgGbJPjLYmG/OZo4P3xSPcJbL0M8p0kJc4PpDzLqbS12', 'USER', NOW(), NOW());
+INSERT IGNORE INTO `User` (`id`, `email`, `password`, `role`, `approvalStatus`, `approvedAt`, `createdAt`, `updatedAt`) VALUES
+('user-admin-001', 'admin@realstate4u.com', '$2a$10$mIw0xROZMJgGbJPjLYmG/OZo4P3xSPcJbL0M8p0kJc4PpDzLqbS12', 'ADMIN', 'APPROVED', NOW(), NOW(), NOW()),
+('user-agent-001', 'agent@realstate4u.com', '$2a$10$mIw0xROZMJgGbJPjLYmG/OZo4P3xSPcJbL0M8p0kJc4PpDzLqbS12', 'AGENT', 'APPROVED', NOW(), NOW(), NOW()),
+('user-landlord-001', 'landlord@realstate4u.com', '$2a$10$mIw0xROZMJgGbJPjLYmG/OZo4P3xSPcJbL0M8p0kJc4PpDzLqbS12', 'LANDLORD', 'APPROVED', NOW(), NOW(), NOW()),
+('user-regular-001', 'user@realstate4u.com', '$2a$10$mIw0xROZMJgGbJPjLYmG/OZo4P3xSPcJbL0M8p0kJc4PpDzLqbS12', 'USER', 'APPROVED', NOW(), NOW(), NOW());
 
 -- Add demo user profiles
 INSERT IGNORE INTO `Profile` (`id`, `userId`, `name`, `phone`, `country`, `city`, `createdAt`, `updatedAt`) VALUES

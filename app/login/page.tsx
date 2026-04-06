@@ -15,6 +15,7 @@ export default async function LoginPage({ searchParams }: LoginPageProps) {
   const requiresVerification = params.verify === "1";
   const reset = params.reset === "1";
   const deliveryPending = params.delivery === "pending";
+  const approvalPending = params.approval === "pending";
   const email = typeof params.email === "string" ? params.email : "";
   const demoMode = !isDatabaseConfigured();
 
@@ -30,8 +31,12 @@ export default async function LoginPage({ searchParams }: LoginPageProps) {
               {registered ? (
                 <div className={requiresVerification ? "status-note status-note-warning" : "status-note status-note-success"}>
                   {requiresVerification
-                    ? "Account created. Confirm the email before signing in."
-                    : "Account created. You can sign in now."}
+                    ? approvalPending
+                      ? "Account created. Confirm the email first, then wait for admin approval before posting listings."
+                      : "Account created. Confirm the email before signing in."
+                    : approvalPending
+                      ? "Account created. Sign in now, but listing access opens after admin approval."
+                      : "Account created. You can sign in now."}
                 </div>
               ) : null}
               {deliveryPending ? (

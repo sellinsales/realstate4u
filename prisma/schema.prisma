@@ -15,6 +15,13 @@ enum UserRole {
   ADMIN
 }
 
+enum AccountApprovalStatus {
+  PENDING
+  APPROVED
+  REJECTED
+  SUSPENDED
+}
+
 enum PropertyType {
   APARTMENT
   HOUSE
@@ -61,6 +68,8 @@ model User {
   email               String               @unique
   password            String
   role                UserRole             @default(USER)
+  approvalStatus      AccountApprovalStatus @default(APPROVED)
+  approvedAt          DateTime?
   emailVerifiedAt     DateTime?
   profile             Profile?
   listings            PropertyListing[]    @relation("PropertyCreator")

@@ -1,6 +1,7 @@
 import "dotenv/config";
 import { hash } from "bcryptjs";
 import {
+  AccountApprovalStatus,
   HousingApplicationStatus,
   HousingQueueType,
   ListingType,
@@ -24,6 +25,8 @@ async function main() {
       update: {
         password,
         role: account.role as UserRole,
+        approvalStatus: AccountApprovalStatus.APPROVED,
+        approvedAt: new Date(),
         profile: {
           upsert: {
             create: {
@@ -45,6 +48,8 @@ async function main() {
         email: account.email,
         password,
         role: account.role as UserRole,
+        approvalStatus: AccountApprovalStatus.APPROVED,
+        approvedAt: new Date(),
         profile: {
           create: {
             name: account.name,

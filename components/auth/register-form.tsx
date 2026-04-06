@@ -39,6 +39,7 @@ export function RegisterForm() {
       message?: string;
       error?: string;
       verificationRequired?: boolean;
+      approvalPending?: boolean;
       delivery?: string;
       email?: string;
     };
@@ -60,6 +61,10 @@ export function RegisterForm() {
         if (data.delivery === "pending") {
           params.set("delivery", "pending");
         }
+      }
+
+      if (data.approvalPending) {
+        params.set("approval", "pending");
       }
 
       router.push(`/login?${params.toString()}`);
@@ -93,6 +98,17 @@ export function RegisterForm() {
           </label>
           <input id="country" name="country" className="field" required />
         </div>
+      </div>
+      <div>
+        <label htmlFor="role" className="field-label">
+          Account type
+        </label>
+        <select id="role" name="role" className="field" defaultValue="USER" required>
+          <option value="USER">Buyer / renter</option>
+          <option value="AGENT">Agent</option>
+          <option value="LANDLORD">Landlord</option>
+        </select>
+        <p className="field-hint">Agents and landlords can sign in right away, but listing access stays locked until admin approval.</p>
       </div>
       <div>
         <label htmlFor="password" className="field-label">

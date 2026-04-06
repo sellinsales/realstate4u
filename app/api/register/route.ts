@@ -1,5 +1,6 @@
 import { hash } from "bcryptjs";
 import { NextResponse } from "next/server";
+import { AccountApprovalStatus, UserRole } from "@prisma/client";
 import {
   createVerificationEmail,
   getBaseUrl,
@@ -44,11 +45,19 @@ export async function POST(request: Request) {
     const supportsAccountSecurity = await hasAccountSecuritySchema();
     const requiresVerification = supportsAccountSecurity && shouldRequireEmailVerification();
     const password = await hash(parsed.data.password, 10);
+    const role = parsed.data.role as UserRole;
+    const approvalStatus =
+      role === UserRole.AGENT || role === UserRole.LANDLORD
+        ? AccountApprovalStatus.PENDING
+        : AccountApprovalStatus.APPROVED;
 
     const user = await prisma.user.create({
       data: {
         email: normalizedEmail,
         password,
+        role,
+        approvalStatus,
+        approvedAt: approvalStatus === AccountApprovalStatus.APPROVED ? new Date() : null,
         ...(supportsAccountSecurity ? { emailVerifiedAt: requiresVerification ? null : new Date() } : {}),
         profile: {
           create: {
@@ -62,7 +71,14 @@ export async function POST(request: Request) {
 
     if (!requiresVerification) {
       return NextResponse.json(
-        { message: "Account created successfully. You can sign in now.", verificationRequired: false },
+        {
+          message:
+            approvalStatus === AccountApprovalStatus.PENDING
+              ? "Account created. Your agent profile is pending admin approval before you can publish listings."
+              : "Account created successfully. You can sign in now.",
+          verificationRequired: false,
+          approvalPending: approvalStatus === AccountApprovalStatus.PENDING,
+        },
         { status: 201 },
       );
     }
@@ -79,8 +95,12 @@ export async function POST(request: Request) {
 
       return NextResponse.json(
         {
-          message: "Account created. Check your inbox to confirm the email before signing in.",
+          message:
+            approvalStatus === AccountApprovalStatus.PENDING
+              ? "Account created. Confirm the email first, then wait for admin approval before posting listings."
+              : "Account created. Check your inbox to confirm the email before signing in.",
           verificationRequired: true,
+          approvalPending: approvalStatus === AccountApprovalStatus.PENDING,
           email: user.email,
           delivery: "sent",
         },
@@ -90,8 +110,11 @@ export async function POST(request: Request) {
       return NextResponse.json(
         {
           message:
-            "Account created, but the confirmation email could not be sent yet. Use resend confirmation from the login page.",
+            approvalStatus === AccountApprovalStatus.PENDING
+              ? "Account created. Email delivery is pending, and your agent profile will still need admin approval before posting."
+              : "Account created, but the confirmation email could not be sent yet. Use resend confirmation from the login page.",
           verificationRequired: true,
+          approvalPending: approvalStatus === AccountApprovalStatus.PENDING,
           email: user.email,
           delivery: "pending",
         },

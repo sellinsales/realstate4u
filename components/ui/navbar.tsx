@@ -36,7 +36,7 @@ export async function Navbar() {
             </span>
             <span className="brand-copy">
               <span className="brand-name">RealState4U</span>
-              <span className="brand-tag">Homes, services, jobs, and demand</span>
+              <span className="brand-tag">Buy, rent, and list property</span>
             </span>
           </Link>
           <div className="hidden rounded-full border border-[var(--brand-line)] bg-white/62 p-1 shadow-[0_18px_40px_-34px_rgba(24,86,122,0.5)] lg:flex">

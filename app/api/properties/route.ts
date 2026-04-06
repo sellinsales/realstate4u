@@ -1,4 +1,4 @@
-import { HousingQueueType, ListingType, PropertyStatus, PropertyType } from "@prisma/client";
+import { AccountApprovalStatus, HousingQueueType, ListingType, PropertyStatus, PropertyType, UserRole } from "@prisma/client";
 import { NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
 import { getProperties } from "@/lib/data";
@@ -49,6 +49,36 @@ export async function POST(request: Request) {
   }
 
   try {
+    const currentUser = await prisma.user.findUnique({
+      where: { id: session.user.id },
+      select: {
+        role: true,
+        approvalStatus: true,
+      },
+    });
+
+    if (!currentUser) {
+      return NextResponse.json({ error: "Your account could not be found." }, { status: 404 });
+    }
+
+    const canPublish =
+      currentUser.role === UserRole.ADMIN ||
+      ((currentUser.role === UserRole.AGENT || currentUser.role === UserRole.LANDLORD) &&
+        currentUser.approvalStatus === AccountApprovalStatus.APPROVED);
+
+    if (!canPublish) {
+      const message =
+        currentUser.role === UserRole.USER
+          ? "Only approved agents, landlords, or admins can publish listings. Upgrade your account type first."
+          : currentUser.approvalStatus === AccountApprovalStatus.PENDING
+            ? "Your account is pending admin approval. Listing access will open after review."
+            : currentUser.approvalStatus === AccountApprovalStatus.REJECTED
+              ? "Your listing account was not approved. Contact admin support before posting."
+              : "Your listing account is currently suspended. Contact admin support before posting.";
+
+      return NextResponse.json({ error: message }, { status: 403 });
+    }
+
     const payload = parsed.data;
     const baseSlug = toSlug(payload.title);
     const existing = await prisma.propertyListing.findUnique({

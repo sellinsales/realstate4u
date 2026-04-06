@@ -1,3 +1,4 @@
+import { AccountApprovalStatus, UserRole } from "@prisma/client";
 import { PersonalizedDashboardPanel } from "@/components/dashboard/personalized-dashboard-panel";
 import Link from "next/link";
 import { auth } from "@/lib/auth";
@@ -16,6 +17,9 @@ export default async function DashboardPage() {
   const snapshot = await getDashboardSnapshot(session.user.id);
   const allProperties = await getProperties();
   const friendlyName = getFriendlyUserName(session.user.name, session.user.email);
+  const sellerApprovalPending =
+    (session.user.role === UserRole.AGENT || session.user.role === UserRole.LANDLORD) &&
+    session.user.approvalStatus === AccountApprovalStatus.PENDING;
 
   return (
     <main className="section-spacing">
@@ -35,6 +39,11 @@ export default async function DashboardPage() {
             </>
           }
         />
+        {sellerApprovalPending ? (
+          <div className="status-note status-note-warning">
+            Your seller account is pending admin approval. You can manage your account now, but listing publishing opens after review.
+          </div>
+        ) : null}
 
         <div className="grid gap-5 md:grid-cols-4">
           <StatCard label="Listings" value={snapshot.listingCount} />

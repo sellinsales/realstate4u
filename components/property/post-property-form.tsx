@@ -646,19 +646,19 @@ export function PostPropertyForm() {
 
       <aside className="space-y-5">
         <div className="panel rounded-[2rem] p-6">
-          <p className="form-section-title">Why this wizard is easier</p>
+          <p className="form-section-title">What helps a listing perform better</p>
           <div className="mt-4 space-y-3 text-sm leading-7 text-[var(--muted)]">
-            <p>Use presets, dropdowns, and step controls instead of typing everything from scratch.</p>
-            <p>Upload images directly from your device and review the listing before it goes live.</p>
-            <p>Validation points to the exact field that needs fixing instead of one vague error.</p>
+            <p>Choose the closest market, area, and property type so buyers land on the right listing faster.</p>
+            <p>Keep the title clean and factual. Buyers respond better to exact area, size, and property type than hype.</p>
+            <p>Put your strongest exterior, lounge, or front-elevation image first because it becomes the listing cover.</p>
           </div>
         </div>
         <div className="panel rounded-[2rem] p-6">
-          <p className="form-section-title">Best results</p>
+          <p className="form-section-title">Publishing notes</p>
           <div className="mt-4 space-y-3 text-sm leading-7 text-[var(--muted)]">
-            <p>Start with a clear title and exact area or community.</p>
-            <p>Upload bright, real photos and keep the strongest exterior or lounge image first.</p>
-            <p>Add a walkthrough video when available. It usually improves inquiry quality.</p>
+            <p>Every new listing enters pending review before it appears as verified marketplace inventory.</p>
+            <p>Primary contact should be a real call number and, for Pakistan, a working WhatsApp number.</p>
+            <p>Add a YouTube walkthrough when available. It usually improves inquiry quality and trust.</p>
           </div>
         </div>
       </aside>

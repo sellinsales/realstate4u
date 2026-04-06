@@ -20,12 +20,11 @@ export function SiteFooter() {
             </span>
             <span className="brand-copy">
               <span className="brand-name">RealState4U</span>
-              <span className="brand-tag">Search, hire, apply, and share demand</span>
+              <span className="brand-tag">Search, sell, and rent property</span>
             </span>
           </Link>
           <p className="max-w-sm text-sm leading-7 text-[var(--muted)]">
-            RealState4U helps visitors find homes, compare service teams, explore jobs, and share requirements without
-            getting lost between unrelated sections.
+            RealState4U keeps the main experience centered on property search, seller-side listing flow, and faster buyer contact.
           </p>
           <div className="flex flex-wrap gap-3">
             <Link href="/properties" className="btn-secondary">
@@ -61,10 +60,10 @@ export function SiteFooter() {
         </div>
 
         <div className="panel rounded-[2rem] p-6">
-          <p className="footer-heading">Why it is easier to use</p>
+          <p className="footer-heading">Seller workflow</p>
           <div className="mt-4 space-y-3 text-sm leading-7 text-[var(--muted)]">
-            <p>Search stays cleaner because homes, services, jobs, and public demand each keep their own clearer route.</p>
-            <p>Your account, inquiries, saved items, and next steps continue across the marketplace instead of starting over on every page.</p>
+            <p>Approved agents and landlords can move from account setup to posting through the guided listing wizard.</p>
+            <p>New listings stay pending until admin review, so the live marketplace stays cleaner for buyers and renters.</p>
           </div>
           <div className="mt-5 footer-links">
             {secondaryLinks.map((link) => (
