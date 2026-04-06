@@ -1,7 +1,7 @@
-import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { LeadForm } from "@/components/property/lead-form";
+import { PropertyGallery } from "@/components/property/property-gallery";
 import { QueueApplyButton } from "@/components/property/queue-apply-button";
 import { ShareListingPanel } from "@/components/property/share-listing-panel";
 import { WhatsAppButton } from "@/components/property/whatsapp-button";
@@ -71,21 +71,7 @@ export default async function PropertyDetailPage({ params }: PropertyDetailPageP
 
         <div className="grid gap-8 lg:grid-cols-[1.1fr_0.9fr]">
           <div className="space-y-6">
-            <div className="grid gap-4 sm:grid-cols-3">
-              {gallery.map((imageUrl) => (
-                <div key={imageUrl} className="panel overflow-hidden rounded-[1.8rem]">
-                  <div className="relative h-64 w-full">
-                    <Image
-                      src={imageUrl}
-                      alt={property.title}
-                      fill
-                      sizes="(max-width: 1024px) 100vw, 33vw"
-                      className="object-cover"
-                    />
-                  </div>
-                </div>
-              ))}
-            </div>
+            <PropertyGallery images={gallery} title={property.title} />
             <div className="panel rounded-[2rem] p-6">
               <SectionHeader
                 eyebrow="Property overview"
