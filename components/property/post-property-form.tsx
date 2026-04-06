@@ -523,7 +523,7 @@ export function PostPropertyForm() {
                 <input type="file" accept="image/*" multiple className="hidden" onChange={handleImageSelection} />
                 <span className="btn-primary">{uploading ? "Uploading..." : "Browse images"}</span>
                 <span className="text-sm leading-7 text-[var(--muted)]">
-                  Upload listing photos directly from your device. RealState4U branding is applied when listings are displayed.
+                  Upload listing photos directly from your device. Images are stored on your server with RealState4U file naming.
                 </span>
               </label>
               {uploadMessage ? <p className="field-success">{uploadMessage}</p> : null}

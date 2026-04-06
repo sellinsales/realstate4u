@@ -28,7 +28,7 @@ Services and jobs are scaffolded as future verticals, but Phase 1 is intentional
 - NextAuth credentials provider
 - Prisma ORM
 - MySQL / MariaDB
-- Cloudinary-ready image URL field
+- Local server image uploads
 - OpenStreetMap link integration
 
 ## Project Structure
@@ -79,9 +79,8 @@ SMTP_PORT=587
 SMTP_USER=
 SMTP_PASS=
 SMTP_SECURE=false
-CLOUDINARY_CLOUD_NAME=
-CLOUDINARY_API_KEY=
-CLOUDINARY_API_SECRET=
+LOCAL_UPLOADS_DIR=
+LOCAL_UPLOADS_PUBLIC_BASE=
 ```
 
 Notes:
@@ -89,6 +88,8 @@ Notes:
 - The app uses MySQL / MariaDB, not PostgreSQL.
 - Email confirmation becomes required automatically when SMTP is configured.
 - You can force confirmation on or off with `AUTH_REQUIRE_EMAIL_VERIFICATION=true` or `false`.
+- If `LOCAL_UPLOADS_DIR` is empty, images are stored in `public/uploads/listings`.
+- If `LOCAL_UPLOADS_PUBLIC_BASE` is empty, uploaded images are served from `/uploads/listings`.
 
 ## Setup
 
@@ -139,7 +140,7 @@ These work when the database is not configured yet:
 - Public property pages work with demo data fallback when MySQL / MariaDB is not connected.
 - Lead and queue APIs return demo-mode success messages without persistence until `DATABASE_URL` is configured.
 - Posting new properties, registration, and live sign-in require a real database connection.
-- The post property form currently accepts image URLs so Cloudinary uploads can be integrated cleanly next.
+- The post property form uses direct server uploads from the browser instead of pasted image URLs.
 - Password reset email and email confirmation delivery require SMTP settings.
 
 ## Useful Commands
