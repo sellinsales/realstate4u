@@ -19,6 +19,7 @@ export interface PropertyCardData {
   firstHand?: boolean;
   landlordSelection?: string;
   isVerified: boolean;
+  status?: string;
   createdAt: string;
   agentName: string;
   contactPhone?: string;
@@ -63,10 +64,23 @@ export interface AdminUserQueueItem {
   city?: string;
 }
 
+export interface AdminManagedUser {
+  id: string;
+  email: string;
+  role: "USER" | "AGENT" | "LANDLORD" | "ADMIN";
+  approvalStatus: ApprovalStatus;
+  createdAt: string;
+  name: string;
+  phone?: string;
+  country?: string;
+  city?: string;
+}
+
 export interface AdminSnapshot {
   pendingListings: PropertyCardData[];
   verifiedCount: number;
   userCount: number;
   approvedAgentCount: number;
   pendingUsers: AdminUserQueueItem[];
+  managedUsers: AdminManagedUser[];
 }

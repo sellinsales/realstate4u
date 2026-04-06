@@ -245,6 +245,17 @@ export const DEMO_ADMIN: AdminSnapshot = {
       city: "Karachi",
     },
   ],
+  managedUsers: DEMO_CREDENTIALS.map((account, index) => ({
+    id: `demo-user-${index + 1}`,
+    email: account.email,
+    role: account.role,
+    approvalStatus: account.role === "USER" || account.role === "ADMIN" ? "APPROVED" : "APPROVED",
+    createdAt: `2026-04-0${index + 1}T09:00:00.000Z`,
+    name: account.name,
+    phone: account.phone,
+    country: account.country,
+    city: account.city,
+  })),
 };
 
 export const DEFAULT_MARKET: MarketCode = "SWEDEN";

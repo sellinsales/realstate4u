@@ -1,6 +1,7 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import type { Route } from "next";
+import { type ChangeEvent, useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import { PAKISTAN_CITIES, SWEDEN_CITIES } from "@/lib/city-options";
 import { buildListingAssetName } from "@/lib/media";
@@ -30,6 +31,31 @@ type FormState = {
   landlordSelection: string;
   latitude: string;
   longitude: string;
+};
+
+export type PropertyFormInitialData = {
+  id?: string;
+  slug?: string;
+  marketCode: FormState["marketCode"];
+  country: string;
+  city: string;
+  title: string;
+  description: string;
+  listingType: FormState["listingType"];
+  propertyType: FormState["propertyType"];
+  price: number;
+  address?: string;
+  bedrooms?: number;
+  bathrooms?: number;
+  areaSqm?: number;
+  contactPhone?: string;
+  whatsappPhone?: string;
+  youtubeUrl?: string;
+  firstHand?: boolean;
+  landlordSelection?: string;
+  latitude?: number;
+  longitude?: number;
+  imageUrls: string[];
 };
 
 const DRAFT_KEY = "realstate4u-post-property-draft-v2";
@@ -98,6 +124,46 @@ const initialState: FormState = {
   longitude: "",
 };
 
+function toFormState(data?: PropertyFormInitialData): FormState {
+  if (!data) {
+    return initialState;
+  }
+
+  return {
+    marketCode: data.marketCode,
+    country: data.country || marketProfiles[data.marketCode].country,
+    city: data.city || marketProfiles[data.marketCode].cities[0],
+    title: data.title || "",
+    description: data.description || "",
+    listingType: data.listingType,
+    propertyType: data.propertyType,
+    price: data.price ? String(data.price) : "",
+    address: data.address || "",
+    plotPreset: "",
+    bedrooms: data.bedrooms ?? 0,
+    bathrooms: data.bathrooms ?? 0,
+    areaSqm: data.areaSqm ?? marketProfiles[data.marketCode].plotPresets[0]?.sqm ?? 0,
+    contactPhone: data.contactPhone || "",
+    whatsappPhone: data.whatsappPhone || "",
+    youtubeUrl: data.youtubeUrl || "",
+    firstHand: data.firstHand ?? false,
+    landlordSelection: data.landlordSelection || "",
+    latitude: data.latitude ? String(data.latitude) : "",
+    longitude: data.longitude ? String(data.longitude) : "",
+  };
+}
+
+function toUploadedImages(data?: PropertyFormInitialData): UploadedImage[] {
+  if (!data?.imageUrls?.length) {
+    return [];
+  }
+
+  return data.imageUrls.map((url, index) => ({
+    url,
+    name: buildListingAssetName(data.title || "listing", index),
+  }));
+}
+
 function Stepper({
   label,
   value,
@@ -123,11 +189,27 @@ function Stepper({
   );
 }
 
-export function PostPropertyForm() {
+export function PostPropertyForm({
+  initialData,
+  submitUrl = "/api/properties",
+  submitMethod = "POST",
+  submitLabel = "Publish listing",
+  successRedirectPath,
+  mode = "create",
+  draftKey = DRAFT_KEY,
+}: {
+  initialData?: PropertyFormInitialData;
+  submitUrl?: string;
+  submitMethod?: "POST" | "PATCH";
+  submitLabel?: string;
+  successRedirectPath?: Route;
+  mode?: "create" | "edit";
+  draftKey?: string;
+}) {
   const router = useRouter();
   const [step, setStep] = useState<WizardStep>("BASICS");
-  const [state, setState] = useState<FormState>(initialState);
-  const [images, setImages] = useState<UploadedImage[]>([]);
+  const [state, setState] = useState<FormState>(() => toFormState(initialData));
+  const [images, setImages] = useState<UploadedImage[]>(() => toUploadedImages(initialData));
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [uploading, setUploading] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -140,17 +222,22 @@ export function PostPropertyForm() {
 
   useEffect(() => {
     try {
-      const raw = window.localStorage.getItem(DRAFT_KEY);
-      if (!raw) return;
-      const parsed = JSON.parse(raw) as { state?: FormState; images?: UploadedImage[] };
-      if (parsed.state) setState({ ...initialState, ...parsed.state });
-      if (parsed.images) setImages(parsed.images);
+      const raw = window.localStorage.getItem(draftKey);
+      if (raw) {
+        const parsed = JSON.parse(raw) as { state?: FormState; images?: UploadedImage[] };
+        if (parsed.state) setState({ ...toFormState(initialData), ...parsed.state });
+        if (parsed.images) setImages(parsed.images);
+        return;
+      }
+
+      setState(toFormState(initialData));
+      setImages(toUploadedImages(initialData));
     } catch {}
-  }, []);
+  }, [draftKey, initialData]);
 
   useEffect(() => {
-    window.localStorage.setItem(DRAFT_KEY, JSON.stringify({ state, images }));
-  }, [state, images]);
+    window.localStorage.setItem(draftKey, JSON.stringify({ state, images }));
+  }, [draftKey, state, images]);
 
   const assetNamePreview = useMemo(() => {
     const count = Math.max(images.length, 1);
@@ -215,7 +302,7 @@ export function PostPropertyForm() {
     return Object.keys(nextErrors).length === 0;
   }
 
-  async function handleImageSelection(event: React.ChangeEvent<HTMLInputElement>) {
+  async function handleImageSelection(event: ChangeEvent<HTMLInputElement>) {
     const files = Array.from(event.target.files || []);
     if (!files.length) return;
     setUploading(true);
@@ -319,8 +406,8 @@ export function PostPropertyForm() {
     setLoading(true);
 
     try {
-      const response = await fetch("/api/properties", {
-        method: "POST",
+      const response = await fetch(submitUrl, {
+        method: submitMethod,
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(parsed.data),
       });
@@ -336,10 +423,16 @@ export function PostPropertyForm() {
         return;
       }
 
-      window.localStorage.removeItem(DRAFT_KEY);
+      window.localStorage.removeItem(draftKey);
+
+      if (successRedirectPath) {
+        router.push(successRedirectPath);
+        router.refresh();
+        return;
+      }
 
       if (data.property?.slug) {
-        router.push(`/properties/${data.property.slug}`);
+        router.push(`/properties/${data.property.slug}` as Route);
         router.refresh();
         return;
       }
@@ -630,15 +723,15 @@ export function PostPropertyForm() {
         <div className="flex flex-col-reverse gap-3 sm:flex-row sm:justify-between">
           <div className="flex flex-wrap gap-3">
             {currentStepIndex > 0 ? <button type="button" className="btn-secondary" onClick={goBack}>Back</button> : null}
-            <button type="button" className="btn-secondary" onClick={() => { window.localStorage.removeItem(DRAFT_KEY); setState(initialState); setImages([]); setErrors({}); setGeneralError(null); setUploadMessage(null); setStep("BASICS"); }}>
-              Clear draft
+            <button type="button" className="btn-secondary" onClick={() => { window.localStorage.removeItem(draftKey); setState(toFormState(initialData)); setImages(toUploadedImages(initialData)); setErrors({}); setGeneralError(null); setUploadMessage(null); setStep("BASICS"); }}>
+              {mode === "edit" ? "Reset changes" : "Clear draft"}
             </button>
           </div>
           {step !== "REVIEW" ? (
             <button type="button" className="btn-primary" onClick={goNext}>Continue</button>
           ) : (
             <button type="button" className="btn-primary" disabled={loading} onClick={handleSubmit}>
-              {loading ? "Publishing..." : "Publish listing"}
+              {loading ? (mode === "edit" ? "Updating..." : "Publishing...") : submitLabel}
             </button>
           )}
         </div>

@@ -70,9 +70,14 @@ export default async function DashboardPage() {
                     {listing.city}, {listing.country}
                   </p>
                 </div>
-                <Link href={`/properties/${listing.slug}`} className="btn-secondary">
-                  View
-                </Link>
+                <div className="flex flex-wrap gap-3">
+                  <Link href={`/properties/${listing.slug}`} className="btn-secondary">
+                    View
+                  </Link>
+                  <Link href={`/dashboard/listings/${listing.id}/edit`} className="btn-primary">
+                    Edit
+                  </Link>
+                </div>
               </div>
             ))}
           </div>

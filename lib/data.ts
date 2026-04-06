@@ -46,6 +46,7 @@ function mapPropertyRecord(record: PropertyRecord, youtubeUrl?: string): Propert
     firstHand: record.firstHand,
     landlordSelection: record.landlordSelection ?? undefined,
     isVerified: record.isVerified,
+    status: record.status,
     createdAt: record.createdAt.toISOString(),
     agentName: record.createdBy.profile?.name ?? record.createdBy.email,
     contactPhone: record.contactPhone ?? record.createdBy.profile?.phone ?? undefined,
@@ -230,13 +231,37 @@ export async function getDashboardSnapshot(userId: string): Promise<DashboardSna
   }
 }
 
+export async function getUserListings(userId: string) {
+  if (!isDatabaseConfigured() || userId.startsWith("demo-")) {
+    return DEMO_PROPERTIES.slice(0, 12);
+  }
+
+  try {
+    const listings = await prisma.propertyListing.findMany({
+      where: {
+        createdById: userId,
+      },
+      include: propertyInclude,
+      orderBy: {
+        createdAt: "desc",
+      },
+      take: 24,
+    });
+
+    const videoMap = await getPropertyVideoMap(listings.map((listing) => listing.id));
+    return listings.map((listing) => mapPropertyRecord(listing, videoMap.get(listing.id)));
+  } catch {
+    return DEMO_PROPERTIES.slice(0, 12);
+  }
+}
+
 export async function getAdminSnapshot(): Promise<AdminSnapshot> {
   if (!isDatabaseConfigured()) {
     return DEMO_ADMIN;
   }
 
   try {
-    const [pendingListings, verifiedCount, userCount, approvedAgentCount, pendingUsers] = await Promise.all([
+    const [pendingListings, verifiedCount, userCount, approvedAgentCount, pendingUsers, managedUsers] = await Promise.all([
       prisma.propertyListing.findMany({
         where: { isVerified: false },
         include: propertyInclude,
@@ -282,6 +307,27 @@ export async function getAdminSnapshot(): Promise<AdminSnapshot> {
           createdAt: "desc",
         },
       }),
+      prisma.user.findMany({
+        select: {
+          id: true,
+          email: true,
+          role: true,
+          approvalStatus: true,
+          createdAt: true,
+          profile: {
+            select: {
+              name: true,
+              phone: true,
+              country: true,
+              city: true,
+            },
+          },
+        },
+        orderBy: {
+          createdAt: "desc",
+        },
+        take: 25,
+      }),
     ]);
 
     const videoMap = await getPropertyVideoMap(pendingListings.map((listing) => listing.id));
@@ -292,6 +338,17 @@ export async function getAdminSnapshot(): Promise<AdminSnapshot> {
       userCount,
       approvedAgentCount,
       pendingUsers: pendingUsers.map((user) => ({
+        id: user.id,
+        email: user.email,
+        role: user.role,
+        approvalStatus: user.approvalStatus,
+        createdAt: user.createdAt.toISOString(),
+        name: user.profile?.name ?? user.email,
+        phone: user.profile?.phone ?? undefined,
+        country: user.profile?.country ?? undefined,
+        city: user.profile?.city ?? undefined,
+      })),
+      managedUsers: managedUsers.map((user) => ({
         id: user.id,
         email: user.email,
         role: user.role,
